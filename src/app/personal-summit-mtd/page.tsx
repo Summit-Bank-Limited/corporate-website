@@ -8,7 +8,7 @@ import GenericSection from "@/components/section/GenericSection";
 import { Testimonials } from "@/components/testimonials/Testimonials";
 import Image from "next/image";
 import { title } from "process";
-import React from "react";
+import React, { useState } from "react";
 import { text } from "stream/consumers";
 import MTDApplicationForm from "@/components/mtd-application/MTDApplicationForm";
 import Button from "@/components/Button";
@@ -17,6 +17,7 @@ import { fadeIn } from "@/lib/animation";
 
 
 export default function page() {
+  const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const heroDetails = {
     title: "Summit MTD (Mudarabah)",
     text: "Your funds are ethically invested and profits are shared between you and the bank based on a pre-agreed ratio.",
@@ -113,6 +114,11 @@ const allSection = [
         ))}
         <Faq  amount={3}/>
        {/*  <Testimonials /> */} 
+       {/* MTD Application Form Modal */}
+       <MTDApplicationForm
+          isOpen={isApplicationOpen}
+          onClose={() => setIsApplicationOpen(false)}
+        />
       </DefaultLayout>
     </div>
   );
