@@ -1,3 +1,5 @@
+"use client";
+
 import FeaturesCard from "@/components/cards/FeaturesCard";
 import Faq from "@/components/faq/Faq";
 import AccountHero from "@/components/generalHero/AccountHero";
