@@ -1,20 +1,17 @@
 "use client";
 
 import Faq from "@/components/faq/Faq";
-import AccountHero from "@/components/generalHero/AccountHero";
+import MTDHero from "@/components/generalHero/MTDHero";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import FeaturesSection from "@/components/section/FeaturesSection";
 import GenericSection from "@/components/section/GenericSection";
 import Image from "next/image";
 import React, { useState } from "react";
 import MTDApplicationForm from "@/components/mtd-application/MTDApplicationForm";
-import Button from "@/components/Button";
-import Framer from "@/components/Framer";
-import { fadeIn } from "@/lib/animation";
+
 
 export default function page() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
-
   const heroDetails = {
     title: "Summit MTD (Mudarabah)",
     text: "Your funds are ethically invested and profits are shared between you and the bank based on a pre-agreed ratio.",
@@ -45,16 +42,21 @@ export default function page() {
       title: "Available for homes, cars, and equipment",
       text: "Ideal for funding goals like home ownership, vehicle acquisition, or equipment purchase through ethical financing.",
     },
-  ];
 
-  const allSection = [
+      
+    
+ 
+  ]
+const allSection = [
     {
       title: "Requirements",
       image: "/account/current-1.png",
       list: [
-        "Have an existing account with the bank",
+        "Have an existing account with the Bank",
         "Completed investment application form (stating tenor and amount)",
-        "Minimum investment amount of N500,000",
+        "Minimum investment amount of N500,000" 
+        
+        
       ],
       reverse: true,
     },
@@ -63,9 +65,9 @@ export default function page() {
       image: "/account/current-2.png",
       list: [
         "SMEs and Registered businesses",
-        "Completed investment application form (stating tenor and amount)",
-        "Minimum investment amount of N1,000,000",
-        "T&Cs apply",
+        "T&Cs apply"
+        ,
+    
       ],
     },
   ];
@@ -73,20 +75,12 @@ export default function page() {
   return (
     <div className="">
       <DefaultLayout>
-        <AccountHero text={heroDetails?.text} title={heroDetails?.title} />
-        
-        {/* Apply Button Section */}
-        <div className="main py-10 flex justify-center">
-          <Framer animation={fadeIn("up", 0.3)}>
-            <Button
-              text="Apply"
-              type="primary"
-              buttonFn={() => setIsApplicationOpen(true)}
-            />
-          </Framer>
-        </div>
-
-        {/* <Partners /> */}
+        <MTDHero 
+          text={heroDetails?.text} 
+          title={heroDetails?.title}
+          onApplyClick={() => setIsApplicationOpen(true)}
+        />
+      {/* <Partners /> */}
         <FeaturesSection features={allFeatures} />
         {allSection?.map((res, index) => (
           <GenericSection
@@ -110,11 +104,10 @@ export default function page() {
             </div>
           </GenericSection>
         ))}
-        <Faq amount={3} />
-        {/*  <Testimonials /> */}
-        
-        {/* MTD Application Form Modal */}
-        <MTDApplicationForm
+         <Faq  amount={3}/>
+       {/*  <Testimonials /> */} 
+       {/* MTD Application Form Modal */}
+       <MTDApplicationForm
           isOpen={isApplicationOpen}
           onClose={() => setIsApplicationOpen(false)}
         />

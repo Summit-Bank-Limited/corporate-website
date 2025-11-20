@@ -490,7 +490,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
           </a>
           <div className="ml-6">
           <Link href="https://ibank.summitbankng.com/IBS/">
-            <Button type="primary" buttonFn>
+            <Button type="primary" buttonFn={() => {}}>
               <span className="whitespace-nowrap">Internet Banking</span>
             </Button>
           </Link>
