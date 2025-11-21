@@ -13,7 +13,7 @@ import MTDApplicationForm from "@/components/mtd-application/MTDApplicationForm"
 export default function page() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const heroDetails = {
-    title: "Summit MTD (Mudarabah)",
+    title: "Term Deposit (Mudarabah)",
     text: "Your funds are ethically invested and profits are shared between you and the bank based on a pre-agreed ratio.",
   };
 

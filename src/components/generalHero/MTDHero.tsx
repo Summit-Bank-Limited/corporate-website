@@ -87,10 +87,10 @@ export default function MTDHero({
                         viewport={{ once: true }}
                         transition={{ delay: 0.6 + index * 0.1 }}
                         whileHover={{ scale: 1.05 }}
-                        className="flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30"
+                        className="flex items-center gap-2 px-4 py-2.5 bg-white/90 backdrop-blur-md rounded-full border-2 border-white shadow-lg"
                       >
                         <Icon size={18} className={feature.color} />
-                        <span className="text-sm font-medium text-white">
+                        <span className="text-sm font-semibold text-gray-800 drop-shadow-sm">
                           {feature.text}
                         </span>
                       </motion.div>

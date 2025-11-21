@@ -44,6 +44,27 @@ export default function MTDApplicationForm({
   const [errorMessage, setErrorMessage] = useState("");
   const verificationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Helper function to format number with commas for display
+  const formatNumberWithCommas = (value: string): string => {
+    if (!value) return '';
+    // Remove all non-digit characters except decimal point
+    const numericValue = value.replace(/[^\d.]/g, '');
+    if (!numericValue) return '';
+    // Split by decimal point
+    const parts = numericValue.split('.');
+    // Format the integer part with commas
+    if (parts[0]) {
+      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    }
+    // Join back with decimal if it exists
+    return parts.length > 1 ? parts.join('.') : parts[0];
+  };
+
+  // Helper function to remove commas and get numeric value (stored without commas)
+  const removeCommas = (value: string): string => {
+    return value.replace(/,/g, '');
+  };
+
   // Fetch rate guide on mount
   useEffect(() => {
     if (isOpen) {
@@ -368,7 +389,7 @@ export default function MTDApplicationForm({
           {currentStep === "terms" && (
             <div className="space-y-4">
               <div className="border-2 border-l-4 border-l-[#C6B07D] rounded-lg p-3 bg-white shadow-sm">
-                <span className="text-base font-bold text-[#AF1F23] mb-2">Terms and Conditions</span>
+                {/* <span className="text-base font-bold text-[#AF1F23] mb-2">Terms and Conditions</span> */}
 
                 <p ><span className="text-sm font-semibold text-[#AF1F23] mt-2 mb-1">Investment Overview</span></p>
                 <span className="text-[#495057] mb-3 text-xs">
@@ -385,16 +406,16 @@ export default function MTDApplicationForm({
                 <ul className="list-disc pl-4 text-[#495057] space-y-0.5 mb-3 text-xs">
                   <span>
                   <li>
-                    <span><strong>Minimum Investment:</strong> N50,000,000.00 (Fifty Million Naira Only)</span>
+                    <span className="text-sm font-semibold mt-2 mb-1"><strong>Minimum Investment:</strong> N50,000,000.00 (Fifty Million Naira Only)</span>
                   </li>
                   <li>
-                    <strong>Tenure Options:</strong> 30, 60, 90, 180, or 365 days
+                    <span className="text-sm font-semibold mt-2 mb-1"><strong>Tenure Options:</strong> 30, 60, 90, 180, or 365 days</span>
                   </li>
                   <li>
-                    <strong>Currency:</strong> Nigerian Naira (NGN)
+                    <span className="text-sm font-semibold mt-2 mb-1"><strong>Currency:</strong> Nigerian Naira (NGN)</span>
                   </li>
                   <li>
-                    <strong>Profit Payout:</strong> Profits are paid monthly, calculated on monthly average balance
+                    <span className="text-sm font-semibold mt-2 mb-1"><strong>Profit Payout:</strong> Profits are paid monthly, calculated on monthly average balance</span>
                   </li>
                   </span>
                 </ul>
@@ -470,14 +491,14 @@ export default function MTDApplicationForm({
 
                 <p><span className="text-sm font-semibold text-[#AF1F23] mt-2 mb-1">Important Notes</span></p>
                 <ul className="list-disc pl-4 text-[#495057] space-y-0.5 text-xs">
-                  <li>All profit rates are expected rates and subject to actual performance</li>
-                  <li>This is a Shariah-compliant investment product</li>
-                  <li>Terms and conditions are subject to change without prior notice</li>
-                  <li>Please read all terms carefully before proceeding</li>
+                  <li><span className="text-sm font-semibold mt-2 mb-1">All profit rates are expected rates and subject to actual performance</span></li>
+                  <li><span className="text-sm font-semibold mt-2 mb-1">This is a Shariah-compliant investment product</span></li>
+                  <li><span className="text-sm font-semibold mt-2 mb-1">Terms and conditions are subject to change without prior notice</span></li>
+                  <li><span className="text-sm font-semibold mt-2 mb-1">Please read all terms carefully before proceeding</span></li>
                 </ul>
               </div>
 
-              <div className="flex items-center p-2 bg-gradient-to-r from-[#faf8f3] to-[#f5f0e1] border-2 border-[#C6B07D] rounded-lg shadow-sm">
+              {/* <div className="flex items-center p-2 bg-gradient-to-r from-[#faf8f3] to-[#f5f0e1] border-2 border-[#C6B07D] rounded-lg shadow-sm">
                 <input
                   type="checkbox"
                   id="acceptTerms"
@@ -488,12 +509,12 @@ export default function MTDApplicationForm({
                 <label htmlFor="acceptTerms" className="text-[#333] cursor-pointer text-xs">
                   I have read and accept the terms and conditions
                 </label>
-              </div>
+              </div> */}
 
               <div className="flex justify-end mt-3">
                 <button
                   onClick={() => setCurrentStep("verification")}
-                  disabled={!termsAccepted}
+                  // disabled={!termsAccepted}
                   className="px-5 py-1.5 bg-gradient-to-r from-[#AF1F23] to-[#8a181b] text-white rounded-lg text-xs font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed hover:shadow-lg transition-all disabled:hover:shadow-none"
                 >
                   Proceed to Application
@@ -505,12 +526,12 @@ export default function MTDApplicationForm({
           {/* Verification Section */}
           {currentStep === "verification" && (
             <div className="space-y-3">
-              <h3 className="text-sm font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-1">
+              <span className="text-base sm:text-lg font-semibold text-[#AF1F23] mb-4 flex justify-center text-center">
                 Account Verification
-              </h3>
-              <p className="text-[#6c757d] mb-4 text-xs">
+              </span>
+              <span className="text-base sm:text-lg font-semibold text-[#6c757d] mb-4 text-base">
                 Please enter your account number and BVN. Verification will happen automatically.
-              </p>
+              </span>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
@@ -575,9 +596,9 @@ export default function MTDApplicationForm({
                 </div>
               )}
 
-              <h3 className="text-sm font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-1">
+              <span className="text-base sm:text-lg font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-2 pt-2 px-2 block">
                 Customer Information
-              </h3>
+              </span>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
@@ -618,19 +639,24 @@ export default function MTDApplicationForm({
                 </div>
               </div>
 
-              <h3 className="text-sm font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-1 mt-4">
+              <span className="text-base sm:text-lg font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-2 pt-2 px-2 block">
                 Investment Details
-              </h3>
+              </span>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
                   <label className="block mb-1 font-semibold text-[10px]">Investment Amount (NGN) *</label>
                   <input
-                    type="number"
-                    min="50000000"
-                    step="0.01"
-                    value={formData.investmentAmount}
-                    onChange={(e) => setFormData({ ...formData, investmentAmount: e.target.value })}
+                    type="text"
+                    value={formData.investmentAmount ? formatNumberWithCommas(formData.investmentAmount) : ''}
+                    onChange={(e) => {
+                      const numericValue = removeCommas(e.target.value);
+                      // Only allow numbers and one decimal point
+                      if (numericValue === '' || /^\d*\.?\d*$/.test(numericValue)) {
+                        setFormData({ ...formData, investmentAmount: numericValue });
+                      }
+                    }}
+                    placeholder="50,000,000.00"
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 text-xs"
                     required
                   />
@@ -715,9 +741,9 @@ export default function MTDApplicationForm({
                 </div>
               </div>
 
-              <h3 className="text-sm font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-1 mt-4">
+              <span className="text-base sm:text-lg font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-2 pt-2 px-2 block">
                 Staff Information
-              </h3>
+              </span>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <div>
@@ -740,9 +766,9 @@ export default function MTDApplicationForm({
                 </div>
               </div>
 
-              <h3 className="text-sm font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-1 mt-4">
+              <span className="text-base sm:text-lg font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-2 pt-2 px-2 block">
                 Customer Signature
-              </h3>
+              </span>
 
               <div>
                 <label className="block mb-1 font-semibold text-[10px]">Customer Signature *</label>
@@ -837,7 +863,7 @@ export default function MTDApplicationForm({
                 </span>
                 <div className="space-y-2 text-[#333] leading-relaxed text-xs">
                   <div>
-                    <span className="font-semibold mb-2"><p>1. Account Balance Requirements</p></span>
+                    <p><span className="text-sm font-bold mb-2">1. Account Balance Requirements</span></p>
                     <span className="mb-3">
 
                       Your Term Deposit Account balance must be untouched within the tenor agreed. Any withdrawal
@@ -846,13 +872,13 @@ export default function MTDApplicationForm({
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold mb-2">2. Withholding Tax</p>
+                    <p><span className="text-sm font-bold mb-2">2. Withholding Tax</span></p>
                     <span className="mb-3">
                       Withholding Tax will be charged on your share of the profit based on FIRS regulatory requirement.
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold mb-2">3. Terms Modification</p>
+                    <p><span className="text-sm font-bold mb-2">3. Terms Modification</span></p>
                     <span className="mb-3">
                       The Bank reserves the right to add or alter any or all of the conditions governing this deposit
                       scheme, and such alteration or addition shall be communicated to you at the end of every
@@ -861,14 +887,14 @@ export default function MTDApplicationForm({
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold mb-2">4. Withdrawal Process</p>
+                    <p><span className="text-sm font-bold mb-2">4. Withdrawal Process</span></p>
                     <span className="mb-3">
                       There shall be no direct withdrawal from the Mudarabah Term Deposit account, all withdrawals shall
                       be routed through your savings or current account.
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold mb-2">5. Rollover Policy</p>
+                    <p><span className="text-sm font-bold mb-2">5. Rollover Policy</span></p>
                     <span className="mb-3">
                       You are required to inform the Bank in writing on or before the maturity date of your intention to
                       rollover or discontinue the investment. Your investment shall be automatically terminated if we
@@ -876,7 +902,7 @@ export default function MTDApplicationForm({
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold mb-2">Authorization</p>
+                    <p><span className="text-sm font-bold mb-2">Authorization</span></p>
                     <span className="mb-3">
                       By executing this letter, you hereby authorize the Bank to invest your funds in line with terms
                       and conditions for operating the Term Mudarabah Deposit Account under the principles of Mudarabah.
