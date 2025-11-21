@@ -19,6 +19,7 @@ export default function OpenTier3Account() {
     email: "",
     phone: "",
     passportPhoto: "",
+    utilityBill: "",
   });
 
   const handleChange = (e) => {
@@ -159,9 +160,11 @@ export default function OpenTier3Account() {
             >
               <option value="">Select ID Type</option>
               <option value="International Passport">International Passport</option>
+              <option value="International Passport">Voters Card</option>
+              <option value="International Passport">Drivers Licence</option>
+              <option value="Resident Permit">Resident Permit</option>
               <option value="Work ID">Work ID</option>
               <option value="School ID">School ID</option>
-              <option value="Resident Permit">Resident Permit</option>
               <option value="Birth Certificate">Birth Certificate</option>
             </select>
           </div>
@@ -236,6 +239,31 @@ export default function OpenTier3Account() {
               </p>
             </div>
 
+          {/* Utility Bill */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-2">Utility Bill</label>
+            <input
+              type="file"
+              name="utilityBill"
+              accept="image/*,application/pdf"
+              capture="environment"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  const file = e.target.files[0];
+                  if (file.size > 2 * 1024 * 1024) { // 2MB in bytes
+                    alert("File size must be less than 2MB.");
+                    return;
+                  }
+                  setFormData({ ...formData, utilityBill: file });
+                }
+              }}
+              className="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700"
+              required
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              Upload an image of your Utility Bill, take a picture, or upload a PDF (Max 2MB).
+            </p>
+          </div>
 
           {/* Submit Button */}
           <div className="flex justify-center">
