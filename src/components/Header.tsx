@@ -130,7 +130,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
             {
               name: "Personal Accounts",
               link: "/personal-current-account",
-              description: "Current (Qard), Savings (Qard), Savings (Mudarabah)"
+              description: "Current (Qard), Savings (Mudarabah)"
             },
             // {
             //   name: "Savings Accounts (Qard)",

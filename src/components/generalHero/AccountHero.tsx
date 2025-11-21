@@ -24,19 +24,21 @@ export default function AccountHero({
     {
       title: "Current Account (Qard)",
       text: "Enjoy unrestricted banking with full control, ethical standards, and seamless access to your funds anytime, anywhere.",
-      link: "https://summitbankng.com/",
+      link: "/open-account/current-account",
+      //link: "https://summitbankng.com/",
       //link: "https://summitbankng.com/current-account",
     },
-    {
-      title: "Savings Account (Qard)",
-      text: "Save with confidence through a secure, future-focused savings account designed to grow with your goals.",
-      link: "https://summitbankng.com/",
+    //{
+      //title: "Savings Account (Qard)",
+      //text: "Save with confidence through a secure, future-focused savings account designed to grow with your goals.",
+      //link: "https://summitbankng.com/",
       //link: "https://summitbankng.com/savings-account",
-    },
+    //},
     {
       title: "Savings Account (Mudarabah)",
       text: "Earn potential returns while maintaining access to your funds. A flexible account designed for responsible growth.",
-      link: "https://summitbankng.com/",
+      link: "/open-account/mudarabah/learn-more",
+      //link: "https://summitbankng.com/",
       //link: "https://summitbankng.com/investment-savings-account",
     },
   ];
