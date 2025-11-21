@@ -23,7 +23,7 @@ export default function OpenTier3Account() {
     utilityBill: "",
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
 
     // Restrict BVN and NIN to 11 digits
@@ -31,6 +31,7 @@ export default function OpenTier3Account() {
 
     setFormData({ ...formData, [name]: value });
   };
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
