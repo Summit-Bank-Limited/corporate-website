@@ -69,6 +69,9 @@ export default function FormsPage() {
     ),
   }));
 
+  // Function to remove ".pdf"
+  const cleanName = (file) => file.replace(/\.pdf$/i, "");
+
   return (
     <DefaultLayout>
       <div>
@@ -93,16 +96,24 @@ export default function FormsPage() {
             <h4 className="text-lg font-semibold mb-3">Search Results</h4>
 
             {searchResults.length > 0 ? (
-              <ul className="list-disc ml-5 space-y-2">
+              <ul className="space-y-3">
                 {searchResults.map((file, i) => (
-                  <li key={i}>
+                  <li key={i} className="flex items-center gap-3">
+                    {/* PDF ICON */}
+                    <img
+                      src="/pdf logo.png"
+                      alt="PDF"
+                      className="w-6 h-6"
+                    />
+
+                    {/* File Link */}
                     <a
                       href={`/forms/${file}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-green-700 hover:underline"
+                      className="text-red-700 hover:underline"
                     >
-                      {file}
+                      {cleanName(file)}
                     </a>
                   </li>
                 ))}
@@ -124,16 +135,24 @@ export default function FormsPage() {
 
                 <AccordionContent>
                   {group.files.length > 0 ? (
-                    <ul className="list-disc ml-5 space-y-2">
+                    <ul className="space-y-3">
                       {group.files.map((file, i) => (
-                        <li key={i}>
+                        <li key={i} className="flex items-center gap-3">
+                          {/* PDF ICON */}
+                          <img
+                            src="/pdf logo.png"
+                            alt="PDF"
+                            className="w-6 h-6"
+                          />
+
+                          {/* File Link */}
                           <a
                             href={`/forms/${file}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-green-700 hover:underline"
+                            className="text-red-700 hover:underline"
                           >
-                            {file}
+                            {cleanName(file)}
                           </a>
                         </li>
                       ))}

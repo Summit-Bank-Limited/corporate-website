@@ -328,14 +328,14 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
     },
 
     {
-      text: "Help & Support",
+      text: "Forms, Help & Support",
       link: "#",
       subLinks: [
         {
           text: "",
           links: [
             {
-              name: "FORMS",
+              name: "Forms",
               link: "/forms",
             },
           ]
