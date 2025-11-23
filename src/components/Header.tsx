@@ -335,6 +335,15 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
           text: "",
           links: [
             {
+              name: "FORMS",
+              link: "/forms",
+            },
+          ]
+        },
+        {
+          text: "",
+          links: [
+            {
               name: "FAQs",
               link: "/faq",
             },
