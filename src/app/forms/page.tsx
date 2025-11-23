@@ -55,7 +55,6 @@ export default function FormsPage() {
     },
   ];
 
-  // Flatten ALL files for search results
   const allFiles = formsList.flatMap((group) => group.files);
 
   const searchResults = allFiles.filter((file) =>
@@ -69,7 +68,6 @@ export default function FormsPage() {
     ),
   }));
 
-  // Function to remove ".pdf"
   const cleanName = (file) => file.replace(/\.pdf$/i, "");
 
   return (
@@ -90,7 +88,7 @@ export default function FormsPage() {
           </div>
         </div>
 
-        {/* SEARCH RESULTS LIST */}
+        {/* SEARCH RESULTS */}
         {searchTerm.length > 0 && (
           <div className="main mt-5 bg-gray-50 p-5 rounded-lg lg:w-[950px] mx-auto shadow-sm">
             <h4 className="text-lg font-semibold mb-3">Search Results</h4>
@@ -99,14 +97,9 @@ export default function FormsPage() {
               <ul className="space-y-3">
                 {searchResults.map((file, i) => (
                   <li key={i} className="flex items-center gap-3">
-                    {/* PDF ICON */}
-                    <img
-                      src="/pdf logo.png"
-                      alt="PDF"
-                      className="w-6 h-6"
-                    />
 
-                    {/* File Link */}
+                    <img src="/pdf logo.png" alt="PDF" className="w-6 h-6" />
+
                     <a
                       href={`/forms/${file}`}
                       target="_blank"
@@ -124,7 +117,7 @@ export default function FormsPage() {
           </div>
         )}
 
-        {/* ACCORDION SECTION */}
+        {/* ACCORDION FOR FORM CATEGORIES */}
         <div className="main py-10 space-y-4">
           {filteredList.map((group, index) => (
             <Accordion key={index} type="single" collapsible>
@@ -138,14 +131,9 @@ export default function FormsPage() {
                     <ul className="space-y-3">
                       {group.files.map((file, i) => (
                         <li key={i} className="flex items-center gap-3">
-                          {/* PDF ICON */}
-                          <img
-                            src="/pdf logo.png"
-                            alt="PDF"
-                            className="w-6 h-6"
-                          />
 
-                          {/* File Link */}
+                          <img src="/pdf logo.png" alt="PDF" className="w-6 h-6" />
+
                           <a
                             href={`/forms/${file}`}
                             target="_blank"
