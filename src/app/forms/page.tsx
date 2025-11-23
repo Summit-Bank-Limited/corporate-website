@@ -68,7 +68,8 @@ export default function FormsPage() {
     ),
   }));
 
-  const cleanName = (file) => file.replace(/\.pdf$/i, "");
+// Function to remove ".pdf" safely
+    const cleanName = (file: string) => file.replace(/\.pdf$/i, "");
 
   return (
     <DefaultLayout>
