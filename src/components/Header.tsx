@@ -542,7 +542,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
                   <Sparkles size={18} className="text-white" />
                 </motion.div>
                 
-                <span className="relative z-10">Business MTD</span>
+                <span className="relative z-10">Term Deposit</span>
                 
                 {/* "New" badge */}
                 <motion.span
