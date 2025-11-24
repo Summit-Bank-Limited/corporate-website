@@ -135,6 +135,10 @@ export default function MTDApplicationForm({
           message: "✓ Account verified successfully!",
         });
         setCustomerData(result.data);
+        // Pre-fill staff ID if account manager ID is available
+        if (result.data.accountManagerId) {
+          setFormData((prev) => ({ ...prev, staffId: result.data.accountManagerId, staffEmail: result.data.accountManagerEmail }));
+        }
         setTimeout(() => {
           setCurrentStep("form");
         }, 1000);
@@ -745,17 +749,26 @@ export default function MTDApplicationForm({
                 Staff Information
               </span>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <div>
                   <label className="block mb-1 font-semibold text-[10px]">Staff ID</label>
                   <input
                     type="text"
-                    value={formData.staffId}
-                    onChange={(e) => setFormData({ ...formData, staffId: e.target.value })}
+                    value={customerData?.staffId}
+                    readOnly
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 text-xs"
                   />
                 </div>
                 <div>
+                  <label className="block mb-1 font-semibold text-[10px]">Account Officer Name</label>
+                  <input
+                    type="text"
+                    value={customerData?.accountOfficerEmail || ""}
+                    readOnly
+                    className="w-full p-2 border-2 border-[#dee2e6] rounded-lg bg-[#e9ecef] text-[#6c757d] text-xs"
+                  />
+                </div>
+                {/* <div>
                   <label className="block mb-1 font-semibold text-[10px]">Staff Email</label>
                   <input
                     type="email"
@@ -763,7 +776,7 @@ export default function MTDApplicationForm({
                     onChange={(e) => setFormData({ ...formData, staffEmail: e.target.value })}
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 text-xs"
                   />
-                </div>
+                </div> */}
               </div>
 
               <span className="text-base sm:text-lg font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-2 pt-2 px-2 block">
