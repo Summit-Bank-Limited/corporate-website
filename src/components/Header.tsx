@@ -130,7 +130,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
             {
               name: "Personal Accounts",
               link: "/personal-current-account",
-              description: "Current (Qard), Savings (Qard), Savings (Mudarabah)"
+              description: "Current (Qard), Savings (Mudarabah)"
             },
             // {
             //   name: "Savings Accounts (Qard)",
@@ -328,9 +328,18 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
     },
 
     {
-      text: "Help & Support",
+      text: "Forms, Help & Support",
       link: "#",
       subLinks: [
+        {
+          text: "",
+          links: [
+            {
+              name: "Forms",
+              link: "/forms",
+            },
+          ]
+        },
         {
           text: "",
           links: [

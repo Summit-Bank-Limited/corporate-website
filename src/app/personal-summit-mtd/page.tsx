@@ -1,5 +1,9 @@
 "use client";
 
+<<<<<<< HEAD
+=======
+import FeaturesCard from "@/components/cards/FeaturesCard";
+>>>>>>> c68f36458b030ba017ae96c6f510b25a98f98631
 import Faq from "@/components/faq/Faq";
 import MTDHero from "@/components/generalHero/MTDHero";
 import DefaultLayout from "@/components/layout/DefaultLayout";
