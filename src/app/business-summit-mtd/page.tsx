@@ -2,26 +2,19 @@
 
 import FeaturesCard from "@/components/cards/FeaturesCard";
 import Faq from "@/components/faq/Faq";
-import AccountHero from "@/components/generalHero/AccountHero";
+import MTDHero from "@/components/generalHero/MTDHero";
 import DefaultLayout from "@/components/layout/DefaultLayout";
-import Partners from "@/components/Partners";
 import FeaturesSection from "@/components/section/FeaturesSection";
 import GenericSection from "@/components/section/GenericSection";
-import { Testimonials } from "@/components/testimonials/Testimonials";
 import Image from "next/image";
-import { title } from "process";
 import React, { useState } from "react";
-import { text } from "stream/consumers";
 import MTDApplicationForm from "@/components/mtd-application/MTDApplicationForm";
-import Button from "@/components/Button";
-import Framer from "@/components/Framer";
-import { fadeIn } from "@/lib/animation";
 
 
 export default function page() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const heroDetails = {
-    title: "Summit MTD (Mudarabah)",
+    title: "Term Deposit (Mudarabah)",
     text: "Your funds are ethically invested and profits are shared between you and the bank based on a pre-agreed ratio.",
   };
 
@@ -83,18 +76,11 @@ const allSection = [
   return (
     <div className="">
       <DefaultLayout>
-        <AccountHero text={heroDetails?.text} title={heroDetails?.title} />
-
-         {/* Apply Button Section */}
-         <div className="main py-10 flex justify-center">
-          <Framer animation={fadeIn("up", 0.3)}>
-            <Button
-              text="Apply"
-              type="primary"
-              buttonFn={() => setIsApplicationOpen(true)}
-            />
-          </Framer>
-        </div>
+        <MTDHero 
+          text={heroDetails?.text} 
+          title={heroDetails?.title}
+          onApplyClick={() => setIsApplicationOpen(true)}
+        />
       {/* <Partners /> */}
         <FeaturesSection features={allFeatures} />
         {allSection?.map((res, index) => (

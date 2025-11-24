@@ -2,54 +2,50 @@
 
 import FeaturesCard from "@/components/cards/FeaturesCard";
 import Faq from "@/components/faq/Faq";
-import AccountHero from "@/components/generalHero/AccountHero";
+import MTDHero from "@/components/generalHero/MTDHero";
 import DefaultLayout from "@/components/layout/DefaultLayout";
-import Partners from "@/components/Partners";
 import FeaturesSection from "@/components/section/FeaturesSection";
 import GenericSection from "@/components/section/GenericSection";
-import { Testimonials } from "@/components/testimonials/Testimonials";
 import Image from "next/image";
-import { title } from "process";
 import React, { useState } from "react";
-import { text } from "stream/consumers";
 import MTDApplicationForm from "@/components/mtd-application/MTDApplicationForm";
-import Button from "@/components/Button";
-import Framer from "@/components/Framer";
-import { fadeIn } from "@/lib/animation";
 
 
 export default function page() {
   const [isApplicationOpen, setIsApplicationOpen] = useState(false);
   const heroDetails = {
-    title: "Summit MTD (Mudarabah)",
+    title: "Term Deposit (Mudarabah)",
     text: "Your funds are ethically invested and profits are shared between you and the bank based on a pre-agreed ratio.",
   };
 
   const allFeatures = [
-   {
-         title: "Shariah compliant investment alternative to fixed deposit",
-         text: "Grow your wealth ethically through profit-sharing, without interest, in accordance with Islamic principles.",
-       },
-       {
-         title: "Higher returns compared to savings account",
-         text: "Earn competitive profits through well-managed investments, offering better potential returns than traditional savings.",
-       },
-       {
-         title: "Fair profit-sharing model",
-         text: "Enjoy transparent earnings where profits are distributed based on a pre-agreed ratio between you and the bank.",
-       },
-       {
-         title: "Flexible investment period",
-         text: "Choose from a range of tenures tailored to your financial goals, whether short-term or long-term.",
-       },
-       {
-         title: "Reinvestment options",
-         text: "Easily roll over your matured investment or reinvest profits for compounded growth.",
-       },
-       {
-         title: "Available for homes, cars, and equipment",
-         text: "Ideal for funding goals like home ownership, vehicle acquisition, or equipment purchase through ethical financing.",
-       },
+    {
+      title: "Shariah compliant investment alternative to fixed deposit",
+      text: "Grow your wealth ethically through profit-sharing, without interest, in accordance with Islamic principles.",
+    },
+    {
+      title: "Higher returns compared to savings account",
+      text: "Earn competitive profits through well-managed investments, offering better potential returns than traditional savings.",
+    },
+    {
+      title: "Fair profit-sharing model",
+      text: "Enjoy transparent earnings where profits are distributed based on a pre-agreed ratio between you and the bank.",
+    },
+    {
+      title: "Flexible investment period",
+      text: "Choose from a range of tenures tailored to your financial goals, whether short-term or long-term.",
+    },
+    {
+      title: "Reinvestment options",
+      text: "Easily roll over your matured investment or reinvest profits for compounded growth.",
+    },
+    {
+      title: "Available for homes, cars, and equipment",
+      text: "Ideal for funding goals like home ownership, vehicle acquisition, or equipment purchase through ethical financing.",
+    },
+
+      
+    
  
   ]
 const allSection = [
@@ -57,9 +53,10 @@ const allSection = [
       title: "Requirements",
       image: "/account/current-1.png",
       list: [
-        "Have an existing account with the bank",
+        "Have an existing account with the Bank",
         "Completed investment application form (stating tenor and amount)",
-        "Minimum investment amount of N500,000",
+        "Minimum investment amount of N500,000" 
+        
         
       ],
       reverse: true,
@@ -68,9 +65,10 @@ const allSection = [
       title: "Eligibility",
       image: "/account/current-2.png",
       list: [
-        "Individuals, Salary earners and Professionals",
+        "SMEs and Registered businesses",
         "T&Cs apply"
-        
+        ,
+    
       ],
     },
   ];
@@ -78,19 +76,12 @@ const allSection = [
   return (
     <div className="">
       <DefaultLayout>
-        <AccountHero text={heroDetails?.text} title={heroDetails?.title} />
-
-        {/* Apply Button Section */}
-        <div className="main py-10 flex justify-center">
-          <Framer animation={fadeIn("up", 0.3)}>
-            <Button
-              text="Apply"
-              type="primary"
-              buttonFn={() => setIsApplicationOpen(true)}
-            />
-          </Framer>
-        </div>
-        {/* <Partners /> */}
+        <MTDHero 
+          text={heroDetails?.text} 
+          title={heroDetails?.title}
+          onApplyClick={() => setIsApplicationOpen(true)}
+        />
+      {/* <Partners /> */}
         <FeaturesSection features={allFeatures} />
         {allSection?.map((res, index) => (
           <GenericSection
@@ -114,7 +105,7 @@ const allSection = [
             </div>
           </GenericSection>
         ))}
-        <Faq  amount={3}/>
+         <Faq  amount={3}/>
        {/*  <Testimonials /> */} 
        {/* MTD Application Form Modal */}
        <MTDApplicationForm

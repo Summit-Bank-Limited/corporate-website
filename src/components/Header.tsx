@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import Button from "./Button";
-import { ArrowRight, ChevronRight, Search, X } from "lucide-react";
+import { ArrowRight, ChevronRight, Search, X, Sparkles, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import Hamburger from "hamburger-react";
 import Framer from "./Framer";
@@ -24,7 +24,7 @@ import {
   RiTiktokFill,
 } from "react-icons/ri";
 import { SiFacebook } from "react-icons/si";
-import { color } from "framer-motion";
+import { color, motion } from "framer-motion";
 import { getCloudinaryUrl } from "@/lib/utils";
 
 export default function Header({ scrollState }: { scrollState: boolean }) {
@@ -497,11 +497,120 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               alt="nifi"
             />
           </a>
-          <div className="ml-6">
+          <div className="ml-6 flex items-center gap-3">
           <Link href="https://ibank.summitbankng.com/IBS/">
-            <Button type="primary" buttonFn>
+            <Button type="primary" buttonFn={() => {}}>
               <span className="whitespace-nowrap">Internet Banking</span>
             </Button>
+          </Link>
+          
+          {/* Animated Business MTD Button */}
+          <Link href="/business-summit-mtd" className="relative">
+            <motion.div
+              className="relative group cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              {/* Pulsing glow effect */}
+              <motion.div
+                className="absolute inset-0 rounded-lg bg-[var(--secondary-color)] opacity-75 blur-md"
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.5, 0.8, 0.5],
+                }}
+                transition={{
+                  duration: 2,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
+              
+              {/* Main button */}
+              <div className="relative bg-[var(--secondary-color)] text-white px-4 py-2.5 rounded-lg font-semibold text-sm whitespace-nowrap flex items-center gap-2 shadow-lg border-2 border-white/20">
+                {/* Sparkle icon with rotation */}
+                <motion.div
+                  animate={{ rotate: [0, 360] }}
+                  transition={{
+                    duration: 3,
+                    repeat: Infinity,
+                    ease: "linear",
+                  }}
+                >
+                  <Sparkles size={18} className="text-white" />
+                </motion.div>
+                
+                <span className="relative z-10">Business MTD</span>
+                
+                {/* "New" badge */}
+                <motion.span
+                  className="absolute -top-2 -right-2 bg-[var(--primary-color)] text-[var(--secondary-color)] text-[10px] font-bold px-1.5 py-0.5 rounded-full shadow-lg border border-[var(--secondary-color)]"
+                  animate={{
+                    scale: [1, 1.15, 1],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  NEW
+                </motion.span>
+                
+                {/* Shimmer effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent"
+                  animate={{
+                    x: ["-100%", "200%"],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatDelay: 1,
+                    ease: "easeInOut",
+                  }}
+                  style={{
+                    transform: "skewX(-20deg)",
+                  }}
+                />
+              </div>
+              
+              {/* Floating particles effect on hover */}
+              <motion.div
+                className="absolute inset-0 pointer-events-none"
+                initial={{ opacity: 0 }}
+                whileHover={{ opacity: 1 }}
+              >
+                {[
+                  { x: -15, y: -15 },
+                  { x: 15, y: -10 },
+                  { x: -10, y: 15 },
+                ].map((pos, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute w-1.5 h-1.5 bg-[var(--primary-color)] rounded-full"
+                    style={{
+                      left: "50%",
+                      top: "50%",
+                    }}
+                    animate={{
+                      x: [0, pos.x],
+                      y: [0, pos.y],
+                      opacity: [0, 1, 0],
+                      scale: [0, 1.5, 0],
+                    }}
+                    transition={{
+                      duration: 1.5,
+                      repeat: Infinity,
+                      delay: i * 0.3,
+                      ease: "easeOut",
+                    }}
+                  />
+                ))}
+              </motion.div>
+            </motion.div>
           </Link>
         </div>
           {/* <div className="hidden xl:flex items-center justify-center gap-1 z-20"> */}

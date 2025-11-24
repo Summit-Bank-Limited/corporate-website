@@ -8,6 +8,7 @@ import DefaultLayout from "@/components/layout/DefaultLayout";
 import ProductsSection from "@/components/ProductsSection";
 import RewardsSection from "@/components/RewardsSection";
 import GenericSection from "@/components/section/GenericSection";
+import MudarabahInvestment from "@/components/MudarabahInvestment";
 
 export default function Home() {
   const loanSection = {
@@ -22,6 +23,7 @@ export default function Home() {
     <div className=" ">
       <DefaultLayout>
         <HeroCarousel />
+        <MudarabahInvestment />
         <ProductsSection />
         <Features />
         <IslamicFinances />
