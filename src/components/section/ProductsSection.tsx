@@ -47,7 +47,7 @@ export default function ProductsSection({ features }: ProductsSectionProps) {
                   rel="noopener noreferrer"
                   className="px-4 py-2 text-sm font-medium text-white bg-[#AF1F23] hover:bg-[#b99f5f] rounded-md transition-colors"
                 >
-                  Open Account
+                  Open Account Online
                 </a>
 
                 {/* 🔥 Pulsing Coming Soon Badge */}
