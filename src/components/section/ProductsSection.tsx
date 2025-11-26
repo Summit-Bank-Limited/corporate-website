@@ -52,7 +52,7 @@ export default function ProductsSection({ features }: ProductsSectionProps) {
 
                 {/* 🔥 Pulsing Coming Soon Badge */}
                 <motion.span
-                  className="absolute -top-2 -right-2 bg-[#AF1F23] text-white text-[10px] font-semibold px-2 py-1 rounded-full shadow"
+                  className="absolute -top-2 -left-2 bg-[#AF1F23] text-white text-[10px] font-semibold px-2 py-1 rounded-full shadow"
                   animate={{
                     scale: [0.9, 1, 0.9],   // pulsing
                     opacity: [0.7, 1, 0.7], // subtle fade
