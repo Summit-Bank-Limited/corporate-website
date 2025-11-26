@@ -1,15 +1,17 @@
+
 "use client";
 import React from "react";
 import FeaturesCard from "../cards/FeaturesCard";
 import { motion } from "framer-motion";
 import { fadeIn } from "@/lib/animation";
 
+//Open Account Button
 
 interface FeatureItem {
   title: string;
   text: string;
-  icon?: string; // Optional if you want to add icons later
-  link?: string; // Optional: link to open account page
+  icon?: string;
+  link?: string;
 }
 
 interface ProductsSectionProps {
@@ -32,18 +34,38 @@ export default function ProductsSection({ features }: ProductsSectionProps) {
             <h3 className="text-xl font-semibold text-[#0A1E42] mb-2">
               {item.title}
             </h3>
+
             <p className="text-sm text-gray-600 leading-relaxed mb-4">
               {item.text}
             </p>
+
             {item.link && (
-              <a
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-4 py-2 text-sm font-medium text-white bg-[#AF1F23] hover:bg-[#b99f5f] rounded-md transition-colors"
-              >
-                Open Account
-              </a>
+              <div className="relative inline-block">
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 text-sm font-medium text-white bg-[#AF1F23] hover:bg-[#b99f5f] rounded-md transition-colors"
+                >
+                  Open Account
+                </a>
+
+                {/* 🔥 Pulsing Coming Soon Badge */}
+                <motion.span
+                  className="absolute -top-2 -right-2 bg-[#AF1F23] text-white text-[10px] font-semibold px-2 py-1 rounded-full shadow"
+                  animate={{
+                    scale: [0.9, 1, 0.9],   // pulsing
+                    opacity: [0.7, 1, 0.7], // subtle fade
+                  }}
+                  transition={{
+                    duration: 1.4,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
+                  Coming Soon
+                </motion.span>
+              </div>
             )}
           </motion.div>
         ))}
@@ -51,16 +73,3 @@ export default function ProductsSection({ features }: ProductsSectionProps) {
     </section>
   );
 }
-
-
-// export default function ProductsFeature({ features }: { features: any }) {
-//   return (
-//     <div className="main space-y-6 py-10 ">
-//       <div className="mx-auto grid lg:grid-cols-3 gap-10 xl:w-[80%]">
-//         {features?.map((feature: any, index: number) => (
-//           <FeaturesCard title={feature?.title} text={feature?.text} key={index} index={index} />
-//         ))}
-//       </div>
-//     </div>
-//   );
-// }
