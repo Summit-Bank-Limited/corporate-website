@@ -38,9 +38,6 @@ export default function page() {
     setSuccess("");
 
     try {
-      // Request reCAPTCHA token from v3
-      const token = await grecaptcha.execute("YOUR_RECAPTCHA_SITE_KEY", { action: "submit" });
-
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -51,7 +48,6 @@ export default function page() {
           accountNumber: form.accountNumber,
           subject: derivedSubject,
           message: form.message,
-          captchaToken: token, // send token to server for verification
         }),
       });
 
@@ -85,9 +81,6 @@ export default function page() {
           title="Enquiries & Complaints"
           text="Can’t find what you are looking for? Please contact us, and we will get back to you as soon as possible."
         />
-
-        {/* Include the Google reCAPTCHA v3 script */}
-        <script src="https://www.google.com/recaptcha/api.js?render=YOUR_RECAPTCHA_SITE_KEY"></script>
 
         <form onSubmit={submit} className="main lg:!w-[60%] space-y-6 py-10 pb-20">
           {/* Full Name */}
@@ -176,7 +169,7 @@ export default function page() {
             custom="!w-full mt-4"
             type="primary"
             text={loading ? "Sending..." : "Submit"}
-            buttonFn={() => {}}
+            buttonFn={submit}
             disabled={loading}
           />
         </form>
