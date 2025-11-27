@@ -403,14 +403,14 @@ export default function MTDApplicationForm({
 
                 <p><span className="text-sm font-semibold text-[#AF1F23] mt-2 mb-1">Eligibility</span></p>
                 <span className="text-[#495057] mb-3 text-xs">
-                  Customer must have an individual Current or Savings Account, or a corporate Current Account.
+                  You must have an Individual Current or Savings Account, or a Corporate Account.
                 </span>
 
                 <p><span className="text-sm font-semibold text-[#AF1F23] mt-2 mb-1">Investment Details</span></p>
                 <ul className="list-disc pl-4 text-[#495057] space-y-0.5 mb-3 text-xs">
                   <span>
                   <li>
-                    <span className="text-sm font-semibold mt-2 mb-1"><strong>Minimum Investment:</strong> N50,000,000.00 (Fifty Million Naira Only)</span>
+                    <span className="text-sm font-semibold mt-2 mb-1"><strong>Minimum Investment:</strong> N1,000,000.00 (One Million Naira Only)</span>
                   </li>
                   <li>
                     <span className="text-sm font-semibold mt-2 mb-1"><strong>Tenure Options:</strong> 30, 60, 90, 180, or 365 days</span>
@@ -482,7 +482,7 @@ export default function MTDApplicationForm({
 
                 <p><span className="text-sm font-semibold text-[#AF1F23] mt-2 mb-1">Rollover Policy</span></p>
                 <span className="text-[#495057] mb-3 text-xs">
-                  The Customer is required to notify the Bank in writing, on or before the maturity date, of their
+                  You are required to notify the Bank in writing, on or before the maturity date, of your
                   intention to either roll over or discontinue the investment. In the absence of rollover instructions
                   by the maturity date, the investment shall be automatically terminated.
                 </span>
@@ -495,10 +495,10 @@ export default function MTDApplicationForm({
 
                 <p><span className="text-sm font-semibold text-[#AF1F23] mt-2 mb-1">Important Notes</span></p>
                 <ul className="list-disc pl-4 text-[#495057] space-y-0.5 text-xs">
-                  <li><span className="text-sm font-semibold mt-2 mb-1">All profit rates are expected rates and subject to actual performance</span></li>
-                  <li><span className="text-sm font-semibold mt-2 mb-1">This is a Shariah-compliant investment product</span></li>
-                  <li><span className="text-sm font-semibold mt-2 mb-1">Terms and conditions are subject to change without prior notice</span></li>
-                  <li><span className="text-sm font-semibold mt-2 mb-1">Please read all terms carefully before proceeding</span></li>
+                  <li><span className="text-sm font-semibold mt-3 mb-1">All profit rates are expected rates and subject to actual performance.</span></li>
+                  {/* <li><span className="text-sm font-semibold mt-2 mb-1">This is a Shariah-compliant investment product.</span></li> */}
+                  <li><span className="text-sm font-semibold mt-2 mb-1">Terms and conditions are subject to change at Summit bank's discretion.</span></li>
+                  <li><span className="text-sm font-semibold mt-2 mb-1">Please read all terms carefully before proceeding.</span></li>
                 </ul>
               </div>
 
