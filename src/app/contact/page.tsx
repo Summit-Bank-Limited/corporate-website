@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from "react";
 
-export default function page() {
+export default function ContactPage() {
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -166,11 +166,10 @@ export default function page() {
 
           {/* Submit Button */}
           <Button
-            custom="!w-full mt-4"
+            custom={`!w-full mt-4 ${loading ? "opacity-50 pointer-events-none" : ""}`}
             type="primary"
             text={loading ? "Sending..." : "Submit"}
             buttonFn={submit}
-            disabled={loading}
           />
         </form>
 
@@ -181,10 +180,10 @@ export default function page() {
           <p className="text-lg text-center text-neutral-700 dark:text-neutral-200">
             You can also contact us by sending an email to{" "}
             <a
-              href="mailto:contactsummit@summitbankng.com"
+              href="mailto:contact@summitbankng.com"
               className="text-[var(--secondary-color)] underline hover:text-[var(--secondary-dark)]"
             >
-              contactsummit@summitbankng.com
+              contact@summitbankng.com
             </a>
             .
           </p>
