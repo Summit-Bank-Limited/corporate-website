@@ -8,7 +8,7 @@ import GeneralHero from "@/components/generalHero/GeneralHero";
 export default function ActivateCardPage() {
   const heroData = {
     title: "Activate Your Card",
-    text: "Activate your Summit Bank card securely and start using it for your transactions.",
+    text: "Activate your Afrigo card securely and start using it for your transactions.",
     image: "/card.png",
   };
 
