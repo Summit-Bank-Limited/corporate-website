@@ -4,10 +4,10 @@ import SectionHero from "@/components/generalHero/SectionHero";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useState } from "react";
+import React, { useState, FormEvent } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function page() {
+export default function Page() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -37,7 +37,8 @@ export default function page() {
     return true;
   };
 
-  const submit = async () => {
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault(); // Prevent default form submission
     if (!validateForm()) {
       return;
     }
@@ -111,7 +112,7 @@ export default function page() {
           text="Can't find what you are looking for? Please contact us, and we will get back to you as soon as possible."
         />
 
-        <form onSubmit={submit} className="main lg:!w-[60%] space-y-6 py-10 pb-20">
+        <form onSubmit={handleSubmit} className="main lg:!w-[60%] space-y-6 py-10 pb-20">
           {/* Full Name */}
           <div>
             <label>Full Name *</label>
@@ -140,27 +141,23 @@ export default function page() {
             <label>Message *</label>
             <Textarea
               name="message"
-              value={form.message}
-              onChange={handleChange}
-              className="h-[200px] resize-none"
-              placeholder="Type in your message here"
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              className="h-[200px] resize-none"
+              placeholder="Type in your message here"
               disabled={isSubmitting}
             />
           </div>
 
           {/* Submit Button */}
           <Button
-            custom={`!w-full mt-4 ${loading ? "opacity-50 pointer-events-none" : ""}`}
+            custom={`!w-full mt-4 ${isSubmitting ? "opacity-50 pointer-events-none" : ""}`}
             type="primary"
             text={isSubmitting ? "Submitting..." : "Submit"}
-            buttonFn={submit}
+            buttonFn={handleSubmit}
             loading={isSubmitting}
           />
         </form>
-
-        {success && <p className="text-center text-green-600 mt-4">{success}</p>}
 
         {/* Contact Email */}
         <div className="w-full flex justify-center items-center pb-12 px-4">
