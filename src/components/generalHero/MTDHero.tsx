@@ -4,7 +4,7 @@ import React from "react";
 import Framer from "../Framer";
 import { fadeIn, fadeInLetters, slideUp } from "@/lib/animation";
 import Button from "../Button";
-import { ArrowRight, CheckCircle2, TrendingUp, Shield, Clock, DollarSign } from "lucide-react";
+import { ArrowRight, CheckCircle2, TrendingUp, Shield, Clock, DollarSign, HandCoinsIcon } from "lucide-react";
 import { motion } from "framer-motion";
 
 interface MTDHeroInterface {
@@ -35,7 +35,7 @@ export default function MTDHero({
       color: "text-blue-600",
     },
     {
-      icon: DollarSign,
+      icon: HandCoinsIcon,
       text: "Profit Sharing",
       color: "text-purple-600",
     },
@@ -150,12 +150,12 @@ export default function MTDHero({
                 <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6 pt-4 text-sm">
                   <div className="flex items-center gap-2 text-white/90">
                     <CheckCircle2 size={16} className="text-green-400" />
-                    <span>Minimum: N500,000</span>
+                    <span>Minimum: N1,000,000</span>
                   </div>
                   <div className="hidden lg:block w-1 h-1 bg-white/40 rounded-full" />
                   <div className="flex items-center gap-2 text-white/90">
                     <CheckCircle2 size={16} className="text-green-400" />
-                    <span>Quick Approval</span>
+                    <span>Seamless Process</span>
                   </div>
                   <div className="hidden lg:block w-1 h-1 bg-white/40 rounded-full" />
                   <div className="flex items-center gap-2 text-white/90">
@@ -197,7 +197,7 @@ export default function MTDHero({
           }}
           className="absolute bottom-20 left-10 lg:left-20 opacity-20"
         >
-          <DollarSign size={60} className="text-white" />
+          {/* <DollarSign size={60} className="text-white" /> */}
         </motion.div>
       </div>
     </div>

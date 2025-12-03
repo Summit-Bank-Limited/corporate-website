@@ -110,7 +110,9 @@ export default function page() {
           title="Enquiries & Complaints"
           text="Can't find what you are looking for? Please contact us, and we will get back to you as soon as possible."
         />
-        <div className="main lg:!w-[60%] space-y-6 py-10 pb-20">
+
+        <form onSubmit={submit} className="main lg:!w-[60%] space-y-6 py-10 pb-20">
+          {/* Full Name */}
           <div>
             <label>Full Name *</label>
             <Input 
@@ -120,6 +122,8 @@ export default function page() {
               disabled={isSubmitting}
             />
           </div>
+
+          {/* Email */}
           <div>
             <label>Email Address *</label>
             <Input 
@@ -130,9 +134,14 @@ export default function page() {
               disabled={isSubmitting}
             />
           </div>
+
+          {/* Message */}
           <div>
             <label>Message *</label>
             <Textarea
+              name="message"
+              value={form.message}
+              onChange={handleChange}
               className="h-[200px] resize-none"
               placeholder="Type in your message here"
               value={formData.message}
@@ -140,24 +149,28 @@ export default function page() {
               disabled={isSubmitting}
             />
           </div>
+
+          {/* Submit Button */}
           <Button
-            custom="!w-full"
+            custom={`!w-full mt-4 ${loading ? "opacity-50 pointer-events-none" : ""}`}
             type="primary"
             text={isSubmitting ? "Submitting..." : "Submit"}
             buttonFn={submit}
             loading={isSubmitting}
           />
-        </div>
+        </form>
 
-        {/* Centered email contact message */}
+        {success && <p className="text-center text-green-600 mt-4">{success}</p>}
+
+        {/* Contact Email */}
         <div className="w-full flex justify-center items-center pb-12 px-4">
           <p className="text-lg text-center text-neutral-700 dark:text-neutral-200">
             You can also contact us by sending an email to{" "}
             <a
-              href="mailto:contactsummit@summitbankng.com"
+              href="mailto:contact@summitbankng.com"
               className="text-[var(--secondary-color)] underline hover:text-[var(--secondary-dark)]"
             >
-              contactsummit@summitbankng.com
+              contact@summitbankng.com
             </a>
             .
           </p>

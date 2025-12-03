@@ -68,13 +68,16 @@ export default function FormsPage() {
     ),
   }));
 
-// Function to remove ".pdf" safely
-    const cleanName = (file: string) => file.replace(/\.pdf$/i, "");
+  // Function to remove ".pdf" safely
+  const cleanName = (file: string) => file.replace(/\.pdf$/i, "");
 
   return (
     <DefaultLayout>
       <div>
-        <SectionHero mainClass={"!pt-[50px]"} title="Select the Form(s) You Need" />
+        <SectionHero
+          mainClass={"!pt-[50px]"}
+          title="Select the Form(s) You Need"
+        />
 
         {/* SEARCH BAR */}
         <div className="main">
@@ -98,9 +101,7 @@ export default function FormsPage() {
               <ul className="space-y-3">
                 {searchResults.map((file, i) => (
                   <li key={i} className="flex items-center gap-3">
-
                     <img src="/pdf logo.png" alt="PDF" className="w-6 h-6" />
-
                     <a
                       href={`/forms/${file}`}
                       target="_blank"
@@ -132,9 +133,11 @@ export default function FormsPage() {
                     <ul className="space-y-3">
                       {group.files.map((file, i) => (
                         <li key={i} className="flex items-center gap-3">
-
-                          <img src="/pdf logo.png" alt="PDF" className="w-6 h-6" />
-
+                          <img
+                            src="/pdf logo.png"
+                            alt="PDF"
+                            className="w-6 h-6"
+                          />
                           <a
                             href={`/forms/${file}`}
                             target="_blank"
@@ -153,6 +156,20 @@ export default function FormsPage() {
               </AccordionItem>
             </Accordion>
           ))}
+        </div>
+
+        {/* CONTACT EMAIL FOR FORM SUBMISSION */}
+        <div className="main mt-10 mb-16 text-center">
+          <p className="text-gray-700 text-sm">
+            For all completed form submissions, kindly send to{" "}
+            <a
+              href="mailto:contact@summitbank.com"
+              className="text-red-700 font-semibold hover:underline"
+            >
+              contact@summitbankng.com 
+              
+            </a>
+          </p>
         </div>
       </div>
     </DefaultLayout>

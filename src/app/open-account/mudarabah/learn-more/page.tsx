@@ -70,9 +70,9 @@ export default function LearnMoreMudarabah() {
       <AccountHero title={heroDetails.title} text={heroDetails.text} />
 
       {/* Apply Buttons - Tier buttons */}
-      <div className="py-10 flex justify-center gap-6 flex-wrap">
+      <div className="py-10 flex justify-center gap-8 flex-wrap">
         {[1, 2, 3].map((tier) => (
-          <div key={tier} className="flex flex-col items-center">
+          <div key={tier} className="flex flex-col items-center text-center px-4">
             <Framer animation={fadeIn("up", 0.2 + tier * 0.1)}>
               <Link href={`/open-account/mudarabah/tier${tier}`}>
                 <Button
@@ -82,7 +82,9 @@ export default function LearnMoreMudarabah() {
                 />
               </Link>
             </Framer>
-            <span className="text-xs mt-2 text-center">
+
+            {/* Wrapped requirement text */}
+            <span className="text-xs mt-3 max-w-[180px] leading-relaxed text-gray-700">
               {tier === 1 &&
                 "BVN, Passport, Signature"}
               {tier === 2 &&
@@ -93,6 +95,8 @@ export default function LearnMoreMudarabah() {
           </div>
         ))}
       </div>
+
+
 
       {/* Features Section */}
       <FeaturesSection features={features} />

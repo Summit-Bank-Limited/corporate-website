@@ -39,10 +39,10 @@ export default function page() {
       title: "Reinvestment options",
       text: "Easily roll over your matured investment or reinvest profits for compounded growth.",
     },
-    {
-      title: "Available for homes, cars, and equipment",
-      text: "Ideal for funding goals like home ownership, vehicle acquisition, or equipment purchase through ethical financing.",
-    },
+    // {
+    //   title: "Available for homes, cars, and equipment",
+    //   text: "Ideal for funding goals like home ownership, vehicle acquisition, or equipment purchase through ethical financing.",
+    // },
 
       
     
