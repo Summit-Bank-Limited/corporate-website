@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { X } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 interface MTDApplicationFormProps {
   isOpen: boolean;
@@ -34,6 +35,7 @@ export default function MTDApplicationForm({
     staffEmail: "",
     customerSignature: null as File | null,
     signatureBase64: "",
+    specialRate: false,
   });
   const [maturityDate, setMaturityDate] = useState("");
   const [showTermsModal, setShowTermsModal] = useState(false);
@@ -83,6 +85,7 @@ export default function MTDApplicationForm({
         staffEmail: "",
         customerSignature: null,
         signatureBase64: "",
+        specialRate: false,
       });
       setCustomerData(null);
       setVerificationStatus({ type: null, message: "" });
@@ -135,10 +138,12 @@ export default function MTDApplicationForm({
           message: "✓ Account verified successfully!",
         });
         setCustomerData(result.data);
-        // Pre-fill staff ID if account manager ID is available
-        if (result.data.accountManagerId) {
-          setFormData((prev) => ({ ...prev, staffId: result.data.accountManagerId, staffEmail: result.data.accountManagerEmail }));
-        }
+        // Pre-fill staff ID and staff email if available
+        setFormData((prev) => ({ 
+          ...prev, 
+          staffId: result.data.accountManagerId || prev.staffId,
+          staffEmail: result.data.accountOfficerEmail || prev.staffEmail
+        }));
         setTimeout(() => {
           setCurrentStep("form");
         }, 1000);
@@ -230,12 +235,12 @@ export default function MTDApplicationForm({
     if (!file) return;
 
     if (!file.type.match("image.*")) {
-      setErrorMessage("Please upload an image file (JPG, PNG, or GIF)");
+      toast.error("Please upload an image file (JPG, PNG, or GIF)");
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      setErrorMessage("File size must be less than 5MB");
+      toast.error("File size must be less than 5MB");
       return;
     }
 
@@ -255,13 +260,13 @@ export default function MTDApplicationForm({
     // Validate
     const amount = parseFloat(formData.investmentAmount);
     if (!amount || isNaN(amount) || amount < 50000000) {
-      setErrorMessage("Investment amount must be at least ₦50,000,000.00");
+      toast.error("Investment amount must be at least ₦50,000,000.00");
       return;
     }
 
     const validTenors = [30, 60, 90, 180, 365];
     if (!validTenors.includes(parseInt(formData.tenor))) {
-      setErrorMessage("Invalid tenor. Must be 30, 60, 90, 180, or 365 days");
+      toast.error("Invalid tenor. Must be 30, 60, 90, 180, or 365 days");
       return;
     }
 
@@ -269,22 +274,22 @@ export default function MTDApplicationForm({
     today.setHours(0, 0, 0, 0);
     const selectedDate = new Date(formData.effectiveDate);
     if (selectedDate < today) {
-      setErrorMessage("Effective date must be today or a future date");
+      toast.error("Effective date must be today or a future date");
       return;
     }
 
     if (!expectedProfitRate || expectedProfitRate === 0) {
-      setErrorMessage("Unable to determine applicable rate");
+      toast.error("Unable to determine applicable rate");
       return;
     }
 
     if (!formData.signatureBase64) {
-      setErrorMessage("Please upload your signature");
+      toast.error("Please upload your signature");
       return;
     }
 
     if (!formData.maturityInstruction) {
-      setErrorMessage("Please select a maturity instruction");
+      toast.error("Please select a maturity instruction");
       return;
     }
 
@@ -307,8 +312,9 @@ export default function MTDApplicationForm({
       tenor: parseInt(formData.tenor),
       expectedProfitRate: expectedProfitRate,
       maturityInstruction: formData.maturityInstruction,
-      staffId: formData.staffId || null,
-      staffEmail: formData.staffEmail || null,
+      specialRate: formData.specialRate,
+      staffId: customerData?.accountManagerId || null,
+      staffEmail: customerData?.accountOfficerEmail || null,
       customerSignature: formData.signatureBase64,
       customerData: {
         fullName: customerData?.fullName || "",
@@ -327,6 +333,7 @@ export default function MTDApplicationForm({
       const result = await response.json();
 
       if (response.ok && result.success) {
+        toast.success("Application submitted successfully!");
         setApplicationResult(result.data);
         setSubmitSuccess(true);
         setCurrentStep("form");
@@ -335,15 +342,15 @@ export default function MTDApplicationForm({
         if (result.errors && Array.isArray(result.errors)) {
           errorMsg = result.errors
             .map((err: any) => `${err.param || err.field}: ${err.msg || err.message}`)
-            .join("\n");
+            .join(", ");
         } else if (result.message) {
           errorMsg = result.message;
         }
-        setErrorMessage(errorMsg);
+        toast.error(errorMsg);
         setShowTermsModal(false);
       }
     } catch (error) {
-      setErrorMessage("Failed to submit application. Please try again.");
+      toast.error("Failed to submit application. Please try again.");
       setShowTermsModal(false);
     } finally {
       setIsSubmitting(false);
@@ -364,8 +371,32 @@ export default function MTDApplicationForm({
   const today = new Date().toISOString().split("T")[0];
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4">
-      <div className="relative w-full max-w-4xl max-h-[95vh] overflow-y-auto bg-white rounded-2xl shadow-2xl">
+    <>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#fff',
+            color: '#333',
+            border: '1px solid #dee2e6',
+          },
+          success: {
+            iconTheme: {
+              primary: '#28a745',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#dc3545',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4">
+        <div className="relative w-full max-w-4xl max-h-[95vh] overflow-y-auto bg-white rounded-2xl shadow-2xl">
         {/* Header */}
         <div className="sticky top-0 bg-gradient-to-r from-[#AF1F23] to-[#8a181b] text-white p-3 text-center z-10">
           <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#C6B07D] via-[#AF1F23] to-[#C6B07D]"></div>
@@ -745,6 +776,19 @@ export default function MTDApplicationForm({
                 </div>
               </div>
 
+              <div className="flex items-center p-2 bg-gradient-to-r from-[#faf8f3] to-[#f5f0e1] border-2 border-[#C6B07D] rounded-lg shadow-sm">
+                <input
+                  type="checkbox"
+                  id="specialRate"
+                  checked={formData.specialRate}
+                  onChange={(e) => setFormData({ ...formData, specialRate: e.target.checked })}
+                  className="w-4 h-4 mr-2 cursor-pointer"
+                />
+                <label htmlFor="specialRate" className="text-[#333] cursor-pointer text-xs font-semibold">
+                  Special Rate Required
+                </label>
+              </div>
+
               <span className="text-base sm:text-lg font-bold text-[#AF1F23] border-b-2 border-[#C6B07D] pb-2 pt-2 px-2 block">
                 Staff Information
               </span>
@@ -754,9 +798,9 @@ export default function MTDApplicationForm({
                   <label className="block mb-1 font-semibold text-[10px]">Staff ID</label>
                   <input
                     type="text"
-                    value={customerData?.staffId}
+                    value={customerData?.accountManagerId || ""}
                     readOnly
-                    className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 text-xs"
+                    className="w-full p-2 border-2 border-[#dee2e6] rounded-lg bg-[#e9ecef] text-[#6c757d] text-xs"
                   />
                 </div>
                 <div>
@@ -961,8 +1005,9 @@ export default function MTDApplicationForm({
             </div>
           </div>
         )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
