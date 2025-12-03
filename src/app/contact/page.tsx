@@ -5,162 +5,148 @@ import DefaultLayout from "@/components/layout/DefaultLayout";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
-export default function ContactPage() {
-  const [form, setForm] = useState({
+export default function page() {
+  const [formData, setFormData] = useState({
     name: "",
     email: "",
-    type: "Enquiry",
-    accountNumber: "",
-    subjectText: "",
     message: "",
   });
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Auto-derive full subject
-  const derivedSubject = `${form.type}${
-    form.type === "Complaint" && form.accountNumber
-      ? ` | Acc: ${form.accountNumber}`
-      : ""
-  }: ${form.subjectText}`;
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const validateForm = () => {
+    if (!formData.name.trim()) {
+      toast.error("Please enter your full name");
+      return false;
+    }
+    if (!formData.email.trim()) {
+      toast.error("Please enter your email address");
+      return false;
+    }
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      toast.error("Please enter a valid email address");
+      return false;
+    }
+    if (!formData.message.trim()) {
+      toast.error("Please enter your message");
+      return false;
+    }
+    return true;
   };
 
-  const submit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setSuccess("");
+  const submit = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
 
     try {
-      const res = await fetch("/api/contact", {
+      const response = await fetch("https://products.summitbankng.com/mtd/enquiry/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          type: form.type,
-          accountNumber: form.accountNumber,
-          subject: derivedSubject,
-          message: form.message,
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          message: formData.message.trim(),
         }),
       });
 
-      const data = await res.json();
-      if (data.success) {
-        setSuccess("Message sent successfully!");
-        setForm({
+      const result = await response.json();
+
+      if (response.ok && result.success) {
+        toast.success("Enquiry submitted successfully! We'll get back to you soon.");
+        // Reset form
+        setFormData({
           name: "",
           email: "",
-          type: "Enquiry",
-          accountNumber: "",
-          subjectText: "",
           message: "",
         });
       } else {
-        setSuccess("Failed to send message. Try again later.");
+        const errorMessage = result.error || result.message || "Failed to submit enquiry. Please try again.";
+        toast.error(errorMessage);
       }
-    } catch (err) {
-      console.error(err);
-      setSuccess("Failed to send message. Try again later.");
+    } catch (error) {
+      console.error("Error submitting enquiry:", error);
+      toast.error("Failed to submit enquiry. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    setLoading(false);
   };
 
   return (
     <DefaultLayout>
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#fff',
+            color: '#333',
+            border: '1px solid #dee2e6',
+          },
+          success: {
+            iconTheme: {
+              primary: '#28a745',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: '#dc3545',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
       <div>
         <SectionHero
           mainClass="!pt-[50px]"
           title="Enquiries & Complaints"
-          text="Can’t find what you are looking for? Please contact us, and we will get back to you as soon as possible."
+          text="Can't find what you are looking for? Please contact us, and we will get back to you as soon as possible."
         />
 
         <form onSubmit={submit} className="main lg:!w-[60%] space-y-6 py-10 pb-20">
           {/* Full Name */}
           <div>
-            <label>Full Name</label>
-            <Input
-              name="name"
-              value={form.name}
-              onChange={handleChange}
+            <label>Full Name *</label>
+            <Input 
               placeholder="Enter your full name"
-              required
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              disabled={isSubmitting}
             />
           </div>
 
           {/* Email */}
           <div>
-            <label>Email Address</label>
-            <Input
-              name="email"
-              value={form.email}
-              onChange={handleChange}
+            <label>Email Address *</label>
+            <Input 
+              type="email"
               placeholder="Enter your email"
-              required
+              value={formData.email}
+              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              disabled={isSubmitting}
             />
-          </div>
-
-          {/* Type Dropdown */}
-          <div>
-            <label>Type</label>
-            <select
-              name="type"
-              value={form.type}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--secondary-color)]"
-            >
-              <option>Enquiry</option>
-              <option>Complaint</option>
-              <option>Suggestion</option>
-            </select>
-          </div>
-
-          {/* Account Number (for complaints) */}
-          {form.type === "Complaint" && (
-            <div>
-              <label>Account Number</label>
-              <Input
-                name="accountNumber"
-                value={form.accountNumber}
-                onChange={handleChange}
-                placeholder="Enter your account number"
-                required
-              />
-            </div>
-          )}
-
-          {/* Subject */}
-          <div>
-            <label>Subject</label>
-            <Input
-              name="subjectText"
-              value={form.subjectText}
-              onChange={handleChange}
-              placeholder="Enter your subject"
-              required
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              Full subject will be sent as: <strong>{derivedSubject}</strong>
-            </p>
           </div>
 
           {/* Message */}
           <div>
-            <label>Message</label>
+            <label>Message *</label>
             <Textarea
               name="message"
               value={form.message}
               onChange={handleChange}
               className="h-[200px] resize-none"
               placeholder="Type in your message here"
-              required
+              value={formData.message}
+              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              disabled={isSubmitting}
             />
           </div>
 
@@ -168,8 +154,9 @@ export default function ContactPage() {
           <Button
             custom={`!w-full mt-4 ${loading ? "opacity-50 pointer-events-none" : ""}`}
             type="primary"
-            text={loading ? "Sending..." : "Submit"}
+            text={isSubmitting ? "Submitting..." : "Submit"}
             buttonFn={submit}
+            loading={isSubmitting}
           />
         </form>
 

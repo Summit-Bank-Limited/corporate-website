@@ -344,6 +344,15 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
           text: "",
           links: [
             {
+              name: "Activate Card",
+              link: "/activate-card",
+            },
+          ]
+        },
+        {
+          text: "",
+          links: [
+            {
               name: "FAQs",
               link: "/faq",
             },

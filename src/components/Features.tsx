@@ -3,9 +3,13 @@ import Image from "next/image";
 import React from "react";
 import Framer from "./Framer";
 import { fadeIn, fadeInLetters } from "@/lib/animation";
+import Button from "./Button";
+import { useRouter } from "next/navigation";
+import { CreditCard } from "lucide-react";
 
 
 export default function Features() {
+  const router = useRouter();
   const features = [
     {
       title: "Instant Transaction",
@@ -54,6 +58,18 @@ export default function Features() {
               </div>
             </div>
           ))}
+          <Framer animation={fadeIn('up', 0.8)}>
+            <div className="pt-6">
+              <Button
+                text="Activate Your Card"
+                type="outline"
+                buttonFn={() => router.push("/activate-card")}
+                custom="!bg-white !text-[var(--secondary-color)] hover:!bg-gray-100"
+              >
+                <CreditCard size={20} />
+              </Button>
+            </div>
+          </Framer>
         </div>
         <Framer animation={fadeIn('up', 0.5)}>
           <Image
