@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 //Deploymemnt Effort|StrawHat|Taiwo|StrawHats|TA|HY
 interface HeroInterface {
   title: string;
-  text: string;
+  text: string | React.ReactNode;
   image: string;
 }
 export default function GeneralHero({ title, text, image }: HeroInterface) {
@@ -54,7 +54,11 @@ export default function GeneralHero({ title, text, image }: HeroInterface) {
               ))}
             </div>
             <Framer animation={fadeIn("up", 0.3)}>
-              <p className="lg:w-[500px]">{text}</p>
+              {typeof text === 'string' ? (
+                <p className="lg:w-[500px]">{text}</p>
+              ) : (
+                <div className="lg:w-[500px]">{text}</div>
+              )}
             </Framer>
             {/* <div className="pt-4">
               <Framer animation={slideUp(1.2)}>
@@ -71,7 +75,7 @@ export default function GeneralHero({ title, text, image }: HeroInterface) {
 
           <Image
             src={image}
-            alt={text}
+            alt={typeof text === 'string' ? text : title}
             height={500}
             width={500}
             className={` h-[300px] lg:h-[500px] w-full rounded-2xl  object-cover `}
