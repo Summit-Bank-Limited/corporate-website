@@ -1,15 +1,29 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import ActivateCardForm from "@/components/activate-card/ActivateCardForm";
 import GeneralHero from "@/components/generalHero/GeneralHero";
 
 export default function ActivateCardPage() {
   const heroData = {
-    title: "Activate Your Card",
-    text: "Activate your Afrigo card securely and start using it for your transactions.",
-    image: "/card.png",
+    title: "Activate Your AfriGo Card",
+    text: (
+      <div className="flex flex-col items-start gap-4">
+        <p>Activate your Afrigo card safely and enjoy seamless, secure transactions.</p>
+
+        {/* AfriGo Logo Below Text */}
+        <Image
+          src="/afrigo.png"
+          alt="AfriGo Logo"
+          width={80}
+          height={80}
+          className="object-contain"
+        />
+      </div>
+    ),
+    image: "/afrigo.png",
   };
 
   return (
@@ -27,4 +41,3 @@ export default function ActivateCardPage() {
     </DefaultLayout>
   );
 }
-
