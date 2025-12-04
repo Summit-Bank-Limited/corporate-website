@@ -1,4 +1,3 @@
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -11,11 +10,10 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-  // REMOVE: output: 'export'
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/:path*',
         headers: [
           {
             key: 'X-Content-Type-Options',
@@ -42,5 +40,4 @@ const nextConfig = {
     ]
   }
 };
-
 module.exports = nextConfig;
