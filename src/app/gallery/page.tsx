@@ -6,7 +6,6 @@ import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getCloudinaryUrl } from "@/lib/utils";
-import fs from "fs/promises";
 
 const galleryFolders = [
   { name: "Summit Launch", path: "launch" },
