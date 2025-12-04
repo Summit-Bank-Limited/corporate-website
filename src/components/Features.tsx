@@ -61,7 +61,7 @@ export default function Features() {
           <Framer animation={fadeIn('up', 0.8)}>
             <div className="pt-6">
               <Button
-                text="Activate Your Card"
+                text="Activate Your AfriGo Card"
                 type="outline"
                 buttonFn={() => router.push("/activate-card")}
                 custom="!bg-white !text-[var(--secondary-color)] hover:!bg-gray-100"

@@ -344,7 +344,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
           text: "",
           links: [
             {
-              name: "Activate Card",
+              name: "Activate Your AfriGo Card",
               link: "/activate-card",
             },
           ]
