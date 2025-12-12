@@ -14,10 +14,10 @@ export default function Footer() {
     {
       heading: "Personal",
       links: [
-        {
-          text: "Savings Accounts (Qard)",
-          link: "#",
-        },
+        // {
+        //   text: "Savings Accounts (Qard)",
+        //   link: "#",
+        // },
         { text: "Current Account (Qard)", link: "#" },
         { text: "Savings Account (Mudarabah)", link: "#" },
         { text: "Summit MTD (Mudarabah)", link: "#" },

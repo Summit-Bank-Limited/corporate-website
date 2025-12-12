@@ -73,7 +73,12 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               name: "Our Board",
               link: "/about-us#board",
               description: "Leadership and Governance"
-            }
+            },
+            {
+              name: "ACE Management Team",
+              link: "/management-team",
+              // description: "Executive Leadership Team"
+            }            
           ]
         },
 
