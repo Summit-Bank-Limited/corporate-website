@@ -1,16 +1,12 @@
-import FeaturesCard from "@/components/cards/FeaturesCard";
 import Faq from "@/components/faq/Faq";
 import AccountHero from "@/components/generalHero/AccountHero";
 import DefaultLayout from "@/components/layout/DefaultLayout";
-import Partners from "@/components/Partners";
 import FeaturesSection from "@/components/section/FeaturesSection";
 import GenericSection from "@/components/section/GenericSection";
-import { Testimonials } from "@/components/testimonials/Testimonials";
 import Image from "next/image";
-import { title } from "process";
 import React from "react";
 
-export default function page() {
+export default function PersonalSavingsAccountPage() {
   const heroDetails = {
     title: "Savings Accounts (Qard)",
     text: "Bank freely with a Shari'ah-compliant savings account that gives you control, convenience, and peace of mind.",
@@ -65,7 +61,6 @@ export default function page() {
     <div className="">
       <DefaultLayout>
         <AccountHero text={heroDetails?.text} title={heroDetails?.title} />
-        {/* <Partners /> */}
         <FeaturesSection features={allFeatures} />
         {allSection?.map((res, index) => (
           <GenericSection
@@ -89,8 +84,7 @@ export default function page() {
             </div>
           </GenericSection>
         ))}
-           <Faq  amount={3}/>
-       {/*  <Testimonials /> */} 
+        <Faq amount={3} />
       </DefaultLayout>
     </div>
   );

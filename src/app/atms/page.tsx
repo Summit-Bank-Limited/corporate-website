@@ -9,28 +9,28 @@ export default function Atms() {
       locationType: "Head Office",
       address: "5 Amal Pepple Street, Off Ameyo Adadevoh Way, Jahi, Abuja.",
       phone: "+234 (0) 700 700 0005",
-      email: "digitalbankingsupport@summitbankng.com",
+      email: "contact@summitbankng.com",
     },
     {
       state: "KANO",
       locationType: "France Road Branch",
       address: "32-40 Home Plus Plaza, France Road, Kano.",
       phone: "+234 (0) 700 700 0005",
-      email: "digitalbankingsupport@summitbankng.com",
+      email: "contact@summitbankng.com",
     },
     {
       state: "KANO",
       locationType: "Bank Road Branch",
       address: "No. 2, Bank Road, Kano State.",
       phone: "+234 (0) 700 700 0005",
-      email: "digitalbankingsupport@summitbankng.com",
+      email: "contact@summitbankng.com",
     },
     {
       state: "LAGOS",
       locationType: "Liaison Office",
       address: "No. 39 Adeola Odeku Street, 3rd Floor, Victoria Island, Lagos.",
       phone: "+234 (0) 700 700 0005",
-      email: "digitalbankingsupport@summitbankng.com",
+      email: "contact@summitbankng.com",
     },
   ];
 

@@ -28,7 +28,7 @@ export default function FormsPage() {
       category: "Card & Collectibles Forms",
       files: [
         "Corporate Account Collectibles.pdf",
-        "GeNS Indemnity.pdf",
+        "SMS Indemnity.pdf",
         "Indemnity for Retracted Card.pdf",
         "Individual Account Collectibles.pdf",
         "PIN Release.pdf",
@@ -41,8 +41,10 @@ export default function FormsPage() {
       files: [
         "Corporate - Single User Registration.pdf",
         "Internet and Online Banking.pdf",
-        "Transfer Limit Corporate .pdf",
-        "Transfer Limit Individual.pdf",
+        "POS Request.pdf",
+        "POS Commitment.pdf",
+        "Transfer Limit Corporate.pdf",
+        "Transfer Limit Individual.pdf",                
       ],
     },
     {
