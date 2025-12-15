@@ -103,7 +103,7 @@ export default function Atms() {
                   </div>
                 ))}
               </div>
-            </div>
+            </div> 
           ))}
         </div>
       </section>
