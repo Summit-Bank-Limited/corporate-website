@@ -12,6 +12,20 @@ export default function Branches() {
       email: "contact@summitbankng.com",
     },
     {
+      state: "FCT ABUJA",
+      locationType: "Wuse 2, Flagship Branch",
+      address: "Plot 1173 Adetokunbo Ademola Crescent, Wuse 2, Abuja.",
+      phone: "+234 (0) 700 700 0005",
+      email: "contact@summitbankng.com",
+    },
+    {
+      state: "KADUNA",
+      locationType: "Kaduna Road Branch",
+      address: "5 Ahmadu Bello Way, Kaduna.",
+      phone: "+234 (0) 700 700 0005",
+      email: "contact@summitbankng.com",
+    },
+    {
       state: "KANO",
       locationType: "France Road Branch",
       address: "32-40 Home Plus Plaza, France Road, Kano.",
@@ -21,7 +35,7 @@ export default function Branches() {
     {
       state: "KANO",
       locationType: "Bank Road Branch",
-      address: "No. 2, Bank Road, Kano State.",
+      address: "No. 2, Bank Road, Kano.",
       phone: "+234 (0) 700 700 0005",
       email: "contact@summitbankng.com",
     },
