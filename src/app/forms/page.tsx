@@ -39,7 +39,8 @@ export default function FormsPage() {
     {
       category: "Digital Channels Forms",
       files: [
-        "Corporate - Single User Registration.pdf",
+        "Corporate Internet Banking CIB.pdf",
+        "Corporate - Single User Registration.pdf",            
         "Internet and Online Banking.pdf",
         "POS Request.pdf",
         "POS Commitment.pdf",

@@ -75,7 +75,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               description: "Leadership and Governance"
             },
             {
-              name: "ACE Management Team",
+              name: "ACE Members",
               link: "/management-team",
               // description: "Executive Leadership Team"
             }            
