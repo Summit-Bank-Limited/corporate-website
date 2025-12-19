@@ -82,7 +82,7 @@ export default function Page() {
         message: formData.message.trim(),
       };
 
-      const response = await fetch('/api/mtd/enquiry/create', {
+      const response = await fetch('https://products.summitbankng.com/mtd/enquiry/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
