@@ -44,8 +44,27 @@ export default function ManagementTeam() {
       title: "Mohammad Mahbubi Ali, PhD",
       category: "Chairman, ACE",
       content: (
-        <DummyContent
-          text={`Dr. Mohammad Mahbubi Ali, PhD, is an expert in Islamic finance and serves as Chairman of the Advisory Committee of Experts (ACE) at Summit Bank Nigeria, providing strategic guidance on Shariah-compliant banking operations. He holds a PhD in Islamic Banking and Finance from IIUM, Malaysia, and has extensive experience as a Shariah advisor and auditor accredited by AAOIFI. Dr. Mahbubi Ali has held leadership and advisory roles across international Islamic financial institutions, bridging academic research with practical implementation. His work focuses on Shariah governance, product compliance, and advancing Islamic banking standards globally.`}
+         <DummyContent
+
+
+
+          text={`Dr. Mohammad Mahbubi Ali is a leading international authority in Islamic banking, finance, and Shariah governance, widely recognised for his intellectual contributions, policy influence, and advisory leadership across Asia, the Middle East, and Africa. 
+
+
+                 He is a Member of the Islamic Finance Development Committee at the Financial Services Authority (OJK) Indonesia, and sits on several high-level Shariah committees, including CIMB Islamic Bank Malaysia and FWD Takaful Malaysia.
+
+
+          With a distinguished academic background, Dr. Mahbubi holds a PhD in Islamic Banking and Finance from IIUM and the Chartered Islamic Finance Professional (CIFP) qualification from INCEIF. His professional experience spans senior research, teaching, policy advisory, and leadership roles, including Resident Islamic Finance Expert at the Brunei Darussalam Central Bank, Head of Economics, Finance, Awqaf, and Zakat at IAIS Malaysia, and Chairman of the Islamic Institute of Sidogiri.
+
+
+          Dr. Mahbubi has authored over 70 peer-reviewed journal articles and research papers, contributed to more than 40 Shariah advisory and consultancy projects, and delivered presentations at numerous international conferences. 
+
+
+          His works significantly advance discourse on Shariah governance, Islamic financial inclusion, sukuk innovation, sustainable finance, and contemporary fiqh muamalat. He has also led major projects for global and national institutions, including Bank Negara Malaysia, INCEIF, AAOIFI, and Bank Indonesia.
+
+
+          A recipient of multiple awards, including Best Paper Awards, and several national academic recognitions. He currently serves as Assistant Professor at the IIUM Institute of Islamic Banking and Finance (IIIBF), Malaysia, and Chairman of the Advisory Committee of Experts at Summit Bank Nigeria.`}
+
         />
       ),
       src: "/management-team/ace-chairman.png",
@@ -55,11 +74,33 @@ export default function ManagementTeam() {
       ],
     },
     {
-      title: "Muhammad Tanko Aliyu, PhD",
+      title: "Muhammad Tanko Aliyu",
       category: "Member, ACE",
       content: (
-        <DummyContent
-          text={`Prof. Muhammad Tanko Aliyu (Baitullah) is a Professor of Qur’anic Studies at the Federal University of Lafia, Nigeria, with over 21 years of teaching experience in Qur’an, Hadith, and related Islamic studies. He earned his B.A. in Qur’an and Hadith Studies, M.A. in Islamic Studies, and PhD in Islamic Studies, and has held academic positions from Graduate Assistant to Professor, publishing extensively in journals, books, and conference proceedings. He has served in multiple administrative and leadership roles, including Dean of Arts, Director of the Centre for Security Studies, Chief Imam, and board positions in Islamic organizations. Prof. Aliyu also participates in national assignments and currently serves as a member of the Advisory Committee of Experts (ACE) at Summit Bank.`}
+       <DummyContent
+
+
+
+          text={`Prof. Muhammad Tanko Aliyu is a Professor of Qur’anic Studies at the Federal University of Lafia, Nigeria. 
+
+
+              He holds degrees in Qur’an and Hadith (Islamic University, Niger Republic), an M.A. in Islamic Studies (University of Jos), and a PhD in Islamic Studies (Bayero University Kano). 
+
+
+              Over the past two decades, he has taught Qur’an, Hadith, and related disciplines and has published widely in national and international journals, books, and conference proceedings. 
+
+
+              His research spans Qur’anic and Hadith Studies, Maqasid al-Shari’ah, Islamic Economics, Fiqh and Usul al-Fiqh, and Political Science. 
+
+
+              He has held several leadership roles, including Head of Unit, Head of Department, Dean of Arts, and currently serves as Director of the Centre for Security Studies at Federal University of Lafia. 
+
+
+              He is also a Senate representative on the University Governing Council. Beyond academia, he serves as the Director of the Abubakar Siddiq Mosque and Islamic Centre and Founder of the Abul-Khayr Islamic Foundation. 
+
+
+              He is an active member of various scholarly associations and currently serves on the Advisory Committee of Experts (ACE) of SUMMIT Bank.`}
+
         />
       ),
       src: "/management-team/member1.png",
@@ -69,11 +110,30 @@ export default function ManagementTeam() {
       ],
     },
     {
-      title: "Muhammad Auwal Salisu, PhD",
+      title: "Muhammad Auwal Salisu",
       category: "Member, ACE",
       content: (
         <DummyContent
-          text={`Dr. Auwal Salisu is a Senior Lecturer and Head of the Department of Islamic Studies at Federal University Gashua, Nigeria, specializing in Islamic Banking, Fiqh, Usul-Fiqh, Maqasid Sharia, and Sharia advisory. He holds a B.A. in Sharia and Islamic Studies, an M.A. in Usul-Fiqh, and a PhD in Islamic Development and Management Studies (Islamic Banking), with additional professional certifications in Shariah for Banking and Finance. With over 25 years of teaching, research, and Quranic leadership experience, he has published extensively, supervised students, and participated in national and international academic forums, while also engaging in community service initiatives. Dr. Auwal is a member of the Advisory Committee of Experts (ACE) at Summit Bank and directs multiple Islamic educational and development foundations in Yobe State, Nigeria.`}
+
+
+
+          text={`Dr. Muhammad Auwal Salisu is a Senior Lecturer in Islamic Development and Management Studies at the Federal University, Gashua, Yobe State, Nigeria. 
+
+
+              With over 17 years of teaching and research experience, he specializes in Fiqh, Usul al-Fiqh, Maqasid al-Shariah, Islamic Finance, Qawa‘id Fiqhiyyah, and Shariah advisory for Islamic banking institutions. 
+
+
+              He holds a B.A. in Shariah and Islamic Studies from OIC Islamic University (Niger Republic), an M.A. in Usul al-Fiqh from Al-Madinah International University (Malaysia), and a PhD in Islamic Development and Islamic Banking from Universiti Sains Malaysia.
+
+
+              Dr. Auwal has published extensively in reputable national and international journals, contributed to book chapters, and presented scholarly papers at conferences across several countries. 
+
+
+              He has supervised undergraduate and postgraduate research and serves as a reviewer and editorial advisor for academic journals. 
+
+
+              He has held key academic leadership roles, including Postgraduate Coordinator and Head of Department of Islamic Studies, and is currently a Member of the Advisory Committee of Experts at SUMMIT Bank, Nigeria.`}
+
         />
       ),
       src: "/management-team/member2.png",
@@ -96,7 +156,7 @@ export default function ManagementTeam() {
 
       <div className="mt-10" id="management-team-anchor">
         <SectionHero
-          subtitle={"ACE Management Team"}
+          subtitle={"ACE Members"}
           customClass={"!text-2xl md:!text-3xl lg:!text-4xl !leading-[1.3]"}
         />
       </div>
