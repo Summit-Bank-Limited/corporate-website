@@ -12,9 +12,6 @@ export default function Page() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subjectType: "Enquiries",
-    subjectText: "",
-    nubanAccountNumber: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,36 +32,11 @@ export default function Page() {
       toast.error("Please enter a valid email address");
       return false;
     }
-    if (!formData.subjectText.trim()) {
-      toast.error("Please enter a subject");
-      return false;
-    }
-    if (formData.subjectType === "Complaints") {
-      if (!formData.nubanAccountNumber.trim()) {
-        toast.error("Please enter your Nuban Account Number for complaints");
-        return false;
-      }
-      const accountRegex = /^\d{10}$/;
-      if (!accountRegex.test(formData.nubanAccountNumber)) {
-        toast.error("Nuban Account Number must be exactly 10 digits");
-        return false;
-      }
-    }
     if (!formData.message.trim()) {
       toast.error("Please enter your message");
       return false;
     }
     return true;
-  };
-
-  const handleSubjectTextChange = (value: string) => {
-    // Remove prefix if accidentally typed
-    const prefix = `${formData.subjectType}: `;
-    if (value.startsWith(prefix)) {
-      setFormData({ ...formData, subjectText: value.slice(prefix.length) });
-    } else {
-      setFormData({ ...formData, subjectText: value });
-    }
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -77,23 +49,29 @@ export default function Page() {
       const payload = {
         name: formData.name.trim(),
         email: formData.email.trim(),
-        subject: `${formData.subjectType}: ${formData.subjectText.trim()}`,
-        nubanAccountNumber: formData.subjectType === "Complaints" ? formData.nubanAccountNumber.trim() : "",
         message: formData.message.trim(),
       };
 
-      console.log("Submitting:", payload);
-      toast.success("Form is ready to submit (currently disabled).");
-
-      // Reset form
-      setFormData({
-        name: "",
-        email: "",
-        subjectType: "Enquiries",
-        subjectText: "",
-        nubanAccountNumber: "",
-        message: "",
+      const response = await fetch('https://products.summitbankng.com/mtd/enquiry/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success(data.message);
+        setFormData({
+          name: "",
+          email: "",
+          message: "",
+        });
+      } else {
+        toast.error(data.error);
+      }
     } catch (error) {
       console.error("Error submitting enquiry:", error);
       toast.error("Failed to submit enquiry. Please try again.");
@@ -101,8 +79,6 @@ export default function Page() {
       setIsSubmitting(false);
     }
   };
-
-  const prefix = `${formData.subjectType}: `;
 
   return (
     <DefaultLayout>
@@ -146,45 +122,6 @@ export default function Page() {
             />
           </div>
 
-          {/* Subject Type */}
-          <div>
-            <label>Subject Type *</label>
-            <select
-              value={formData.subjectType}
-              onChange={(e) => setFormData({ ...formData, subjectType: e.target.value })}
-              className="w-full border p-2 rounded"
-              disabled={isSubmitting}
-            >
-              <option value="Enquiries">Enquiries</option>
-              <option value="Complaints">Complaints</option>
-            </select>
-          </div>
-
-          {/* Subject Text with fixed prefix */}
-          <div>
-            <label>Subject *</label>
-            <Input
-              placeholder="Enter your subject"
-              value={prefix + formData.subjectText}
-              onChange={(e) => handleSubjectTextChange(e.target.value)}
-              disabled={isSubmitting}
-            />
-          </div>
-
-          {/* Nuban Account Number (conditional) */}
-          {formData.subjectType === "Complaints" && (
-            <div>
-              <label>Nuban Account Number *</label>
-              <Input
-                placeholder="Enter your 10-digit Nuban account number"
-                value={formData.nubanAccountNumber}
-                maxLength={10}
-                onChange={(e) => setFormData({ ...formData, nubanAccountNumber: e.target.value.replace(/\D/, '') })}
-                disabled={isSubmitting}
-              />
-            </div>
-          )}
-
           {/* Message */}
           <div>
             <label>Message * (max {messageCharacterLimit} characters)</label>
@@ -202,7 +139,7 @@ export default function Page() {
 
           {/* Submit Button */}
           <Button
-            custom={`!w-full mt-4 opacity-50 pointer-events-none`} // Disabled for now
+            custom={`!w-full mt-4`}
             type="primary"
             text="Submit"
             buttonFn={handleSubmit}
