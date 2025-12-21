@@ -271,6 +271,15 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
             },
           ],
         },
+        {
+          text: "Services",
+          links: [
+            {
+              name: "Request for POS",
+              link: "https://pos-merchant.summitbankng.com/pos-merchant",
+            },
+          ],
+        },
       ],
     },
 
@@ -691,16 +700,30 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
                 <div key={index}>
                   {item?.links ? (
                     <div className="space-y-2">
-                      {item.links.map((res: any, j: number) => (
-                        <Link
-                          key={j}
-                          href={res?.link}
-                          onClick={closeMobileMenu}
-                          className="block text-black hover:font-bold"
-                        >
-                          - {res.name}
-                        </Link>
-                      ))}
+                      {item.links.map((res: any, j: number) => {
+                        const isExternal = res?.link?.startsWith('http://') || res?.link?.startsWith('https://');
+                        return isExternal ? (
+                          <a
+                            key={j}
+                            href={res?.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={closeMobileMenu}
+                            className="block text-black hover:font-bold"
+                          >
+                            - {res.name}
+                          </a>
+                        ) : (
+                          <Link
+                            key={j}
+                            href={res?.link}
+                            onClick={closeMobileMenu}
+                            className="block text-black hover:font-bold"
+                          >
+                            - {res.name}
+                          </Link>
+                        );
+                      })}
                     </div>
                   ) : (
                     <Link
@@ -796,16 +819,30 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
                               <div key={i}>
                                 {item?.links ? (
                                   <div className="space-y-2">
-                                    {item.links.map((res: any, j: number) => (
-                                      <Link
-                                        key={j}
-                                        href={res?.link}
-                                        onClick={closeMobileMenu}
-                                        className="block text-black hover:font-bold"
-                                      >
-                                        - {res.name}
-                                      </Link>
-                                    ))}
+                                    {item.links.map((res: any, j: number) => {
+                                      const isExternal = res?.link?.startsWith('http://') || res?.link?.startsWith('https://');
+                                      return isExternal ? (
+                                        <a
+                                          key={j}
+                                          href={res?.link}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          onClick={closeMobileMenu}
+                                          className="block text-black hover:font-bold"
+                                        >
+                                          - {res.name}
+                                        </a>
+                                      ) : (
+                                        <Link
+                                          key={j}
+                                          href={res?.link}
+                                          onClick={closeMobileMenu}
+                                          className="block text-black hover:font-bold"
+                                        >
+                                          - {res.name}
+                                        </Link>
+                                      );
+                                    })}
                                   </div>
                                 ) : (
                                   <Link

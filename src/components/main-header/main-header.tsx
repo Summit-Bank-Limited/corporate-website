@@ -34,25 +34,46 @@ export function MainHeader({ menu }: { menu: Record<string, any> }) {
                           <li key={colIndex}>
                             <p className="text-[15px] font-semibold mb-2">{column.text}</p>
                             <ul className="grid gap-1">
-                              {column?.links?.map((linkItem: any, linkIndex: number) => (
-                                <li key={linkIndex} className="mb-2">
-                                  <NavigationMenuLink asChild>
-                                    <Link
-                                      href={linkItem?.link}
-                                      className="flex flex-col p-2 rounded-md hover:bg-gray-100 transition-colors"
-                                    >
-                                      <span className="text-base font-medium">
-                                        {linkItem.name}
-                                      </span>
-                                      {linkItem.description && (
-                                        <span className="text-xs text-gray-500 mt-1 font-normal">
-                                          {linkItem.description}
-                                        </span>
+                              {column?.links?.map((linkItem: any, linkIndex: number) => {
+                                const isExternal = linkItem?.link?.startsWith('http://') || linkItem?.link?.startsWith('https://');
+                                return (
+                                  <li key={linkIndex} className="mb-2">
+                                    <NavigationMenuLink asChild>
+                                      {isExternal ? (
+                                        <a
+                                          href={linkItem?.link}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="flex flex-col p-2 rounded-md hover:bg-gray-100 transition-colors"
+                                        >
+                                          <span className="text-base font-medium">
+                                            {linkItem.name}
+                                          </span>
+                                          {linkItem.description && (
+                                            <span className="text-xs text-gray-500 mt-1 font-normal">
+                                              {linkItem.description}
+                                            </span>
+                                          )}
+                                        </a>
+                                      ) : (
+                                        <Link
+                                          href={linkItem?.link}
+                                          className="flex flex-col p-2 rounded-md hover:bg-gray-100 transition-colors"
+                                        >
+                                          <span className="text-base font-medium">
+                                            {linkItem.name}
+                                          </span>
+                                          {linkItem.description && (
+                                            <span className="text-xs text-gray-500 mt-1 font-normal">
+                                              {linkItem.description}
+                                            </span>
+                                          )}
+                                        </Link>
                                       )}
-                                    </Link>
-                                  </NavigationMenuLink>
-                                </li>
-                              ))}
+                                    </NavigationMenuLink>
+                                  </li>
+                                );
+                              })}
                             </ul>
                           </li>
                         ))}
