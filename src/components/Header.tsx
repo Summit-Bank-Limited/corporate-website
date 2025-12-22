@@ -271,15 +271,15 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
             },
           ],
         },
-        {
-          text: "Services",
-          links: [
-            {
-              name: "Request for POS",
-              link: "https://pos-merchant.summitbankng.com/pos-merchant",
-            },
-          ],
-        },
+        // {
+        //   text: "Services",
+        //   links: [
+        //     {
+        //       name: "Request for POS",
+        //       link: "https://pos-merchant.summitbankng.com/pos-merchant",
+        //     },
+        //   ],
+        // },
       ],
     },
 
