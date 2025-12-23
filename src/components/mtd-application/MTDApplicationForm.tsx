@@ -528,7 +528,7 @@ export default function MTDApplicationForm({
                 <ul className="list-disc pl-4 text-[#495057] space-y-0.5 text-xs">
                   <li><span className="text-sm font-semibold mt-3 mb-1">All profit rates are expected rates and subject to actual performance.</span></li>
                   {/* <li><span className="text-sm font-semibold mt-2 mb-1">This is a Shariah-compliant investment product.</span></li> */}
-                  <li><span className="text-sm font-semibold mt-2 mb-1">Terms and conditions are subject to change at Summit bank's discretion.</span></li>
+                  <li><span className="text-sm font-semibold mt-2 mb-1">Terms and conditions are subject to change at Summit Bank’s discretion, with prior notification to customers.</span></li>
                   <li><span className="text-sm font-semibold mt-2 mb-1">Please read all terms carefully before proceeding.</span></li>
                 </ul>
               </div>

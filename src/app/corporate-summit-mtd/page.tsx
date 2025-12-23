@@ -54,7 +54,7 @@ const allSection = [
       list: [
         "Have an existing account with the Bank",
         "Completed investment application form (stating tenor and amount)",
-        "Minimum investment amount of N500,000" 
+        "Minimum investment amount of N1,000,000" 
         
         
       ],
@@ -64,9 +64,8 @@ const allSection = [
       title: "Eligibility",
       image: "/account/current-2.png",
       list: [
-        "SMEs and Registered businesses",
+        "All Registered businesses",
         "T&Cs apply"
-        ,
     
       ],
     },

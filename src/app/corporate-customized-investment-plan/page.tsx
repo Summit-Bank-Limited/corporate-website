@@ -57,7 +57,6 @@ const allSection = [
         "Professionals",
         "T&Cs apply"
     ,
-    
       ],
     },
   ];
