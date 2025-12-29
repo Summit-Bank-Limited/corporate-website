@@ -85,7 +85,7 @@ export default function ActivateCardForm() {
 
     setIsLoading(true);
     try {
-      const response = await fetch('https://products.summitbankng.com/mtd/request-token-bvn', {
+      const response = await fetch('/api/mtd/request-token-bvn', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ export default function ActivateCardForm() {
 
     setIsLoading(true);
     try {
-      const response = await fetch('https://products.summitbankng.com/mtd/card-activation', {
+      const response = await fetch('/api/mtd/card-activation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
