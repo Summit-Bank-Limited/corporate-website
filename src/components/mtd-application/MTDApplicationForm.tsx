@@ -100,7 +100,7 @@ export default function MTDApplicationForm({
   // Fetch rate guide
   const fetchRateGuide = async () => {
     try {
-      const response = await fetch("https://products.summitbankng.com/mtd/mtd/rates");
+      const response = await fetch("/api/mtd/rates");
       const result = await response.json();
       if (result.success && result.data) {
         setRateTiers(result.data);
@@ -124,7 +124,7 @@ export default function MTDApplicationForm({
     setVerificationStatus({ type: "verifying", message: "Verifying account..." });
 
     try {
-      const response = await fetch("https://products.summitbankng.com/mtd/mtd/verify", {
+      const response = await fetch("/api/mtd/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ accountNumber, bvn }),
@@ -190,7 +190,7 @@ export default function MTDApplicationForm({
 
     if (amount >= 50000000 && tenor && effectiveDate) {
       try {
-        const url = `https://products.summitbankng.com/mtd/mtd/rates/calculate?amount=${amount}&tenor=${tenor}&effectiveDate=${effectiveDate}`;
+        const url = `/api/mtd/rates/calculate?amount=${amount}&tenor=${tenor}&effectiveDate=${effectiveDate}`;
         const response = await fetch(url);
         const result = await response.json();
 
@@ -324,7 +324,7 @@ export default function MTDApplicationForm({
     };
 
     try {
-      const response = await fetch("https://products.summitbankng.com/mtd/mtd/application", {
+      const response = await fetch("/api/mtd/application", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submitData),
