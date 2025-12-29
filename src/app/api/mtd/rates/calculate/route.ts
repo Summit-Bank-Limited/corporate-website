@@ -25,7 +25,25 @@ export async function GET(request: NextRequest) {
       cache: 'no-store',
     });
 
-    const data = await response.json();
+    // Get response text first to check if it's JSON
+    const responseText = await response.text();
+    let data;
+    
+    try {
+      // Try to parse as JSON
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      // If it's not JSON (likely HTML error page), return error
+      console.error('Non-JSON response received:', responseText.substring(0, 200));
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Invalid response from server. Please try again later.',
+          details: response.status >= 500 ? 'Server error' : 'Unexpected response format'
+        },
+        { status: response.status >= 500 ? 502 : 500 }
+      );
+    }
 
     // Return the response with proper CORS headers
     return NextResponse.json(data, {
