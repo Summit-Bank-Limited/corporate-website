@@ -67,6 +67,26 @@ export default function MTDApplicationForm({
     return value.replace(/,/g, '');
   };
 
+  // Helper function to format staff ID (e.g., "23" -> "SB250023", "75" -> "SB250075")
+  const formatStaffId = (staffId: string | number | null | undefined): string => {
+    if (!staffId) return '';
+    
+    // Convert to string and extract only digits
+    const numericPart = String(staffId).replace(/\D/g, '');
+    
+    // If already formatted (starts with SB25), return as is
+    if (String(staffId).startsWith('SB25')) {
+      return String(staffId);
+    }
+    
+    // If no numeric part, return empty
+    if (!numericPart) return '';
+    
+    // Format as SB25 + zero-padded 4-digit number
+    const paddedNumber = numericPart.padStart(4, '0');
+    return `SB25${paddedNumber}`;
+  };
+
   // Fetch rate guide on mount
   useEffect(() => {
     if (isOpen) {
@@ -139,9 +159,10 @@ export default function MTDApplicationForm({
         });
         setCustomerData(result.data);
         // Pre-fill staff ID and staff email if available
+        const formattedStaffId = formatStaffId(result.data.accountManagerId);
         setFormData((prev) => ({ 
           ...prev, 
-          staffId: result.data.accountManagerId || prev.staffId,
+          staffId: formattedStaffId || prev.staffId,
           staffEmail: result.data.accountOfficerEmail || prev.staffEmail
         }));
         setTimeout(() => {
@@ -313,7 +334,7 @@ export default function MTDApplicationForm({
       expectedProfitRate: expectedProfitRate,
       maturityInstruction: formData.maturityInstruction,
       specialRate: formData.specialRate,
-      staffId: customerData?.accountManagerId || null,
+      staffId: formatStaffId(customerData?.accountManagerId) || null,
       staffEmail: customerData?.accountOfficerEmail || null,
       customerSignature: formData.signatureBase64,
       customerData: {
@@ -798,7 +819,7 @@ export default function MTDApplicationForm({
                   <label className="block mb-1 font-semibold text-[10px]">Staff ID</label>
                   <input
                     type="text"
-                    value={customerData?.accountManagerId || ""}
+                    value={formatStaffId(customerData?.accountManagerId) || ""}
                     readOnly
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg bg-[#e9ecef] text-[#6c757d] text-xs"
                   />
