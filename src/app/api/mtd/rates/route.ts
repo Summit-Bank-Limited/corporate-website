@@ -11,23 +11,42 @@ export async function GET(request: NextRequest) {
       cache: 'no-store', // or 'force-cache' for caching
     });
 
-    // Get response text first to check if it's JSON
+    // Get response text and check content type
+    const contentType = response.headers.get('content-type') || '';
     const responseText = await response.text();
+    const trimmedText = responseText.trim();
+    
     let data;
     
-    try {
-      // Try to parse as JSON
-      data = JSON.parse(responseText);
-    } catch (parseError) {
-      // If it's not JSON (likely HTML error page), return error
-      console.error('Non-JSON response received:', responseText.substring(0, 200));
+    // Check if response is HTML (error page)
+    if (trimmedText.startsWith('<!DOCTYPE') || trimmedText.startsWith('<!doctype') || trimmedText.startsWith('<html')) {
+      console.error('HTML response received instead of JSON:', trimmedText.substring(0, 200));
       return NextResponse.json(
         { 
           success: false, 
           error: 'Invalid response from server. Please try again later.',
-          details: response.status >= 500 ? 'Server error' : 'Unexpected response format'
+          details: 'Server returned HTML instead of JSON'
         },
-        { status: response.status >= 500 ? 502 : 500 }
+        { status: 502 }
+      );
+    }
+    
+    // Try to parse as JSON
+    try {
+      data = JSON.parse(trimmedText);
+    } catch (parseError) {
+      // Only log if it's not empty
+      if (trimmedText) {
+        console.error('Failed to parse JSON response:', trimmedText.substring(0, 200));
+        console.error('Parse error:', parseError);
+      }
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Invalid response from server. Please try again later.',
+          details: 'Failed to parse server response'
+        },
+        { status: 502 }
       );
     }
 
