@@ -233,22 +233,6 @@ export default function Page() {
                 />
               </div>
 
-              {/* Transaction/Session ID */}
-              <div>
-                <label>Transaction/Session ID *</label>
-                <Input
-                  type="number"
-                  placeholder="Enter Transaction/Session ID"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      last6Digits: e.target.value.replace(/\D/, ""),
-                    })
-                  }
-                  disabled={isSubmitting}
-                />
-              </div>
-
               {/* Amount */}
               <div>
                 <label>Amount *</label>
@@ -276,7 +260,21 @@ export default function Page() {
                   disabled={isSubmitting}
                 />
               </div>
-
+              {/* Transaction/Session ID */}
+              <div>
+                <label>Transaction/Session ID *</label>
+                <Input
+                  type="number"
+                  placeholder="Enter Transaction/Session ID"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      last6Digits: e.target.value.replace(/\D/, ""),
+                    })
+                  }
+                  disabled={isSubmitting}
+                />
+              </div>
 
               {/* Channel */}
               <div>
