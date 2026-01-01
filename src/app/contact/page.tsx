@@ -16,7 +16,15 @@ export default function Page() {
     subjectText: "",
     nubanAccountNumber: "",
     message: "",
+    last6Digits: "",
+    amount: "",
+    amountFormatted: "",
+    transactionID: "",
+    channel: "",
+    startDate: "",
+    endDate: "",
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const messageCharacterLimit = 1500;
@@ -58,7 +66,6 @@ export default function Page() {
   };
 
   const handleSubjectTextChange = (value: string) => {
-    // Remove prefix if accidentally typed
     const prefix = `${formData.subjectType}: `;
     if (value.startsWith(prefix)) {
       setFormData({ ...formData, subjectText: value.slice(prefix.length) });
@@ -78,7 +85,10 @@ export default function Page() {
         name: formData.name.trim(),
         email: formData.email.trim(),
         subject: `${formData.subjectType}: ${formData.subjectText.trim()}`,
-        nubanAccountNumber: formData.subjectType === "Complaints" ? formData.nubanAccountNumber.trim() : undefined,
+        nubanAccountNumber:
+          formData.subjectType === "Complaints"
+            ? formData.nubanAccountNumber.trim()
+            : undefined,
         message: formData.message.trim(),
       };
 
@@ -102,6 +112,13 @@ export default function Page() {
           subjectText: "",
           nubanAccountNumber: "",
           message: "",
+          last6Digits: "",
+          amount: "",
+          amountFormatted: "",
+          transactionID: "",
+          channel: "",
+          startDate: "",
+          endDate: "",
         });
       } else {
         toast.error(result.error || "Failed to submit enquiry.");
@@ -130,12 +147,11 @@ export default function Page() {
       <div>
         <SectionHero
           mainClass="!pt-[50px]"
-          title="Enquiries & Complaints"
+          title="Enquiries, Complaints & Dispense Errors"
           text="Can't find what you are looking for? Please contact us, and we will get back to you as soon as possible."
         />
 
         <form onSubmit={handleSubmit} className="main lg:!w-[60%] space-y-6 py-10 pb-20">
-          {/* Full Name */}
           <div>
             <label>Full Name *</label>
             <Input
@@ -146,7 +162,6 @@ export default function Page() {
             />
           </div>
 
-          {/* Email */}
           <div>
             <label>Email Address *</label>
             <Input
@@ -160,7 +175,7 @@ export default function Page() {
 
           {/* Subject Type */}
           <div>
-            <label>Subject Type *</label>
+            <label>Subject Type (Click the DropDown) *</label>
             <select
               value={formData.subjectType}
               onChange={(e) => setFormData({ ...formData, subjectType: e.target.value })}
@@ -169,10 +184,10 @@ export default function Page() {
             >
               <option value="Enquiries">Enquiries</option>
               <option value="Complaints">Complaints</option>
+              <option value="Dispense Error">Dispense Error</option>
             </select>
           </div>
 
-          {/* Subject Text with fixed prefix */}
           <div>
             <label>Subject *</label>
             <Input
@@ -183,7 +198,6 @@ export default function Page() {
             />
           </div>
 
-          {/* Nuban Account Number (conditional) */}
           {formData.subjectType === "Complaints" && (
             <div>
               <label>Nuban Account Number *</label>
@@ -191,13 +205,136 @@ export default function Page() {
                 placeholder="Enter your 10-digit Nuban account number"
                 value={formData.nubanAccountNumber}
                 maxLength={10}
-                onChange={(e) => setFormData({ ...formData, nubanAccountNumber: e.target.value.replace(/\D/, '') })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    nubanAccountNumber: e.target.value.replace(/\D/, ""),
+                  })
+                }
                 disabled={isSubmitting}
               />
             </div>
           )}
 
-          {/* Message */}
+          {formData.subjectType === "Dispense Error" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* NUBAN Account Number */}
+              <div>
+                <label>Nuban Account Number *</label>
+                <Input
+                  placeholder="Enter your 10-digit Nuban account number"
+                  value={formData.nubanAccountNumber}
+                  maxLength={10}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      nubanAccountNumber: e.target.value.replace(/\D/, ""),
+                    })
+                  }
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              {/* Last 6 Digits of Card */}
+              <div>
+                <label>Last 6 Digits of Card *</label>
+                <Input
+                  placeholder="Enter last 6 digits of your card"
+                  maxLength={6}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      last6Digits: e.target.value.replace(/\D/, ""),
+                    })
+                  }
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              {/* Amount */}
+              <div>
+                <label>Amount *</label>
+                <Input
+                  type="text"
+                  placeholder="Enter transaction amount"
+                  value={formData.amountFormatted || ""}
+                  onChange={(e) => {
+                    // Remove non-digit and non-decimal characters
+                    const rawValue = e.target.value.replace(/[^0-9.]/g, "");
+
+                    // Format with commas
+                    const parts = rawValue.split(".");
+                    const integerPart = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    const formattedValue = parts.length > 1
+                      ? `${integerPart}.${parts[1].slice(0, 2)}` // allow 2 decimals
+                      : integerPart;
+
+                    setFormData({
+                      ...formData,
+                      amount: rawValue,             // raw number for submission
+                      amountFormatted: formattedValue, // formatted for display
+                    });
+                  }}
+                  disabled={isSubmitting}
+                />
+              </div>
+              {/* Transaction/Session ID */}
+              <div>
+                <label>Transaction/Session ID *</label>
+                <Input
+                  type="number"
+                  placeholder="Enter Transaction/Session ID"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      last6Digits: e.target.value.replace(/\D/, ""),
+                    })
+                  }
+                  disabled={isSubmitting}
+                />
+              </div>
+
+              {/* Channel */}
+              <div>
+                <label>Channel *</label>
+                <select
+                  className="w-full border p-2 rounded"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      channel: e.target.value,
+                    })
+                  }
+                  disabled={isSubmitting}
+                >
+                  <option value="">Select Channel</option>
+                  <option value="ATM">ATM</option>
+                  <option value="POS">POS</option>
+                  <option value="WEB">WEB</option>
+                  <option value="Transfer">Transfer</option>
+                </select>
+              </div>
+
+              {/* Transaction Date */}
+              <div>
+                <label>Transaction Date *</label>
+                <Input
+                  type="date"
+                  max={new Date(Date.now() - 24 * 60 * 60 * 1000)
+                    .toISOString()
+                    .split("T")[0]}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      startDate: e.target.value,
+                    })
+                  }
+                  disabled={isSubmitting}
+                />
+              </div>
+            </div>
+          )}
+      
           <div>
             <label>Message * (max {messageCharacterLimit} characters)</label>
             <Textarea
@@ -209,10 +346,11 @@ export default function Page() {
               placeholder="Type in your message here"
               disabled={isSubmitting}
             />
-            <p className="text-sm text-gray-500">{formData.message.length}/{messageCharacterLimit} characters</p>
+            <p className="text-sm text-gray-500">
+              {formData.message.length}/{messageCharacterLimit} characters
+            </p>
           </div>
 
-          {/* Submit Button */}
           <Button
             custom="!w-full mt-4"
             type="primary"
@@ -221,19 +359,6 @@ export default function Page() {
             loading={isSubmitting}
           />
         </form>
-
-        {/* Contact Email */}
-        <div className="w-full flex justify-center items-center pb-12 px-4">
-          <p className="text-lg text-center text-neutral-700 dark:text-neutral-200">
-            You can also contact us by sending an email to{" "}
-            <a
-              href="mailto:contact@summitbankng.com"
-              className="text-[var(--secondary-color)] underline hover:text-[var(--secondary-dark)]"
-            >
-              contact@summitbankng.com
-            </a>.
-          </p>
-        </div>
       </div>
     </DefaultLayout>
   );
