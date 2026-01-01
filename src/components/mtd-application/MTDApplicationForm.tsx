@@ -389,6 +389,23 @@ export default function MTDApplicationForm({
     return `N${amount.toLocaleString()}`;
   };
 
+  // More precise formatter for range display to avoid rounding issues
+  const formatRangeAmount = (amount: number) => {
+    if (amount >= 1000000000) {
+      return `N${(amount / 1000000000).toFixed(1)}B`;
+    } else if (amount >= 1000000) {
+      const millions = amount / 1000000;
+      // If the value is >= 999M, truncate to 2 decimals to avoid rounding to 1000M
+      // Use Math.floor to truncate, then format with decimals
+      if (millions >= 999) {
+        const truncated = Math.floor(millions * 100) / 100;
+        return `N${truncated.toFixed(2)}M`;
+      }
+      return `N${Math.floor(millions)}M`;
+    }
+    return `N${amount.toLocaleString()}`;
+  };
+
   const today = new Date().toISOString().split("T")[0];
 
   return (
@@ -494,11 +511,11 @@ export default function MTDApplicationForm({
                         rateTiers.map((tier, idx) => {
                           const minAmount = parseFloat(tier.min_amount);
                           const maxAmount = tier.max_amount ? parseFloat(tier.max_amount) : null;
-                          let rangeText = formatAmount(minAmount);
+                          let rangeText = formatRangeAmount(minAmount);
                           if (maxAmount !== null) {
-                            rangeText += ` - ${formatAmount(maxAmount)}`;
+                            rangeText += ` - ${formatRangeAmount(maxAmount)}`;
                           } else {
-                            rangeText = `Above ${formatAmount(minAmount)}`;
+                            rangeText = `Above ${formatRangeAmount(minAmount)}`;
                           }
                           return (
                             <tr key={idx} className={idx % 2 === 0 ? "bg-[#faf8f3]" : ""}>
