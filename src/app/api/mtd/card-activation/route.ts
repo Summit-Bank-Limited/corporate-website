@@ -21,7 +21,44 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({ accountNumber, token, cardNumber, pin }),
     });
 
-    const data = await response.json();
+    // Get response text and check content type
+    const contentType = response.headers.get('content-type') || '';
+    const responseText = await response.text();
+    const trimmedText = responseText.trim();
+    
+    let data;
+    
+    // Check if response is HTML (error page)
+    if (trimmedText.startsWith('<!DOCTYPE') || trimmedText.startsWith('<!doctype') || trimmedText.startsWith('<html')) {
+      console.error('HTML response received instead of JSON:', trimmedText.substring(0, 200));
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Invalid response from server. Please try again later.',
+          details: 'Server returned HTML instead of JSON'
+        },
+        { status: 502 }
+      );
+    }
+    
+    // Try to parse as JSON
+    try {
+      data = JSON.parse(trimmedText);
+    } catch (parseError) {
+      // Only log if it's not empty
+      if (trimmedText) {
+        console.error('Failed to parse JSON response:', trimmedText.substring(0, 200));
+        console.error('Parse error:', parseError);
+      }
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Invalid response from server. Please try again later.',
+          details: 'Failed to parse server response'
+        },
+        { status: 502 }
+      );
+    }
 
     // Return the response with proper CORS headers
     return NextResponse.json(data, {

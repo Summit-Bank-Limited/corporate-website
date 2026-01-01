@@ -92,16 +92,19 @@ export default function Page() {
         message: formData.message.trim(),
       };
 
-      const response = await fetch("https://products.summitbankng.com/mtd/enquiry/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const response = await fetch('/api/mtd/enquiry/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(payload),
       });
 
       const result = await response.json();
 
-      if (response.ok) {
-        toast.success(result.message);
+      if (response.ok && result.success) {
+        toast.success(result.message || "Enquiry submitted successfully.");
+        // Reset form
         setFormData({
           name: "",
           email: "",
