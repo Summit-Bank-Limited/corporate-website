@@ -16,7 +16,15 @@ export default function Page() {
     subjectText: "",
     nubanAccountNumber: "",
     message: "",
+    last6Digits: "",
+    amount: "",
+    amountFormatted: "",
+    transactionID: "",
+    channel: "",
+    startDate: "",
+    endDate: "",
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const messageCharacterLimit = 1500;
@@ -101,6 +109,13 @@ export default function Page() {
           subjectText: "",
           nubanAccountNumber: "",
           message: "",
+          last6Digits: "",
+          amount: "",
+          amountFormatted: "",
+          transactionID: "",
+          channel: "",
+          startDate: "",
+          endDate: "",
         });
       } else {
         toast.error(result.error || "Failed to submit enquiry.");
