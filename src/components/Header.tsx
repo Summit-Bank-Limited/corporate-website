@@ -385,7 +385,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
           text: "",
           links: [
             {
-              name: "Complaints and Enquiries",
+              name: "Enquiries, Complaints & Dispense Errors",
               link: "/contact",
             },
           ]
