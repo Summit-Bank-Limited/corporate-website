@@ -58,6 +58,47 @@ export default function Page() {
         return false;
       }
     }
+    if (formData.subjectType === "Dispense Error") {
+      if (!formData.nubanAccountNumber.trim()) {
+        toast.error("Please enter your Nuban Account Number");
+        return false;
+      }
+      const accountRegex = /^\d{10}$/;
+      if (!accountRegex.test(formData.nubanAccountNumber)) {
+        toast.error("Nuban Account Number must be exactly 10 digits");
+        return false;
+      }
+      if (!formData.last6Digits.trim()) {
+        toast.error("Please enter the last 6 digits of your card");
+        return false;
+      }
+      const cardDigitsRegex = /^\d{6}$/;
+      if (!cardDigitsRegex.test(formData.last6Digits)) {
+        toast.error("Last 6 digits of card must be exactly 6 digits");
+        return false;
+      }
+      if (!formData.amount.trim()) {
+        toast.error("Please enter the transaction amount");
+        return false;
+      }
+      const amountNum = parseFloat(formData.amount);
+      if (isNaN(amountNum) || amountNum <= 0) {
+        toast.error("Please enter a valid transaction amount");
+        return false;
+      }
+      if (!formData.transactionID.trim()) {
+        toast.error("Please enter the Transaction/Session ID");
+        return false;
+      }
+      if (!formData.channel.trim()) {
+        toast.error("Please select a channel");
+        return false;
+      }
+      if (!formData.startDate.trim()) {
+        toast.error("Please enter the transaction date");
+        return false;
+      }
+    }
     if (!formData.message.trim()) {
       toast.error("Please enter your message");
       return false;
@@ -74,6 +115,16 @@ export default function Page() {
     }
   };
 
+  // Helper function to convert date from YYYY-MM-DD to dd/mm/yyyy
+  const formatDateForAPI = (dateString: string): string => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!validateForm()) return;
@@ -81,16 +132,25 @@ export default function Page() {
     setIsSubmitting(true);
 
     try {
-      const payload = {
+      const payload: any = {
         name: formData.name.trim(),
         email: formData.email.trim(),
+        subjectType: formData.subjectType,
         subject: `${formData.subjectType}: ${formData.subjectText.trim()}`,
-        nubanAccountNumber:
-          formData.subjectType === "Complaints"
-            ? formData.nubanAccountNumber.trim()
-            : undefined,
         message: formData.message.trim(),
       };
+
+      // Add fields based on subject type
+      if (formData.subjectType === "Complaints") {
+        payload.nubanAccountNumber = formData.nubanAccountNumber.trim();
+      } else if (formData.subjectType === "Dispense Error") {
+        payload.nubanAccountNumber = formData.nubanAccountNumber.trim();
+        payload.last6DigitsOfCard = formData.last6Digits.trim();
+        payload.amount = formData.amount.trim();
+        payload.transactionSessionId = formData.transactionID.trim();
+        payload.channel = formData.channel.trim();
+        payload.transactionDate = formatDateForAPI(formData.startDate);
+      }
 
       const response = await fetch('/api/mtd/enquiry/create', {
         method: 'POST',
@@ -240,6 +300,7 @@ export default function Page() {
                 <label>Last 6 Digits of Card *</label>
                 <Input
                   placeholder="Enter last 6 digits of your card"
+                  value={formData.last6Digits}
                   maxLength={6}
                   onChange={(e) =>
                     setFormData({
@@ -282,12 +343,13 @@ export default function Page() {
               <div>
                 <label>Transaction/Session ID *</label>
                 <Input
-                  type="number"
+                  type="text"
                   placeholder="Enter Transaction/Session ID"
+                  value={formData.transactionID}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      last6Digits: e.target.value.replace(/\D/, ""),
+                      transactionID: e.target.value,
                     })
                   }
                   disabled={isSubmitting}
@@ -299,6 +361,7 @@ export default function Page() {
                 <label>Channel *</label>
                 <select
                   className="w-full border p-2 rounded"
+                  value={formData.channel}
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -320,6 +383,7 @@ export default function Page() {
                 <label>Transaction Date *</label>
                 <Input
                   type="date"
+                  value={formData.startDate}
                   max={new Date(Date.now() - 24 * 60 * 60 * 1000)
                     .toISOString()
                     .split("T")[0]}
