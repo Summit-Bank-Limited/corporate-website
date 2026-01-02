@@ -3,7 +3,19 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, subject, message, nubanAccountNumber } = body;
+    const { 
+      name, 
+      email, 
+      subject, 
+      subjectType,
+      message, 
+      nubanAccountNumber,
+      last6DigitsOfCard,
+      amount,
+      transactionSessionId,
+      channel,
+      transactionDate
+    } = body;
 
     // Validate required fields
     if (!name || typeof name !== 'string' || !name.trim()) {
@@ -41,14 +53,72 @@ export async function POST(request: NextRequest) {
       nuban = nubanStr;
     }
 
+    // Validate Dispense Error specific fields
+    const isDispenseError = subjectType && subjectType.toLowerCase() === 'dispense error';
+    
+    if (isDispenseError) {
+      // NUBAN is required for dispense errors
+      if (!nuban) {
+        return NextResponse.json({ success: false, error: "NUBAN account number is required for dispense errors." }, { status: 400 });
+      }
+
+      // Validate last 6 digits of card
+      if (!last6DigitsOfCard || typeof last6DigitsOfCard !== 'string' || !last6DigitsOfCard.trim()) {
+        return NextResponse.json({ success: false, error: "Last 6 digits of card is required for dispense errors." }, { status: 400 });
+      }
+      const cardDigits = last6DigitsOfCard.trim();
+      if (!/^\d{6}$/.test(cardDigits)) {
+        return NextResponse.json({ success: false, error: "Last 6 digits of card must be exactly 6 digits." }, { status: 400 });
+      }
+
+      // Validate amount
+      if (!amount || typeof amount !== 'string' || !amount.trim()) {
+        return NextResponse.json({ success: false, error: "Amount is required for dispense errors." }, { status: 400 });
+      }
+      const amountNum = parseFloat(amount.trim());
+      if (isNaN(amountNum) || amountNum <= 0) {
+        return NextResponse.json({ success: false, error: "Amount must be a valid positive number." }, { status: 400 });
+      }
+
+      // Validate transaction session ID
+      if (!transactionSessionId || typeof transactionSessionId !== 'string' || !transactionSessionId.trim()) {
+        return NextResponse.json({ success: false, error: "Transaction/Session ID is required for dispense errors." }, { status: 400 });
+      }
+
+      // Validate channel
+      if (!channel || typeof channel !== 'string' || !channel.trim()) {
+        return NextResponse.json({ success: false, error: "Channel is required for dispense errors." }, { status: 400 });
+      }
+
+      // Validate transaction date
+      if (!transactionDate || typeof transactionDate !== 'string' || !transactionDate.trim()) {
+        return NextResponse.json({ success: false, error: "Transaction date is required for dispense errors." }, { status: 400 });
+      }
+      // Validate date format (dd/mm/yyyy)
+      const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+      if (!dateRegex.test(transactionDate.trim())) {
+        return NextResponse.json({ success: false, error: "Transaction date must be in dd/mm/yyyy format." }, { status: 400 });
+      }
+    }
+
     // Prepare payload for external API
-    const payload = {
+    const payload: any = {
       name: name.trim(),
       email: email.trim(),
+      subjectType: subjectType || undefined,
       subject: subject.trim(),
       message: message.trim(),
       ...(nuban && { nubanAccountNumber: nuban }),
     };
+
+    // Add dispense error specific fields
+    if (isDispenseError) {
+      payload.last6DigitsOfCard = last6DigitsOfCard.trim();
+      payload.amount = amount.trim();
+      payload.transactionSessionId = transactionSessionId.trim();
+      payload.channel = channel.trim();
+      payload.transactionDate = transactionDate.trim();
+    }
 
     // Make server-to-server call to external API
     const response = await fetch('https://products.summitbankng.com/mtd/enquiry/create', {
