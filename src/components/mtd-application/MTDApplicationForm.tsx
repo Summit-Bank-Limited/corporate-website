@@ -14,9 +14,11 @@ export default function MTDApplicationForm({
   isOpen,
   onClose,
 }: MTDApplicationFormProps) {
-  const [currentStep, setCurrentStep] = useState<"terms" | "verification" | "form">("terms");
+  const [currentStep, setCurrentStep] = useState<"terms" | "accountType" | "verification" | "form">("terms");
+  const [accountType, setAccountType] = useState<"individual" | "corporate" | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [rateTiers, setRateTiers] = useState<any[]>([]);
+  const [minimumInvestmentAmount, setMinimumInvestmentAmount] = useState<number>(50000000);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState<{
     type: "verifying" | "success" | "error" | null;
@@ -27,6 +29,7 @@ export default function MTDApplicationForm({
   const [formData, setFormData] = useState({
     accountNumber: "",
     bvn: "",
+    tin: "",
     investmentAmount: "",
     tenor: "",
     effectiveDate: "",
@@ -87,16 +90,32 @@ export default function MTDApplicationForm({
     return `SB25${paddedNumber}`;
   };
 
+  // Helper function to mask staff ID for display (e.g., "SB250023" -> "SB25****")
+  const maskStaffId = (staffId: string | number | null | undefined): string => {
+    const formatted = formatStaffId(staffId);
+    if (!formatted) return '';
+    
+    // If the ID is 6 characters or less, mask all but first 2 characters
+    if (formatted.length <= 6) {
+      return formatted.substring(0, 2) + '*'.repeat(formatted.length - 2);
+    }
+    
+    // For longer IDs, show first 4 characters and mask the rest
+    return formatted.substring(0, 4) + '*'.repeat(formatted.length - 4);
+  };
+
   // Fetch rate guide on mount
   useEffect(() => {
     if (isOpen) {
       fetchRateGuide();
       // Reset form when modal opens
       setCurrentStep("terms");
+      setAccountType(null);
       setTermsAccepted(false);
       setFormData({
         accountNumber: "",
         bvn: "",
+        tin: "",
         investmentAmount: "",
         tenor: "",
         effectiveDate: "",
@@ -124,6 +143,13 @@ export default function MTDApplicationForm({
       const result = await response.json();
       if (result.success && result.data) {
         setRateTiers(result.data);
+        // Set minimum investment amount from the first rate tier
+        if (result.data && result.data.length > 0) {
+          const firstTierMinAmount = parseFloat(result.data[0].min_amount);
+          if (!isNaN(firstTierMinAmount)) {
+            setMinimumInvestmentAmount(firstTierMinAmount);
+          }
+        }
       }
     } catch (error) {
       console.error("Error fetching rates:", error);
@@ -133,21 +159,35 @@ export default function MTDApplicationForm({
   // Auto-verify account
   const autoVerifyAccount = async () => {
     const accountNumber = formData.accountNumber.trim();
-    const bvn = formData.bvn.trim();
-
-    if (!accountNumber || !bvn) return;
+    
+    if (!accountNumber) return;
     if (!/^[0-9]{10}$/.test(accountNumber)) return;
-    if (!/^[0-9]{11}$/.test(bvn)) return;
+
+    // Validate based on account type
+    if (accountType === "individual") {
+      const bvn = formData.bvn.trim();
+      if (!bvn || !/^[0-9]{11}$/.test(bvn)) return;
+    } else if (accountType === "corporate") {
+      const tin = formData.tin.trim();
+      if (!tin) return;
+    } else {
+      return;
+    }
 
     if (isVerifying) return;
     setIsVerifying(true);
     setVerificationStatus({ type: "verifying", message: "Verifying account..." });
 
     try {
-      const response = await fetch("/api/mtd/verify", {
+      const endpoint = accountType === "corporate" ? "/api/mtd/verify-corporate" : "/api/mtd/verify";
+      const body = accountType === "corporate" 
+        ? { accountNumber, tin: formData.tin.trim() }
+        : { accountNumber, bvn: formData.bvn.trim() };
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ accountNumber, bvn }),
+        body: JSON.stringify(body),
       });
 
       const result = await response.json();
@@ -190,10 +230,16 @@ export default function MTDApplicationForm({
       clearTimeout(verificationTimeoutRef.current);
     }
 
-    if (formData.accountNumber && formData.bvn && currentStep === "verification") {
-      verificationTimeoutRef.current = setTimeout(() => {
-        autoVerifyAccount();
-      }, 1000);
+    if (currentStep === "verification" && accountType && formData.accountNumber) {
+      const hasRequiredField = accountType === "individual" 
+        ? formData.bvn && /^[0-9]{11}$/.test(formData.bvn)
+        : formData.tin && formData.tin.trim().length > 0;
+
+      if (hasRequiredField && /^[0-9]{10}$/.test(formData.accountNumber)) {
+        verificationTimeoutRef.current = setTimeout(() => {
+          autoVerifyAccount();
+        }, 1000);
+      }
     }
 
     return () => {
@@ -201,7 +247,7 @@ export default function MTDApplicationForm({
         clearTimeout(verificationTimeoutRef.current);
       }
     };
-  }, [formData.accountNumber, formData.bvn, currentStep]);
+  }, [formData.accountNumber, formData.bvn, formData.tin, currentStep, accountType]);
 
   // Calculate profit rate and maturity date
   const calculateRateAndMaturity = async () => {
@@ -209,7 +255,7 @@ export default function MTDApplicationForm({
     const tenor = parseInt(formData.tenor);
     const effectiveDate = formData.effectiveDate;
 
-    if (amount >= 50000000 && tenor && effectiveDate) {
+    if (amount >= minimumInvestmentAmount && tenor && effectiveDate) {
       try {
         const url = `/api/mtd/rates/calculate?amount=${amount}&tenor=${tenor}&effectiveDate=${effectiveDate}`;
         const response = await fetch(url);
@@ -280,8 +326,8 @@ export default function MTDApplicationForm({
 
     // Validate
     const amount = parseFloat(formData.investmentAmount);
-    if (!amount || isNaN(amount) || amount < 50000000) {
-      toast.error("Investment amount must be at least ₦50,000,000.00");
+    if (!amount || isNaN(amount) || amount < minimumInvestmentAmount) {
+      toast.error(`Investment amount must be at least ₦${minimumInvestmentAmount.toLocaleString()}.00`);
       return;
     }
 
@@ -327,7 +373,9 @@ export default function MTDApplicationForm({
 
     const submitData = {
       accountNumber: formData.accountNumber,
-      bvn: formData.bvn,
+      bvn: accountType === "individual" ? formData.bvn : undefined,
+      tin: accountType === "corporate" ? formData.tin : undefined,
+      accountType: accountType,
       investmentAmount: parseFloat(formData.investmentAmount),
       effectiveDate: formData.effectiveDate,
       tenor: parseInt(formData.tenor),
@@ -586,11 +634,69 @@ export default function MTDApplicationForm({
 
               <div className="flex justify-end mt-3">
                 <button
-                  onClick={() => setCurrentStep("verification")}
+                  onClick={() => setCurrentStep("accountType")}
                   // disabled={!termsAccepted}
                   className="px-5 py-1.5 bg-gradient-to-r from-[#AF1F23] to-[#8a181b] text-white rounded-lg text-xs font-semibold disabled:bg-gray-400 disabled:cursor-not-allowed hover:shadow-lg transition-all disabled:hover:shadow-none"
                 >
                   Proceed to Application
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Account Type Selection Section */}
+          {currentStep === "accountType" && (
+            <div className="space-y-3">
+              <span className="text-base sm:text-lg font-semibold text-[#AF1F23] mb-4 flex justify-center text-center">
+                Select Account Type
+              </span>
+              <span className="text-base sm:text-lg font-semibold text-[#6c757d] mb-4 text-base">
+                Please select whether this is an Individual or Corporate account.
+              </span>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <button
+                  onClick={() => {
+                    setAccountType("individual");
+                    setCurrentStep("verification");
+                  }}
+                  className={`p-4 border-2 rounded-lg transition-all ${
+                    accountType === "individual"
+                      ? "border-[#AF1F23] bg-gradient-to-r from-[#faf8f3] to-[#f5f0e1]"
+                      : "border-[#dee2e6] hover:border-[#C6B07D] bg-white"
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">👤</div>
+                    <div className="font-semibold text-sm text-[#AF1F23]">Individual</div>
+                    <div className="text-xs text-[#6c757d] mt-1">Personal Account</div>
+                  </div>
+                </button>
+                <button
+                  onClick={() => {
+                    setAccountType("corporate");
+                    setCurrentStep("verification");
+                  }}
+                  className={`p-4 border-2 rounded-lg transition-all ${
+                    accountType === "corporate"
+                      ? "border-[#AF1F23] bg-gradient-to-r from-[#faf8f3] to-[#f5f0e1]"
+                      : "border-[#dee2e6] hover:border-[#C6B07D] bg-white"
+                  }`}
+                >
+                  <div className="text-center">
+                    <div className="text-2xl mb-2">🏢</div>
+                    <div className="font-semibold text-sm text-[#AF1F23]">Corporate</div>
+                    <div className="text-xs text-[#6c757d] mt-1">Business Account</div>
+                  </div>
+                </button>
+              </div>
+
+              <div className="flex justify-end mt-3">
+                <button
+                  onClick={() => setCurrentStep("terms")}
+                  className="px-4 py-1.5 bg-gradient-to-r from-[#C6B07D] to-[#b09d6c] text-[#333] rounded-lg text-xs font-semibold hover:shadow-lg transition-all"
+                >
+                  Back to Terms
                 </button>
               </div>
             </div>
@@ -603,7 +709,7 @@ export default function MTDApplicationForm({
                 Account Verification
               </span>
               <span className="text-base sm:text-lg font-semibold text-[#6c757d] mb-4 text-base">
-                Please enter your account number and BVN. Verification will happen automatically.
+                Please enter your account number and {accountType === "corporate" ? "TIN" : "BVN"}. Verification will happen automatically.
               </span>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -622,16 +728,31 @@ export default function MTDApplicationForm({
                   />
                 </div>
                 <div>
-                  <label className="block mb-1 font-semibold text-[10px]">BVN (11 digits) *</label>
-                  <input
-                    type="text"
-                    pattern="[0-9]{11}"
-                    maxLength={11}
-                    value={formData.bvn}
-                    onChange={(e) => setFormData({ ...formData, bvn: e.target.value.replace(/\D/g, "") })}
-                    className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 text-xs"
-                    required
-                  />
+                  {accountType === "corporate" ? (
+                    <>
+                      <label className="block mb-1 font-semibold text-[10px]">TIN (Tax Identification Number) *</label>
+                      <input
+                        type="text"
+                        value={formData.tin}
+                        onChange={(e) => setFormData({ ...formData, tin: e.target.value })}
+                        className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 text-xs"
+                        required
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <label className="block mb-1 font-semibold text-[10px]">BVN (11 digits) *</label>
+                      <input
+                        type="text"
+                        pattern="[0-9]{11}"
+                        maxLength={11}
+                        value={formData.bvn}
+                        onChange={(e) => setFormData({ ...formData, bvn: e.target.value.replace(/\D/g, "") })}
+                        className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 text-xs"
+                        required
+                      />
+                    </>
+                  )}
                 </div>
               </div>
 
@@ -651,10 +772,14 @@ export default function MTDApplicationForm({
 
               <div className="flex justify-end mt-3">
                 <button
-                  onClick={() => setCurrentStep("terms")}
+                  onClick={() => {
+                    setCurrentStep("accountType");
+                    setFormData({ ...formData, accountNumber: "", bvn: "", tin: "" });
+                    setVerificationStatus({ type: null, message: "" });
+                  }}
                   className="px-4 py-1.5 bg-gradient-to-r from-[#C6B07D] to-[#b09d6c] text-[#333] rounded-lg text-xs font-semibold hover:shadow-lg transition-all"
                 >
-                  Back to Terms
+                  Back
                 </button>
               </div>
             </div>
@@ -729,18 +854,18 @@ export default function MTDApplicationForm({
                         setFormData({ ...formData, investmentAmount: numericValue });
                       }
                     }}
-                    placeholder="50,000,000.00"
+                    placeholder={minimumInvestmentAmount.toLocaleString() + ".00"}
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 text-xs"
                     required
                   />
-                  <small className="text-[#6c757d] text-[10px]">Minimum: ₦50,000,000.00</small>
+                  <small className="text-[#6c757d] text-[10px]">Minimum: ₦{minimumInvestmentAmount.toLocaleString()}.00</small>
                 </div>
                 <div>
                   <label className="block mb-1 font-semibold text-[10px]">Tenor (Days) *</label>
                   <select
                     value={formData.tenor}
                     onChange={(e) => setFormData({ ...formData, tenor: e.target.value })}
-                    disabled={!formData.investmentAmount || parseFloat(formData.investmentAmount) < 50000000}
+                    disabled={!formData.investmentAmount || parseFloat(formData.investmentAmount) < minimumInvestmentAmount}
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 disabled:bg-[#e9ecef] disabled:text-[#6c757d] text-xs"
                     required
                   >
@@ -759,7 +884,7 @@ export default function MTDApplicationForm({
                     min={today}
                     value={formData.effectiveDate}
                     onChange={(e) => setFormData({ ...formData, effectiveDate: e.target.value })}
-                    disabled={!formData.investmentAmount || parseFloat(formData.investmentAmount) < 50000000}
+                    disabled={!formData.investmentAmount || parseFloat(formData.investmentAmount) < minimumInvestmentAmount}
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 disabled:bg-[#e9ecef] disabled:text-[#6c757d] text-xs"
                     required
                   />
@@ -836,7 +961,7 @@ export default function MTDApplicationForm({
                   <label className="block mb-1 font-semibold text-[10px]">Staff ID</label>
                   <input
                     type="text"
-                    value={formatStaffId(customerData?.accountManagerId) || ""}
+                    value={maskStaffId(customerData?.accountManagerId) || ""}
                     readOnly
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg bg-[#e9ecef] text-[#6c757d] text-xs"
                   />
