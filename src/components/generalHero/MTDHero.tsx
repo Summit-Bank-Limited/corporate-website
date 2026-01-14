@@ -61,7 +61,7 @@ export default function MTDHero({
                 {title?.split(" ").map((char: string, i: number) => (
                   <div key={i}>
                     <Framer animation={fadeInLetters(i)}>
-                      <h1 className="text-white drop-shadow-lg">{char}</h1>
+                      <h1 className="text-white drop-shadow-lg font-bold">{char}</h1>
                     </Framer>
                   </div>
                 ))}
@@ -69,7 +69,7 @@ export default function MTDHero({
 
               {/* Description */}
               <Framer animation={fadeIn("up", 0.3)}>
-                <p className="lg:w-[600px] text-lg lg:text-xl text-gray-100 drop-shadow-md">
+                <p className="lg:w-[600px] text-lg lg:text-xl text-black drop-shadow-md">
                   {text}
                 </p>
               </Framer>
