@@ -18,7 +18,7 @@ export default function MTDApplicationForm({
   const [accountType, setAccountType] = useState<"individual" | "corporate" | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [rateTiers, setRateTiers] = useState<any[]>([]);
-  const [minimumInvestmentAmount, setMinimumInvestmentAmount] = useState<number>(50000000);
+  const [minimumInvestmentAmount, setMinimumInvestmentAmount] = useState<number>(1000000);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState<{
     type: "verifying" | "success" | "error" | null;
@@ -143,13 +143,8 @@ export default function MTDApplicationForm({
       const result = await response.json();
       if (result.success && result.data) {
         setRateTiers(result.data);
-        // Set minimum investment amount from the first rate tier
-        if (result.data && result.data.length > 0) {
-          const firstTierMinAmount = parseFloat(result.data[0].min_amount);
-          if (!isNaN(firstTierMinAmount)) {
-            setMinimumInvestmentAmount(firstTierMinAmount);
-          }
-        }
+        // Minimum investment amount is fixed at 1 million
+        // Keep the initial value of 1,000,000 regardless of API response
       }
     } catch (error) {
       console.error("Error fetching rates:", error);
