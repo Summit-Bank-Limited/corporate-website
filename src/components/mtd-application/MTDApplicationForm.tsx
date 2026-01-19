@@ -10,6 +10,9 @@ interface MTDApplicationFormProps {
   onClose: () => void;
 }
 
+// Minimum investment amount is fixed at 1 million Naira
+const MINIMUM_INVESTMENT_AMOUNT = 1000000;
+
 export default function MTDApplicationForm({
   isOpen,
   onClose,
@@ -18,7 +21,7 @@ export default function MTDApplicationForm({
   const [accountType, setAccountType] = useState<"individual" | "corporate" | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [rateTiers, setRateTiers] = useState<any[]>([]);
-  const [minimumInvestmentAmount, setMinimumInvestmentAmount] = useState<number>(1000000);
+  const [minimumInvestmentAmount] = useState<number>(MINIMUM_INVESTMENT_AMOUNT);
   const [isVerifying, setIsVerifying] = useState(false);
   const [verificationStatus, setVerificationStatus] = useState<{
     type: "verifying" | "success" | "error" | null;
@@ -250,7 +253,7 @@ export default function MTDApplicationForm({
     const tenor = parseInt(formData.tenor);
     const effectiveDate = formData.effectiveDate;
 
-    if (amount >= minimumInvestmentAmount && tenor && effectiveDate) {
+    if (amount >= MINIMUM_INVESTMENT_AMOUNT && tenor && effectiveDate) {
       try {
         const url = `/api/mtd/rates/calculate?amount=${amount}&tenor=${tenor}&effectiveDate=${effectiveDate}`;
         const response = await fetch(url);
@@ -321,8 +324,8 @@ export default function MTDApplicationForm({
 
     // Validate
     const amount = parseFloat(formData.investmentAmount);
-    if (!amount || isNaN(amount) || amount < minimumInvestmentAmount) {
-      toast.error(`Investment amount must be at least ₦${minimumInvestmentAmount.toLocaleString()}.00`);
+    if (!amount || isNaN(amount) || amount < MINIMUM_INVESTMENT_AMOUNT) {
+      toast.error(`Investment amount must be at least ₦${MINIMUM_INVESTMENT_AMOUNT.toLocaleString()}.00`);
       return;
     }
 
@@ -849,18 +852,18 @@ export default function MTDApplicationForm({
                         setFormData({ ...formData, investmentAmount: numericValue });
                       }
                     }}
-                    placeholder={minimumInvestmentAmount.toLocaleString() + ".00"}
+                    placeholder={MINIMUM_INVESTMENT_AMOUNT.toLocaleString() + ".00"}
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 text-xs"
                     required
                   />
-                  <small className="text-[#6c757d] text-[10px]">Minimum: ₦{minimumInvestmentAmount.toLocaleString()}.00</small>
+                  <small className="text-[#6c757d] text-[10px]">Minimum: ₦{MINIMUM_INVESTMENT_AMOUNT.toLocaleString()}.00</small>
                 </div>
                 <div>
                   <label className="block mb-1 font-semibold text-[10px]">Tenor (Days) *</label>
                   <select
                     value={formData.tenor}
                     onChange={(e) => setFormData({ ...formData, tenor: e.target.value })}
-                    disabled={!formData.investmentAmount || parseFloat(formData.investmentAmount) < minimumInvestmentAmount}
+                    disabled={!formData.investmentAmount || parseFloat(formData.investmentAmount) < MINIMUM_INVESTMENT_AMOUNT}
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 disabled:bg-[#e9ecef] disabled:text-[#6c757d] text-xs"
                     required
                   >
@@ -879,7 +882,7 @@ export default function MTDApplicationForm({
                     min={today}
                     value={formData.effectiveDate}
                     onChange={(e) => setFormData({ ...formData, effectiveDate: e.target.value })}
-                    disabled={!formData.investmentAmount || parseFloat(formData.investmentAmount) < minimumInvestmentAmount}
+                    disabled={!formData.investmentAmount || parseFloat(formData.investmentAmount) < MINIMUM_INVESTMENT_AMOUNT}
                     className="w-full p-2 border-2 border-[#dee2e6] rounded-lg focus:outline-none focus:border-[#AF1F23] focus:ring-1 focus:ring-[#AF1F23]/20 disabled:bg-[#e9ecef] disabled:text-[#6c757d] text-xs"
                     required
                   />
