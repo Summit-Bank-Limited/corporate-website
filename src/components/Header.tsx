@@ -389,6 +389,15 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               link: "/contact",
             },
           ]
+        },
+        {
+          text: "",
+          links: [
+            {
+              name: "Create Hardware PIN",
+              link: "/create-hardware-pin",
+            },
+          ]
         }
 
       ]
