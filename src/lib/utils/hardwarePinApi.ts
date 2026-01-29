@@ -47,15 +47,20 @@ async function makeApiRequest(
       body: JSON.stringify(payload),
     });
 
-    if (!response.ok && response.status >= 500) {
-      throw new Error(`Server error: ${response.status} ${response.statusText}`);
-    }
-
+    // Always read the response body, even for error statuses
     const data = await response.json();
 
-    // Handle error response from API route
-    if (data.success === false || data.error) {
-      throw new Error(data.error || 'Request failed');
+    // Handle error response from API route (including 500 errors)
+    if (!response.ok || data.success === false || data.error) {
+      // Extract error message from various possible locations
+      const errorMessage = 
+        data.statusDescription || 
+        data.error || 
+        data.data?.respMsg || 
+        data.message ||
+        `Server error: ${response.status} ${response.statusText}`;
+      
+      throw new Error(errorMessage);
     }
 
     // Handle API response format

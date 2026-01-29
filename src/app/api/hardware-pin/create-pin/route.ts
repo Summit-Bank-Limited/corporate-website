@@ -55,6 +55,36 @@ export async function POST(request: NextRequest) {
       throw new Error(`Invalid JSON response from API: ${responseText.substring(0, 100)}`);
     }
 
+    // If the server returned an error status, extract and return the error message
+    if (!response.ok || response.status >= 400) {
+      const errorMessage = 
+        data?.statusDescription || 
+        data?.data?.respMsg || 
+        data?.message || 
+        data?.error || 
+        (typeof data?.error === 'string' ? data.error : data?.error?.message) ||
+        'An error occurred while creating the hardware PIN';
+      
+      console.error('[create-pin] API returned error:', errorMessage);
+      return NextResponse.json(
+        {
+          success: false,
+          error: errorMessage,
+          statusCode: data?.statusCode || response.status.toString(),
+          statusDescription: errorMessage,
+          data: data?.data || null,
+        },
+        {
+          status: response.status,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST',
+            'Access-Control-Allow-Headers': 'Content-Type',
+          },
+        }
+      );
+    }
+
     console.log('[create-pin] Returning response with status:', response.status);
     return NextResponse.json(data, {
       status: response.status,
