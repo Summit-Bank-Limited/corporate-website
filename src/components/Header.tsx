@@ -372,6 +372,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
             },
           ]
         },
+        
         // {
         //   text: "",
         //   links: [
@@ -393,6 +394,26 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
 
       ]
     },
+        {
+          text: "Blog",
+          link: "/summitblog",
+          subLinks: [
+            {
+              text: "",
+              links: [
+                {
+                  name: "Press Releases",
+                  link: "/summitblog/press-release",
+                },
+                {
+                  name: "Summit Insights",
+                  link: "/summitblog/summit-insights",
+                },
+              ],
+            },
+          ],
+        },
+
 
 
     // {
@@ -421,6 +442,31 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
         <div className="fixed top-0 left-0 z-50 w-full bg-[var(--secondary-color)] h-[40px]">
           <div className=" flex h-full items-center justify-end main">
             <div className="socials flex lg:items-center gap-5">
+              <a
+            href="https://www.cbn.gov.ng/supervision/fi.html?id=9892"
+            target="_blank"
+            referrerPolicy="no-referrer"
+            className={`lg:flex hidden  text-sm items-center gap-2 ${scrollState ? "text-[#898d96]" : "text-[#898d96]"
+              } ${searchMenu && "hidden"}`}
+          >
+
+            <Image
+              src="/logo/central-bank-of-nigeria.png"
+              alt="CBN Logo"
+              width={30}
+              height={30}
+            />
+            Licensed by the Central Bank of Nigeria
+
+            <Image
+              src="/logo/NIFI.png"
+              height={40}
+              width={40}
+              alt="nifi"
+            />
+          </a>
+              
+              
               <a href="https://www.facebook.com/Summitbankng1">
                 <SiFacebook size={20} color="white" />
               </a>
@@ -452,6 +498,8 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               >
                 <RiTiktokFill size={20} color="white" />
               </a>
+
+              
             </div>
           </div>
         </div>
@@ -466,10 +514,10 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
         >
           <Link href="/" className=" z-50">
             <Image
-              className="h-[80px] w-[80px] object-cover"
+              className="h-[100px] w-[100px] object-cover"
               src={require("../../public/logo.svg")}
-              height={40}
-              width={40}
+              height={60}
+              width={60}
               alt="logo"
             />
           </Link>
@@ -497,7 +545,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
           ))}
         </div> */}
           <MainHeader menu={menuData} />
-          <a
+          {/* <a
             href="https://www.cbn.gov.ng/supervision/fi.html?id=9892"
             target="_blank"
             referrerPolicy="no-referrer"
@@ -519,7 +567,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               width={40}
               alt="nifi"
             />
-          </a>
+          </a> */}
           <div className="ml-6 flex items-center gap-3">
           <Link href="https://ibank.summitbankng.com/IBS/">
             <Button type="primary" buttonFn={() => {}}>
