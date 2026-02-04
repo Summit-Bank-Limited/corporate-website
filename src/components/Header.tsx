@@ -167,14 +167,14 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               name: "Summit MTD (Mudarabah)",
               link: "/personal-summit-mtd",
             },
-            {
-              name: "Summit Sukuk Investments - SSI",
-              link: "/personal-summit-sukuk-investments",
-            },
-            {
-              name: "Customized Investment Plan – CIP",
-              link: "/personal-customized-investment-plan",
-            },
+            // {
+            //   name: "Summit Sukuk Investments - SSI",
+            //   link: "/personal-summit-sukuk-investments",
+            // },
+            // {
+            //   name: "Customized Investment Plan – CIP",
+            //   link: "/personal-customized-investment-plan",
+            // },
           ],
         },
       ],
@@ -214,14 +214,14 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               name: "Summit MTD (Mudarabah)",
               link: "/business-summit-mtd",
             },
-            {
-              name: "Summit Sukuk Investments - SSI",
-              link: "/business-summit-sukuk-investments",
-            },
-            {
-              name: "Customized Investment Plan – CIP",
-              link: "/business-customized-investment-plan",
-            },
+            // {
+            //   name: "Summit Sukuk Investments - SSI",
+            //   link: "/business-summit-sukuk-investments",
+            // },
+            // {
+            //   name: "Customized Investment Plan – CIP",
+            //   link: "/business-customized-investment-plan",
+            // },
           ],
         },
       ],
@@ -261,14 +261,14 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               name: "Summit MTD (Mudarabah)",
               link: "/corporate-summit-mtd",
             },
-            {
-              name: "Summit Sukuk Investments - SSI",
-              link: "/corporate-summit-sukuk-investments",
-            },
-            {
-              name: "Customized Investment Plan – CIP",
-              link: "/corporate-customized-investment-plan",
-            },
+            // {
+            //   name: "Summit Sukuk Investments - SSI",
+            //   link: "/corporate-summit-sukuk-investments",
+            // },
+            // {
+            //   name: "Customized Investment Plan – CIP",
+            //   link: "/corporate-customized-investment-plan",
+            // },
           ],
         },
         {

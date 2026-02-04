@@ -79,7 +79,7 @@ export const pressReleases: PressRelease[] = [
     From the point of view of clarifying subsisting media speculations, Dr. Mukhtar Adam, Executive Director/Chief Operating Officer, stated that the Summit Bank leadership combines seasoned executives from Nigeria’s top banks and digital innovators. “While some of our directors have built accomplished careers at frontline financial institutions such as Zenith Bank, Summit Bank is an independent financial entity governed by a professional board, and fully complaint with the Central Bank of Nigeria (CBN) regulations,” he said.
     Recalling the bank’s mission, “To be the trusted partner, providing ethical banking solutions that empower individuals and communities while making a positive impact in the lives of stakeholders for a prosperous society,” Dr. Adam said the mission is clear and Nigerian customers deserve banking that is straightforward, fair, and values-driven. “Our offerings promise no hidden costs or complicated banking – for both the banked and unbanked Nigerians – with clear complaint banking services that is backed by robust technology, sophisticated banking infrastructure, and tested human resources,” he said.
     The bank said its operations are guided by a set of core values that encompass Stewardship, Unity, Moral integrity, Mastery, Innovation, Transparency, Boldness, Authenticity, Mobility, and Keenness, anchored by its vision and mission, and powered by an approach that is simple, transparent, with clear fees and products structured without conventional interests. “These values and statements are not mere cosmetics; we mean them literarily as we say them, and they are integral to our system, which we have designed to combine institutional banking experience with modern digital models to make non-interest banking practical and accessible to anyone, anywhere,” Dr. Adam informed.
-    Presenting the product portfolio, the bank listed Savings Account, Current Account, Summit Mudarabah Term Deposit, and Domiciliary Account as well as personal banking products. SME and Corporate Solutions comprises of Corporate Current Account, Summit Cost-Plus, Summit Sukuk Investments, and Domiciliary Accounts. Under Finance and Investment, there is the Home and Asset Acquisition Finance as well as Investment Finance and Structured Investment Vehicles.
+    Presenting the product portfolio, the bank listed Savings Account, Current Account, Summit Mudarabah Term Deposit, and Domiciliary Account as well as personal banking products. SME and Corporate Solutions comprises of Corporate Current Account, and Domiciliary Accounts. Under Finance and Investment, there is the Home and Asset Acquisition Finance as well as Investment Finance and Structured Investment Vehicles.
     Summit Bank, established as a purpose-driven non-interest bank, was incorporated in July 2024 and licenced by the CBN in February 2025. The bank aims to redefine ethical finance through transparent products, digital accessibility, and a strong commitment to financial inclusion.
     <strong>Publication Links:</strong>
     <a href="https://tribuneonlineng.com/summit-bank-confirms-operations-shares-vision-for-ethical-inclusive-finance/" target="_blank" rel="noopener noreferrer">Summit Bank confirms operations, shares vision for ethical, inclusive finance – Nigerian Tribune</a>
@@ -115,4 +115,59 @@ export const pressReleases: PressRelease[] = [
     <a href="https://youtu.be/9aZ7RTvh7Fo?si=NE82HT9KG6hvZvGF" target="_blank" rel="noopener noreferrer">Access the full interview here.</a>
     `
   },
+  {
+    slug: "coo-punch-interview",
+    title: "Summit Bank COO Talks About Life and Business in Punch Interview",
+    date: "December 2025",
+    summary: "Dr. Mukhtar Adam, Summit Bank’s Executive Director/Chief Operating Officer, granted an interview to Punch newspaper in December 2025.",
+    content: `Dr. Mukhtar Adam, Summit Bank’s Executive Director/Chief Operating Officer, granted an interview to Punch newspaper in December 2025. 
+    During the interview, he discussed his interest in finance and banking, his formative years, his years in consulting, and his journey into the banking world. The bumper-pack interview also touched on his entrepreneurial and academic life, as well as how he balances life and family in his multi-dimensional work style.
+    Non-interest banking, including its ethical and inclusive approaches, was also discussed. In addition, he talked about the emergence of Summit Bank, the bank’s vision and direction, and other issues within the non-interest banking space.
+    <strong>Publication Links:</strong>
+    <a href="https://punchng.com/missionary-school-experience-taught-me-religious-coexistence-summit-bank-coo-adam/" target="_blank" rel="noopener noreferrer">Read the full interview here.</a>
+    `
+  },
+  {
+    slug: "cbn-capital-requirement",
+    title: "Summit Bank Confirms CBN Capital Requirement, Looks Ahead with Firm Vision",
+    date: "January, 2026",
+    summary: "With the Central Bank of Nigeria’s (CBN) updated recapitalisation deadline of 31 March 2026, Summit Bank has confirmed that it has fully met its capital requirement, positioning the bank in strong compliance with the CBN’s objective of strengthening financial stability within the Nigerian banking sector..",
+    content: `With the Central Bank of Nigeria’s (CBN) updated recapitalisation deadline of 31 March 2026, Summit Bank has confirmed that it has fully met its capital requirement, positioning the bank in strong compliance with the CBN’s objective of strengthening financial stability within the Nigerian banking sector.
+    As Nigeria’s newest entrant into the non-interest banking space, Summit Bank recorded a regulatory capital base of ₦15.3 billion as at 21 May 2025, a position previously confirmed by the CBN. This places the bank comfortably above the ₦10 billion minimum capital requirement for regional non-interest banks.
+    Commenting on the milestone, Dr. Sirajo Salisu, Managing Director/Chief Executive Officer of Summit Bank, attributed the achievement to strong stakeholder confidence and institutional leadership.
+    “This milestone has been made possible by the unflinching confidence of our shareholders, the effective leadership of the Board and management team, and the dedication of our staff,” he said.
+    Having achieved full capital compliance ahead of schedule, Summit Bank is now set to further strengthen its long-term commitment to operational excellence, value creation, and leadership within the ethical banking space, while supporting stakeholders for shared growth and prosperity.
+    Speaking in the same vein, Dr. Mukhtar Adam, Executive Director/Chief Operating Officer, said the bank will continue to combine operational excellence with value-based banking to deliver sustainable outcomes for customers and shareholders alike.
+    “With our strengthened capital base, we will continue to drive ethical and inclusive value-based banking through digital platforms, superior customer experience, and targeted lending that supports SMEs and underserved communities,” he said.
+    He added that meeting the regulatory threshold is not an end in itself, but a solid foundation for the bank’s forward-looking agenda of responsible scaling, innovation within non-interest principles, and deepening partnerships that create shared economic value.
+    Under the current CBN recapitalisation framework, minimum capital requirements are set at ₦500 billion for international banks, ₦200 billion for national commercial banks, ₦50 billion for regional commercial banks, ₦20 billion for national non-interest banks, and ₦10 billion for regional non-interest banks, with a deadline of 31 March 2026 for full compliance.
+    Summit Bank, a purpose-driven non-interest bank, was incorporated in July 2024 and licensed by the CBN in February 2025. Positioned to deliver ethical banking services to the public, the bank aims to redefine inclusive finance through transparent products, digital accessibility, and a strong commitment to financial inclusion.
+
+    `
+  },
+  // {
+  //   slug: "summit-emir-kano-visit",
+  //   title: "Summit Bank Pays Courtesy Visit to the Emir of Kano",
+  //   date: "November 12, 2025",
+  //   summary: "Dr. Sirajo Salisu, Managing Director/Chief Executive Office of Summit Bank Ltd, granted an interview to Arise TV on Wednesday 12 November 2025.",
+  //   content: `Dr. Sirajo Salisu, Managing Director/Chief Executive Office of Summit Bank Ltd, granted an interview to Arise TV on Wednesday 12 November 2025. 
+  //   The interview explored the meaning of non-interest banking, common misconceptions about non-interest banking, the tech space, the economy, as well as issues concerning financial inclusion.
+  //   Summit Bank’s propositions, ethical responsibility, and sectoral operational challenges were also discussed.
+  //   <strong>Publication Links:</strong>
+  //   <a href="https://youtu.be/9aZ7RTvh7Fo?si=NE82HT9KG6hvZvGF" target="_blank" rel="noopener noreferrer">Access the full interview here.</a>
+  //   `
+  // },
+  // {
+  //   slug: "md-arise-tv-interview",
+  //   title: "Summit Bank MD Discusses Non-Interest Banking on Arise TV",
+  //   date: "November 12, 2025",
+  //   summary: "Dr. Sirajo Salisu, Managing Director/Chief Executive Office of Summit Bank Ltd, granted an interview to Arise TV on Wednesday 12 November 2025.",
+  //   content: `Dr. Sirajo Salisu, Managing Director/Chief Executive Office of Summit Bank Ltd, granted an interview to Arise TV on Wednesday 12 November 2025. 
+  //   The interview explored the meaning of non-interest banking, common misconceptions about non-interest banking, the tech space, the economy, as well as issues concerning financial inclusion.
+  //   Summit Bank’s propositions, ethical responsibility, and sectoral operational challenges were also discussed.
+  //   <strong>Publication Links:</strong>
+  //   <a href="https://youtu.be/9aZ7RTvh7Fo?si=NE82HT9KG6hvZvGF" target="_blank" rel="noopener noreferrer">Access the full interview here.</a>
+  //   `
+  // },
+
 ];
