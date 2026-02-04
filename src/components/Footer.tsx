@@ -44,10 +44,10 @@ export default function Footer() {
           link: "/business-customized-investment-plan",
         },
         { text: "Domiciliary Accounts", link: "#" },
-        {
-          text: "Summit Sukuk Investments - SSI",
-          link: "/corporate-summit-sukuk-investments",
-        },
+        // {
+        //   text: "Summit Sukuk Investments - SSI",
+        //   link: "/corporate-summit-sukuk-investments",
+        // },
       ],
     },
     {
@@ -65,10 +65,10 @@ export default function Footer() {
           text: "Summit Lease to Own Finance - SLOF (Ijara)",
           link: "/corporate-summit-lease",
         },
-        {
-          text: "Summit Sukuk Investments - SSI",
-          link: "/corporate-summit-sukuk-investments",
-        },
+        // {
+        //   text: "Summit Sukuk Investments - SSI",
+        //   link: "/corporate-summit-sukuk-investments",
+        // },
         { text: "Domiciliary Accounts", link: "#" },
       ],
     },
@@ -94,8 +94,8 @@ export default function Footer() {
           text: "Summit MTD (Mudarabah)",
           link: "#",
         },
-        { text: "Summit Sukuk Investments - SSI", link: "#" },
-        { text: "Customized Investment Plan – CIP", link: "#" },
+        // { text: "Summit Sukuk Investments - SSI", link: "#" },
+        // { text: "Customized Investment Plan – CIP", link: "#" },
       ],
     },
   ];
