@@ -57,8 +57,8 @@ export default function ResetPinForm() {
 
     if (!formData.token.trim()) {
       newErrors.token = "Token is required";
-    } else if (formData.token.length < 4) {
-      newErrors.token = "Token must be at least 4 digits";
+    } else if (formData.token.length !== 6 || !/^\d+$/.test(formData.token)) {
+      newErrors.token = "Token must be exactly 6 digits";
     }
 
     if (!formData.pin.trim()) {
@@ -356,9 +356,10 @@ export default function ResetPinForm() {
                 <Input
                   type="text"
                   value={formData.token}
-                  onChange={(e) => handleInputChange("token", e.target.value.replace(/\D/g, ""))}
+                  onChange={(e) => handleInputChange("token", e.target.value.replace(/\D/g, "").slice(0, 6))}
                   placeholder="Enter reset PIN token"
                   className={errors.token ? "border-red-500" : ""}
+                  maxLength={6}
                 />
                 {errors.token && (
                   <p className="text-red-500 text-xs mt-1">{errors.token}</p>
