@@ -57,8 +57,10 @@ export async function POST(request: NextRequest) {
 
     // If the server returned an error status, extract and return the error message
     if (!response.ok || response.status >= 400) {
+      // Preserve the original statusDescription from server response (priority)
+      const statusDescription = data?.statusDescription;
       const errorMessage = 
-        data?.statusDescription || 
+        statusDescription || 
         data?.data?.respMsg || 
         data?.message || 
         data?.error || 
@@ -66,12 +68,13 @@ export async function POST(request: NextRequest) {
         'An error occurred while creating the hardware PIN';
       
       console.error('[create-pin] API returned error:', errorMessage);
+      console.error('[create-pin] Original statusDescription:', statusDescription);
       return NextResponse.json(
         {
           success: false,
           error: errorMessage,
           statusCode: data?.statusCode || response.status.toString(),
-          statusDescription: errorMessage,
+          statusDescription: statusDescription || errorMessage, // Preserve original statusDescription if available
           data: data?.data || null,
         },
         {
