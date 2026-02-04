@@ -41,13 +41,28 @@ const pressReleases = [
       "Dr. Sirajo Salisu, Managing Director/Chief Executive Office of Summit Bank Ltd, granted an interview to Arise TV on Wednesday 12 November 2025.",
     slug: "md-arise-tv-interview",
   },
-//  {
-//     title: "Summit Bank Honours Customers and Staff, Launches Mobile App to Mark CSW 2025",
-//     date: "October 10, 2025",
-//     summary:
-//       "Summit Bank’s mobile payment transactions hit record numbers, showing strong adoption of digital banking solutions among customers.",
-//     slug: "Mobile-App-Launch",
-//   },
+  {
+    title: "Summit Bank COO Talks About Life and Business in Punch Interview",
+    date: "December, 2025",
+    summary:
+      "Dr. Mukhtar Adam, Summit Bank’s Executive Director/Chief Operating Officer, granted an interview to Punch newspaper in December 2025. ",
+    slug: "coo-punch-interview",
+  },
+  {
+    title: "Summit Bank Confirms CBN Capital Requirement, Looks Ahead with Firm Vision",
+    date: "January, 2026",
+    summary:
+      "With the Central Bank of Nigeria’s (CBN) updated recapitalisation deadline of 31 March 2026, Summit Bank has confirmed that it has fully met its capital requirement, positioning the bank in strong compliance with the CBN’s objective of strengthening financial stability within the Nigerian banking sector.",
+    slug: "cbn-capital-requirement",
+  },
+  // {
+  //   title: "Summit Bank MD Discusses Non-Interest Banking on Arise TV",
+  //   date: "November 12, 2025",
+  //   summary:
+  //     "Dr. Sirajo Salisu, Managing Director/Chief Executive Office of Summit Bank Ltd, granted an interview to Arise TV on Wednesday 12 November 2025.",
+  //   slug: "md-arise-tv-interview",
+  // },
+
 ];
 
 // Helper to get a short content preview
@@ -61,7 +76,7 @@ export default function PressReleasesPage() {
     <DefaultLayout>
       <SectionHero
         mainClass="bg-pattern !text-white py-10 rounded-2xl"
-        title="Press Releases"
+        title="Press Centre"
         subtitle="Stay Updated with Summit Bank"
       />
 

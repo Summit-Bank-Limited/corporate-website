@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { CheckCircle2, CreditCard, Lock } from "lucide-react";
+import { CheckCircle2, CreditCard, Lock, KeyRound } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import { Input } from "@/components/ui/input";
 import Button from "@/components/Button";
@@ -11,7 +11,7 @@ Modal.setAppElement("body");
 
 type Step = "account-details" | "pin" | "success";
 
-export default function ActivateCardForm() {
+export default function ResetPinForm() {
   const [currentStep, setCurrentStep] = useState<Step>("account-details");
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -104,7 +104,7 @@ export default function ActivateCardForm() {
         return;
       }
 
-      toast.success(data.data?.statusDescription || "Account verified! Please check your phone/email for the activation token.");
+      toast.success(data.data?.statusDescription || "Account verified! Please check your phone/email for the reset PIN token.");
       setCurrentStep("pin");
     } catch (error) {
       console.error('Error requesting token:', error);
@@ -122,7 +122,7 @@ export default function ActivateCardForm() {
 
     setIsLoading(true);
     try {
-      const response = await fetch('/api/mtd/card-activation', {
+      const response = await fetch('/api/mtd/card-reset-pin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -138,17 +138,17 @@ export default function ActivateCardForm() {
       const data = await response.json();
 
       if (!response.ok || !data.success) {
-        const errorMessage = data.data?.statusDescription || data.message || 'Failed to activate card. Please try again.';
+        const errorMessage = data.data?.statusDescription || data.message || 'Failed to reset PIN. Please try again.';
         toast.error(errorMessage);
         return;
       }
 
-      toast.success("Card activated successfully!");
+      toast.success("PIN reset successfully!");
       setIsSuccessModalOpen(true);
       setCurrentStep("success");
     } catch (error) {
-      console.error('Error activating card:', error);
-      toast.error("Failed to activate card. Please check your connection and try again.");
+      console.error('Error resetting PIN:', error);
+      toast.error("Failed to reset PIN. Please check your connection and try again.");
     } finally {
       setIsLoading(false);
     }
@@ -212,7 +212,7 @@ export default function ActivateCardForm() {
           <div className="flex items-center justify-between mb-4">
               {[
               { step: "account-details", label: "Account Details", icon: CreditCard },
-              { step: "pin", label: "PIN", icon: Lock },
+              { step: "pin", label: "Reset PIN", icon: KeyRound },
               { step: "success", label: "Complete", icon: CheckCircle2 },
             ].map((item, index, array) => {
               const Icon = item.icon;
@@ -264,7 +264,7 @@ export default function ActivateCardForm() {
                 Enter Account Details
               </h2>
               <p className="text-gray-600">
-                Please provide your account information to begin card activation
+                Please provide your account information to begin PIN reset
               </p>
             </div>
 
@@ -321,13 +321,13 @@ export default function ActivateCardForm() {
           <form onSubmit={handlePinSubmit} className="space-y-6">
             <div className="text-center mb-6">
               <div className="w-16 h-16 bg-[var(--secondary-color)]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Lock className="text-[var(--secondary-color)]" size={32} />
+                <KeyRound className="text-[var(--secondary-color)]" size={32} />
               </div>
               <h2 className="text-2xl md:text-3xl font-bold text-[var(--secondary-color)] mb-2">
-                Set Your PIN
+                Reset Your PIN
               </h2>
               <p className="text-gray-600">
-                Enter your card details, token, and create a 4-digit PIN
+                Enter your card details, token, and set a new 4-digit PIN
               </p>
             </div>
 
@@ -357,7 +357,7 @@ export default function ActivateCardForm() {
                   type="text"
                   value={formData.token}
                   onChange={(e) => handleInputChange("token", e.target.value.replace(/\D/g, "").slice(0, 6))}
-                  placeholder="Enter activation token"
+                  placeholder="Enter reset PIN token"
                   className={errors.token ? "border-red-500" : ""}
                   maxLength={6}
                 />
@@ -368,7 +368,7 @@ export default function ActivateCardForm() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  PIN <span className="text-red-500">*</span>
+                  New PIN <span className="text-red-500">*</span>
                 </label>
                 <Input
                   type="password"
@@ -407,7 +407,7 @@ export default function ActivateCardForm() {
                 disabled={isLoading}
                 className={`h-[45px] cursor-pointer hover:shadow-xl flex items-center gap-2 justify-center w-full text-center px-6 transition-all duration-300 hover:px-8 py-2 border rounded-lg bg-[var(--secondary-color)] border-[var(--secondary-color)] text-white disabled:bg-gray-400 disabled:text-gray-500`}
               >
-                {isLoading ? "Activating..." : "Activate Card"}
+                {isLoading ? "Resetting..." : "Reset PIN"}
               </button>
             </div>
           </form>
@@ -417,7 +417,7 @@ export default function ActivateCardForm() {
         <Modal
           isOpen={isSuccessModalOpen}
           onRequestClose={() => {}}
-          contentLabel="Card Activated"
+          contentLabel="PIN Reset"
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
           overlayClassName="fixed inset-0 bg-black bg-opacity-50"
         >
@@ -426,10 +426,10 @@ export default function ActivateCardForm() {
               <CheckCircle2 className="text-green-500" size={48} />
             </div>
             <h3 className="text-2xl font-bold text-[var(--secondary-color)] mb-2">
-              Card Activated Successfully!
+              PIN Reset Successfully!
             </h3>
             <p className="text-gray-600 mb-6">
-              Your card has been successfully activated. You can now start using it for transactions.
+              Your card PIN has been successfully reset. You can now use your new PIN for transactions.
             </p>
             <Button
               text="Done"

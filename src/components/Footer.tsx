@@ -44,10 +44,10 @@ export default function Footer() {
           link: "/business-customized-investment-plan",
         },
         { text: "Domiciliary Accounts", link: "#" },
-        {
-          text: "Summit Sukuk Investments - SSI",
-          link: "/corporate-summit-sukuk-investments",
-        },
+        // {
+        //   text: "Summit Sukuk Investments - SSI",
+        //   link: "/corporate-summit-sukuk-investments",
+        // },
       ],
     },
     {
@@ -65,10 +65,10 @@ export default function Footer() {
           text: "Summit Lease to Own Finance - SLOF (Ijara)",
           link: "/corporate-summit-lease",
         },
-        {
-          text: "Summit Sukuk Investments - SSI",
-          link: "/corporate-summit-sukuk-investments",
-        },
+        // {
+        //   text: "Summit Sukuk Investments - SSI",
+        //   link: "/corporate-summit-sukuk-investments",
+        // },
         { text: "Domiciliary Accounts", link: "#" },
       ],
     },
@@ -94,8 +94,8 @@ export default function Footer() {
           text: "Summit MTD (Mudarabah)",
           link: "#",
         },
-        { text: "Summit Sukuk Investments - SSI", link: "#" },
-        { text: "Customized Investment Plan – CIP", link: "#" },
+        // { text: "Summit Sukuk Investments - SSI", link: "#" },
+        // { text: "Customized Investment Plan – CIP", link: "#" },
       ],
     },
   ];
@@ -129,8 +129,7 @@ export default function Footer() {
             <div className="flex lg:items-center flex-col lg:flex-row gap-4 lg:gap-10">
               © {year} Summit Bank Limited
               <a
-                href="https://www.cbn.gov.ng/supervision/fi.html?id=9892 
-"
+                href="https://www.cbn.gov.ng/supervision/fi.html?id=9892"
                 target="_blank"
                 referrerPolicy="no-referrer"
                 className="flex items-center gap-2"

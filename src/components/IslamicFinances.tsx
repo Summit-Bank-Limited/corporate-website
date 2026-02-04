@@ -20,12 +20,12 @@ export default function IslamicFinances() {
           Empowering Your Financial Journey with Ethical and Strategic Growth.
         </h3>
         <div
-          className="max-h-[900px] lg:h-[90vh] bg-bottom flex items-end  h-full bg-cover rounded-3xl my-10 "
+          className="max-h-[900px] lg:h-[90vh] bg-bottom flex items-end justify-center h-full bg-cover rounded-3xl my-10"
           style={{
             backgroundImage: `url('/finance.png')`,
           }}
         >
-          <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-3 py-5 lg:w-[600px] mx-auto">
+          <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-3 py-5 lg:w-[600px] w-full px-4 mx-auto">
             {finances.map((item, index) => (
               <Framer animation={fadeInLetters(index)} key={index}>
                 <IslamicFinanceCard

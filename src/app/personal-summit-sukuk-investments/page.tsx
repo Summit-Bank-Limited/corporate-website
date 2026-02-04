@@ -89,7 +89,7 @@ const allSection = [
             </div>
           </GenericSection>
         ))}
-         <Faq  amount={3}/>
+          <Faq  amount={3}/>
        {/*  <Testimonials /> */} 
       </DefaultLayout>
     </div>

@@ -32,7 +32,7 @@ export default function page() {
     },
     {
       title: "Regular profit distributions",
-      text: "eceive consistent earnings with transparent, scheduled payouts based on your investment plan.",
+      text: "Receive consistent earnings with transparent, scheduled payouts based on your investment plan.",
     
     },
 
