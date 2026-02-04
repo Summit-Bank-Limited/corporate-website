@@ -218,7 +218,7 @@ export default function ProductsSection() {
               <div className="flex items-center flex-wrap gap-2 justify-center">
                 <h2>Excellence in</h2>
                 <WordRotate
-                  className="!text-3xl md:!text-4xl lg:!text-6xl font-bold !text-[var(--secondary-color)]"
+                  className="!text-3xl md:!text-4xl lg:!text-6xl leading-[1] font-bold !text-[var(--secondary-color)]"
                   words={allWords}
                 />
               </div>
@@ -229,7 +229,7 @@ export default function ProductsSection() {
             </Framer>
 
             <Framer animation={slideUp(0.7)}>
-              <p className="py-4 lg:max-w-[800px] mx-auto">
+              <p className="py-4 lg:max-w-[800px] w-full mx-auto">
                 Get premium financial solutions for personal and business needs.
                 We deliver expert support and tailored services with unmatched
                 professionalism.
@@ -237,7 +237,7 @@ export default function ProductsSection() {
             </Framer>
           </div>
 
-          <div className="products grid md:grid-cols-10 gap-4 py-10">
+          <div className="products grid grid-cols-1 md:grid-cols-2 lg:grid-cols-10 gap-4 py-10">
             {allProducts.map((item, index) => (
               <ProductCard
                 key={index}

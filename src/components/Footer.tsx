@@ -129,8 +129,7 @@ export default function Footer() {
             <div className="flex lg:items-center flex-col lg:flex-row gap-4 lg:gap-10">
               © {year} Summit Bank Limited
               <a
-                href="https://www.cbn.gov.ng/supervision/fi.html?id=9892 
-"
+                href="https://www.cbn.gov.ng/supervision/fi.html?id=9892"
                 target="_blank"
                 referrerPolicy="no-referrer"
                 className="flex items-center gap-2"

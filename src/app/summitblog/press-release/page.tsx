@@ -76,7 +76,7 @@ export default function PressReleasesPage() {
     <DefaultLayout>
       <SectionHero
         mainClass="bg-pattern !text-white py-10 rounded-2xl"
-        title="Press Releases"
+        title="Press Centre"
         subtitle="Stay Updated with Summit Bank"
       />
 

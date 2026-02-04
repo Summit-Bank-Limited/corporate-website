@@ -34,23 +34,23 @@ export default function Features() {
         backgroundImage: `url('/orange-bg.png')`,
       }}
     >
-      <div className="main grid lg:grid-cols-2  h-full">
-        <div className="h-full flex flex-col lg:gap-6 justify-center text-white ">
+      <div className="main grid lg:grid-cols-2 gap-8 items-center h-full">
+        <div className="h-full flex flex-col lg:gap-6 justify-center text-white">
           {features?.map((item, index) => (
             <div
               className="flex not-last:border-b py-6 items-center gap-5"
               key={index}
             >
               <Image
-                className="h-[50px] w-[50px] object-cover"
+                className="h-[50px] w-[50px] object-cover flex-shrink-0"
                 src={item.image}
                 height={80}
                 width={80}
                 alt={item.title}
               />
-              <div className="">
+              <div className="flex-1">
                 <Framer animation={fadeInLetters(index)}>
-                  <h4 className=" py-4">{item.title}</h4>
+                  <h4 className="py-4">{item.title}</h4>
                 </Framer>
                 <Framer animation={fadeInLetters(index)}>
                   <p className="!text-white">{item.text}</p>
@@ -72,13 +72,15 @@ export default function Features() {
           </Framer>
         </div>
         <Framer animation={fadeIn('up', 0.5)}>
-          <Image
-            className="relative lg:absolute -bottom-10 lg:bottom-0 w-fit object-contain h-full -right-10 md:-right-[25%] lg:right-0 z-0"
-            src="/feature.png"
-            alt="banner"
-            width={400}
-            height={400}
-          />
+          <div className="relative w-full h-full flex items-center justify-center lg:justify-end">
+            <Image
+              className="relative w-full max-w-[500px] lg:max-w-[600px] object-contain h-auto"
+              src="/feature.png"
+              alt="banner"
+              width={400}
+              height={400}
+            />
+          </div>
         </Framer>
       </div>
     </div>

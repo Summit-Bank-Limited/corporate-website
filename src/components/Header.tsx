@@ -24,7 +24,7 @@ import {
   RiTiktokFill,
 } from "react-icons/ri";
 import { SiFacebook } from "react-icons/si";
-import { color, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { getCloudinaryUrl } from "@/lib/utils";
 
 export default function Header({ scrollState }: { scrollState: boolean }) {
@@ -367,6 +367,15 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
           text: "",
           links: [
             {
+              name: "Reset AfriGo Card PIN",
+              link: "/reset-pin",
+            },
+          ]
+        },
+        {
+          text: "",
+          links: [
+            {
               name: "FAQs",
               link: "/faq",
             },
@@ -411,7 +420,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               text: "",
               links: [
                 {
-                  name: "Press Releases",
+                  name: "Summit News",
                   link: "/summitblog/press-release",
                 },
                 {
@@ -465,7 +474,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               width={30}
               height={30}
             />
-            Licensed by the Central Bank of Nigeria
+            <span className="text-white">Licensed by the Central Bank of Nigeria</span>
 
             <Image
               src="/logo/NIFI.png"
