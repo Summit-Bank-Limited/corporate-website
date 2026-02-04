@@ -127,7 +127,8 @@ export const hardwarePinApi = {
     
     // Check if respCode indicates success
     if (response.data?.respCode !== '00' && response.data?.respCode !== '0') {
-      throw new Error(response.data?.respMsg || response.statusDescription || 'Failed to create PIN');
+      // Prioritize statusDescription from the API route response
+      throw new Error(response.statusDescription || response.data?.respMsg || 'Failed to create PIN');
     }
     
     return response;
