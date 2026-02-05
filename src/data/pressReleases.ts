@@ -8,6 +8,33 @@ export interface PressRelease {
 }
 
 export const pressReleases: PressRelease[] = [
+  
+  
+  
+  {
+    slug: "md-vanguard-interview",
+    title: "Summit Bank MD Talks About Non-Interest Banking in a Vanguard Interview",
+    date: "January, 2025",
+    summary:"Dr. Sirajo Salisu, Summit Bank’s Managing Director/Chief Executive Officer, granted an interview Vanguard Newspaper in January 2026.  ",
+    content:`Dr. Sirajo Salisu, Summit Bank’s Managing Director/Chief Executive Officer, granted an interview Vanguard Newspaper in January 2026. 
+    He discussed non-interest banking and explained what it means, how it works, and the vision that Summit Bank is bringing into the sector. He talks about how traditional financing combines with a digital-first platform. He explains non-interest (Islamic/ethical) banking as profit-sharing rather than interest-based, detailing the model where customers and depositors receive portions of realised profits; based on agreed sharing ratios while avoiding hidden charges. 
+    He also talks about how Summit Bank targets businesses, offering advisory services, professional teams, and value-added support. 
+    The interview sort to clear public misconceptions about non-interest bank. Dr. Salisu stresses the developmental nature of non-interest banking, its sustainable focus, as well as his long banking experience.
+    <strong>Publication Links:</strong>
+    <a href="https://www.vanguardngr.com/2026/01/why-many-nigerians-choose-non-interest-banking-summit-bank-ceo-2/" target="_blank" rel="noopener noreferrer">Read the full interview here.</a>
+    `
+  },
+  {
+    slug: "emir-of-kano-visit",
+    title: "Summit Bank Leadership Consolidates Regional Ties with Courtesy Visit to Emir of Kano",
+    date: "December 16, 2025",
+    summary:"The management and board of Summit Bank Limited, led by Chairman Umar Shuaib Ahmed, MD/CEO Dr. Sirajo Salisu, and ED/COO Dr. Mukhtar Adam, paid a high-profile courtesy visit to the Emir of Kano, His Royal Highness Muhammadu Sanusi II, at his palace on 16th December 2025. ",
+    content:`The management and board of Summit Bank Limited, led by Chairman Umar Shuaib Ahmed, MD/CEO Dr. Sirajo Salisu, and ED/COO Dr. Mukhtar Adam, paid a high-profile courtesy visit to the Emir of Kano, His Royal Highness Muhammadu Sanusi II, at his palace on 16th December 2025. 
+    The visit served as a formal introduction of the bank’s ethical, non-interest banking presence in the historic commercial hub, signalling a strategic commitment to the North-West market. 
+    During the engagement, the delegation highlighted the bank’s mission to drive financial inclusion and support the state’s vibrant SME sector through ethical, Shariah-compliant financial solutions. In response, Emir Sanusi II—a former Governor of the Central Bank of Nigeria (CBN)—commended the board's professional pedigree and expressed his support for the bank’s entry into Kano's competitive financial landscape. 
+    This engagement marks a significant milestone in Summit Bank’s expansion strategy, reinforcing its dedication to building institutional trust and long-term community relationships within Nigeria’s key economic centres.
+    `
+  },
   {
     slug: "summit-digital-launch",
     title: "Summit Bank Chooses ICSFS as Core Technology Partner",
