@@ -371,8 +371,7 @@ export default function MTDApplicationForm({
 
     const submitData = {
       accountNumber: formData.accountNumber,
-      bvn: accountType === "individual" ? formData.bvn : undefined,
-      tin: accountType === "corporate" ? formData.tin : undefined,
+      bvn: accountType === "individual" ? formData.bvn : formData.tin,
       accountType: accountType,
       investmentAmount: parseFloat(formData.investmentAmount),
       effectiveDate: formData.effectiveDate,
