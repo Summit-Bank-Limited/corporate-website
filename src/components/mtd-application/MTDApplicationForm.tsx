@@ -10,7 +10,7 @@ interface MTDApplicationFormProps {
   onClose: () => void;
 }
 
-// Minimum investment amount is fixed at 1 million Naira
+// Minimum investment amount is fixed at 1 million Naira ggg ggg
 const MINIMUM_INVESTMENT_AMOUNT = 1000000;
 
 export default function MTDApplicationForm({
