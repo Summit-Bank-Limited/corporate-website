@@ -39,6 +39,8 @@ async function makeApiRequest(
   payload: Record<string, any>
 ): Promise<any> {
   try {
+    console.log(`[hardwarePinApi] Making request to ${endpoint}`, { payload: { ...payload } });
+    
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -47,8 +49,24 @@ async function makeApiRequest(
       body: JSON.stringify(payload),
     });
 
-    // Always read the response body, even for error statuses
-    const data = await response.json();
+    console.log(`[hardwarePinApi] Response status: ${response.status} ${response.statusText}`);
+
+    // Parse JSON response with error handling
+    let data;
+    try {
+      const responseText = await response.text();
+      console.log(`[hardwarePinApi] Response text:`, responseText.substring(0, 200));
+      
+      if (!responseText) {
+        throw new Error('Empty response from server');
+      }
+      
+      data = JSON.parse(responseText);
+      console.log(`[hardwarePinApi] Parsed response:`, JSON.stringify(data).substring(0, 200));
+    } catch (parseError) {
+      console.error(`[hardwarePinApi] JSON parse error:`, parseError);
+      throw new Error(`Failed to parse server response: ${parseError instanceof Error ? parseError.message : 'Unknown error'}`);
+    }
 
     // Handle error response from API route (including 500 errors)
     if (!response.ok || data.success === false || data.error) {
@@ -60,23 +78,29 @@ async function makeApiRequest(
         data.message ||
         `Server error: ${response.status} ${response.statusText}`;
       
+      console.error(`[hardwarePinApi] API error:`, errorMessage);
       throw new Error(errorMessage);
     }
 
     // Handle API response format
     if (data.statusCode === '200' || data.statusCode === 200) {
-      return {
+      const formattedResponse = {
         statusCode: '200',
         statusDescription: data.statusDescription || 'Success',
         data: data.data,
         message: data.data?.respMsg || data.statusDescription || 'Success',
         ...(data.otp ? { otp: data.otp } : {}),
       };
+      console.log(`[hardwarePinApi] Formatted success response:`, JSON.stringify(formattedResponse).substring(0, 200));
+      return formattedResponse;
     }
 
     // Error response
-    throw new Error(data.statusDescription || data.data?.respMsg || data.error || 'Request failed');
+    const errorMsg = data.statusDescription || data.data?.respMsg || data.error || 'Request failed';
+    console.error(`[hardwarePinApi] Request failed:`, errorMsg);
+    throw new Error(errorMsg);
   } catch (error) {
+    console.error(`[hardwarePinApi] Request error:`, error);
     throw new Error(extractErrorMessage(error));
   }
 }
@@ -87,14 +111,35 @@ export const hardwarePinApi = {
    * @param customerId - Customer ID (required)
    */
   async sendOTP(customerId: string) {
+    console.log(`[hardwarePinApi.sendOTP] Starting OTP generation for customer:`, customerId);
     const payload = { customer_id: customerId };
     const response = await makeApiRequest('/api/hardware-pin/send-otp', payload);
     
+    console.log(`[hardwarePinApi.sendOTP] Received response:`, JSON.stringify(response).substring(0, 300));
+    
     // Check if respCode indicates error
-    if (response.data?.respCode && response.data.respCode !== '0') {
-      throw new Error(response.data.respMsg || response.statusDescription || 'Failed to send OTP');
+    // Only throw error if respCode exists and is explicitly an error code (not a success code)
+    // Common success codes: '0', '00', '200', etc.
+    // Common error codes: anything else that's not a known success code
+    if (response.data?.respCode) {
+      const respCode = String(response.data.respCode);
+      const successCodes = ['0', '00', '200'];
+      
+      // Only throw error if respCode is not a known success code
+      if (!successCodes.includes(respCode)) {
+        const errorMsg = response.data.respMsg || response.statusDescription || 'Failed to send OTP';
+        console.error(`[hardwarePinApi.sendOTP] Error respCode detected: ${respCode}`, errorMsg);
+        throw new Error(errorMsg);
+      } else {
+        console.log(`[hardwarePinApi.sendOTP] Success respCode: ${respCode}`);
+      }
+    } else {
+      // If respCode doesn't exist, check if statusCode indicates success
+      // If statusCode is 200, we consider it successful even without respCode
+      console.log(`[hardwarePinApi.sendOTP] No respCode in response, but statusCode is ${response.statusCode}`);
     }
     
+    console.log(`[hardwarePinApi.sendOTP] Returning successful response`);
     return response;
   },
 
