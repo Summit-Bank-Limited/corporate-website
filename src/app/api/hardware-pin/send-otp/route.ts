@@ -24,13 +24,30 @@ export async function POST(request: NextRequest) {
     console.log('[send-otp] Calling API:', apiUrl);
     console.log('[send-otp] Request payload:', { customer_id });
 
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ customer_id }),
-    });
+    // Set up 120 second timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, 120000); // 120 seconds
+
+    let response;
+    try {
+      response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ customer_id }),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+    } catch (fetchError: any) {
+      clearTimeout(timeoutId);
+      if (fetchError.name === 'AbortError') {
+        throw new Error('Request timeout: The API request took longer than 120 seconds');
+      }
+      throw fetchError;
+    }
 
     console.log('[send-otp] API response status:', response.status);
     console.log('[send-otp] API response ok:', response.ok);

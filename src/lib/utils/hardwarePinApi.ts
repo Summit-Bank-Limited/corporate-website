@@ -41,13 +41,30 @@ async function makeApiRequest(
   try {
     console.log(`[hardwarePinApi] Making request to ${endpoint}`, { payload: { ...payload } });
     
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+    // Set up 120 second timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => {
+      controller.abort();
+    }, 120000); // 120 seconds
+    
+    let response;
+    try {
+      response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
+    } catch (fetchError: any) {
+      clearTimeout(timeoutId);
+      if (fetchError.name === 'AbortError') {
+        throw new Error('Request timeout: The request took longer than 120 seconds');
+      }
+      throw fetchError;
+    }
 
     console.log(`[hardwarePinApi] Response status: ${response.status} ${response.statusText}`);
 
