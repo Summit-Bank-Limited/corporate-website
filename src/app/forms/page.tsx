@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import Link from "next/link";
 
 export default function FormsPage() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -84,6 +85,21 @@ export default function FormsPage() {
 
         {/* SEARCH BAR */}
         <div className="main">
+          <div className="mb-6 lg:w-[950px] mx-auto rounded-xl border border-[#AF1F23]/20 bg-[#AF1F23]/5 p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h4 className="text-lg font-semibold text-gray-900">Need an eToken?</h4>
+              <p className="text-sm text-gray-700">
+                Use our secure 3-step eToken request flow (Generate Token, Validate Token, Submit Request).
+              </p>
+            </div>
+            <Link
+              href="/forms/request-etoken"
+              className="h-[45px] inline-flex items-center justify-center px-6 rounded-lg bg-[#AF1F23] text-white hover:shadow-xl transition-all duration-300"
+            >
+              Request eToken
+            </Link>
+          </div>
+
           <div className="flex items-center border h-[70px] p-2 px-4 rounded-lg gap-4 lg:w-[950px] mx-auto">
             <SearchIcon size={20} color="gray" />
             <input

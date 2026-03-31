@@ -23,9 +23,17 @@ export default function Page() {
     channel: "",
     startDate: "",
     endDate: "",
+    customerId: "",
+    token: "",
+    etokenAccountNumber: "",
+    etokenAccountName: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGeneratingToken, setIsGeneratingToken] = useState(false);
+  const [isValidatingToken, setIsValidatingToken] = useState(false);
+  const [tokenGenerated, setTokenGenerated] = useState(false);
+  const [tokenValidated, setTokenValidated] = useState(false);
 
   const messageCharacterLimit = 1500;
 
@@ -42,6 +50,41 @@ export default function Page() {
     if (!emailRegex.test(formData.email)) {
       toast.error("Please enter a valid email address");
       return false;
+    }
+    if (formData.subjectType === "eToken Request") {
+      if (!formData.customerId.trim()) {
+        toast.error("Please enter Customer ID");
+        return false;
+      }
+      if (!/^\d+$/.test(formData.customerId)) {
+        toast.error("Customer ID must contain only digits");
+        return false;
+      }
+      if (!formData.token.trim()) {
+        toast.error("Please enter token");
+        return false;
+      }
+      if (!/^\d+$/.test(formData.token)) {
+        toast.error("Token must contain only digits");
+        return false;
+      }
+      if (!tokenValidated) {
+        toast.error("Please validate token before submitting request");
+        return false;
+      }
+      if (!formData.etokenAccountNumber.trim()) {
+        toast.error("Please enter account number");
+        return false;
+      }
+      if (!/^\d+$/.test(formData.etokenAccountNumber)) {
+        toast.error("Account number must contain only digits");
+        return false;
+      }
+      if (!formData.etokenAccountName.trim()) {
+        toast.error("Please enter account name");
+        return false;
+      }
+      return true;
     }
     if (!formData.subjectText.trim()) {
       toast.error("Please enter a subject");
@@ -132,6 +175,49 @@ export default function Page() {
     setIsSubmitting(true);
 
     try {
+      if (formData.subjectType === "eToken Request") {
+        const etokenResponse = await fetch('/api/mtd/etoken/request', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            accountNumber: formData.etokenAccountNumber.trim(),
+            accountName: formData.etokenAccountName.trim(),
+            email: formData.email.trim(),
+          }),
+        });
+
+        const etokenResult = await etokenResponse.json();
+        if (etokenResponse.ok && etokenResult.success) {
+          toast.success(etokenResult.message || "eToken request submitted successfully.");
+          setFormData({
+            name: "",
+            email: "",
+            subjectType: "Enquiries",
+            subjectText: "",
+            nubanAccountNumber: "",
+            message: "",
+            last6Digits: "",
+            amount: "",
+            amountFormatted: "",
+            transactionID: "",
+            channel: "",
+            startDate: "",
+            endDate: "",
+            customerId: "",
+            token: "",
+            etokenAccountNumber: "",
+            etokenAccountName: "",
+          });
+          setTokenGenerated(false);
+          setTokenValidated(false);
+        } else {
+          toast.error(etokenResult.error || "Failed to submit eToken request.");
+        }
+        return;
+      }
+
       const payload: any = {
         name: formData.name.trim(),
         email: formData.email.trim(),
@@ -179,7 +265,13 @@ export default function Page() {
           channel: "",
           startDate: "",
           endDate: "",
+          customerId: "",
+          token: "",
+          etokenAccountNumber: "",
+          etokenAccountName: "",
         });
+        setTokenGenerated(false);
+        setTokenValidated(false);
       } else {
         toast.error(result.error || "Failed to submit enquiry.");
       }
@@ -192,6 +284,80 @@ export default function Page() {
   };
 
   const prefix = `${formData.subjectType}: `;
+
+  const handleGenerateToken = async () => {
+    if (!formData.customerId.trim()) {
+      toast.error("Please enter Customer ID");
+      return;
+    }
+    if (!/^\d+$/.test(formData.customerId)) {
+      toast.error("Customer ID must contain only digits");
+      return;
+    }
+
+    setIsGeneratingToken(true);
+    try {
+      const response = await fetch('/api/mtd/etoken/generate-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customer_id: formData.customerId.trim() }),
+      });
+      const result = await response.json();
+      if (response.ok && result.success) {
+        setTokenGenerated(true);
+        setTokenValidated(false);
+        toast.success("Token generated successfully. Please enter the token.");
+      } else {
+        toast.error(result.error || "Failed to generate token.");
+      }
+    } catch (error) {
+      console.error("Error generating token:", error);
+      toast.error("Failed to generate token. Please try again.");
+    } finally {
+      setIsGeneratingToken(false);
+    }
+  };
+
+  const handleValidateToken = async () => {
+    if (!formData.customerId.trim()) {
+      toast.error("Please enter Customer ID");
+      return;
+    }
+    if (!formData.token.trim()) {
+      toast.error("Please enter token");
+      return;
+    }
+    if (!/^\d+$/.test(formData.token)) {
+      toast.error("Token must contain only digits");
+      return;
+    }
+
+    setIsValidatingToken(true);
+    try {
+      const response = await fetch('/api/mtd/etoken/validate-token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          customer_id: formData.customerId.trim(),
+          token: formData.token.trim(),
+        }),
+      });
+      const result = await response.json();
+      if (response.ok && result.success) {
+        setTokenValidated(true);
+        toast.success("Token validated successfully. You can now submit your request.");
+      } else {
+        setTokenValidated(false);
+        toast.error(result.error || "Failed to validate token.");
+      }
+    } catch (error) {
+      console.error("Error validating token:", error);
+      setTokenValidated(false);
+      toast.error("Failed to validate token. Please try again.");
+    } finally {
+      setIsValidatingToken(false);
+    }
+  };
 
   return (
     <DefaultLayout>
@@ -207,7 +373,7 @@ export default function Page() {
       <div>
         <SectionHero
           mainClass="!pt-[50px]"
-          title="Enquiries, Complaints & Dispense Errors"
+          title="Enquiries, Complaints, Dispense Errors & eToken Request"
           text="Can't find what you are looking for? Please contact us, and we will get back to you as soon as possible."
         />
 
@@ -238,25 +404,126 @@ export default function Page() {
             <label>Subject Type (Click the DropDown) *</label>
             <select
               value={formData.subjectType}
-              onChange={(e) => setFormData({ ...formData, subjectType: e.target.value })}
+              onChange={(e) => {
+                const nextSubjectType = e.target.value;
+                setFormData({
+                  ...formData,
+                  subjectType: nextSubjectType,
+                  customerId: nextSubjectType === "eToken Request" ? formData.customerId : "",
+                  token: nextSubjectType === "eToken Request" ? formData.token : "",
+                  etokenAccountNumber: nextSubjectType === "eToken Request" ? formData.etokenAccountNumber : "",
+                  etokenAccountName: nextSubjectType === "eToken Request" ? formData.etokenAccountName : "",
+                });
+                if (nextSubjectType !== "eToken Request") {
+                  setTokenGenerated(false);
+                  setTokenValidated(false);
+                }
+              }}
               className="w-full border p-2 rounded"
               disabled={isSubmitting}
             >
               <option value="Enquiries">Enquiries</option>
               <option value="Complaints">Complaints</option>
               <option value="Dispense Error">Dispense Error</option>
+              <option value="eToken Request">eToken Request</option>
             </select>
           </div>
 
-          <div>
-            <label>Subject *</label>
-            <Input
-              placeholder="Enter your subject"
-              value={prefix + formData.subjectText}
-              onChange={(e) => handleSubjectTextChange(e.target.value)}
-              disabled={isSubmitting}
-            />
-          </div>
+          {formData.subjectType !== "eToken Request" && (
+            <div>
+              <label>Subject *</label>
+              <Input
+                placeholder="Enter your subject"
+                value={prefix + formData.subjectText}
+                onChange={(e) => handleSubjectTextChange(e.target.value)}
+                disabled={isSubmitting}
+              />
+            </div>
+          )}
+
+          {formData.subjectType === "eToken Request" && (
+            <div className="space-y-4 rounded-lg border p-4">
+              <p className="text-sm text-gray-600">
+                Follow the secure steps below to complete your eToken request.
+              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label>Customer ID *</label>
+                  <Input
+                    placeholder="Enter customer ID"
+                    value={formData.customerId}
+                    onChange={(e) => {
+                      setFormData({ ...formData, customerId: e.target.value.replace(/\D/g, "") });
+                      setTokenGenerated(false);
+                      setTokenValidated(false);
+                    }}
+                    disabled={isSubmitting || isGeneratingToken || isValidatingToken}
+                  />
+                </div>
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={handleGenerateToken}
+                    disabled={isSubmitting || isGeneratingToken || isValidatingToken}
+                    className="h-[45px] cursor-pointer hover:shadow-xl flex items-center justify-center w-full text-center px-6 transition-all duration-300 hover:px-8 py-2 border rounded-lg bg-[var(--secondary-color)] border-[var(--secondary-color)] text-white disabled:bg-gray-400 disabled:text-gray-500"
+                  >
+                    {isGeneratingToken ? "Generating..." : "Generate Token"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label>Token *</label>
+                  <Input
+                    placeholder="Enter token"
+                    value={formData.token}
+                    onChange={(e) => {
+                      setFormData({ ...formData, token: e.target.value.replace(/\D/g, "") });
+                      setTokenValidated(false);
+                    }}
+                    disabled={isSubmitting || isValidatingToken || !tokenGenerated}
+                  />
+                </div>
+                <div className="flex items-end">
+                  <button
+                    type="button"
+                    onClick={handleValidateToken}
+                    disabled={isSubmitting || isValidatingToken || !tokenGenerated}
+                    className="h-[45px] cursor-pointer hover:shadow-xl flex items-center justify-center w-full text-center px-6 transition-all duration-300 hover:px-8 py-2 border rounded-lg bg-[var(--secondary-color)] border-[var(--secondary-color)] text-white disabled:bg-gray-400 disabled:text-gray-500"
+                  >
+                    {isValidatingToken ? "Validating..." : "Validate Token"}
+                  </button>
+                </div>
+              </div>
+
+              {tokenValidated && <p className="text-sm text-green-600">Token validated successfully.</p>}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label>Account Number *</label>
+                  <Input
+                    placeholder="Enter account number"
+                    value={formData.etokenAccountNumber}
+                    onChange={(e) =>
+                      setFormData({ ...formData, etokenAccountNumber: e.target.value.replace(/\D/g, "") })
+                    }
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <label>Account Name *</label>
+                  <Input
+                    placeholder="Enter account name"
+                    value={formData.etokenAccountName}
+                    onChange={(e) => setFormData({ ...formData, etokenAccountName: e.target.value })}
+                    disabled={isSubmitting}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
 
           {formData.subjectType === "Complaints" && (
             <div>
@@ -399,26 +666,28 @@ export default function Page() {
             </div>
           )}
       
-          <div>
-            <label>Message * (max {messageCharacterLimit} characters)</label>
-            <Textarea
-              name="message"
-              value={formData.message}
-              maxLength={messageCharacterLimit}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              className="h-[200px] resize-none"
-              placeholder="Type in your message here"
-              disabled={isSubmitting}
-            />
-            <p className="text-sm text-gray-500">
-              {formData.message.length}/{messageCharacterLimit} characters
-            </p>
-          </div>
+          {formData.subjectType !== "eToken Request" && (
+            <div>
+              <label>Message * (max {messageCharacterLimit} characters)</label>
+              <Textarea
+                name="message"
+                value={formData.message}
+                maxLength={messageCharacterLimit}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                className="h-[200px] resize-none"
+                placeholder="Type in your message here"
+                disabled={isSubmitting}
+              />
+              <p className="text-sm text-gray-500">
+                {formData.message.length}/{messageCharacterLimit} characters
+              </p>
+            </div>
+          )}
 
           <Button
             custom="!w-full mt-4"
             type="primary"
-            text="Submit"
+            text={formData.subjectType === "eToken Request" ? "Submit eToken Request" : "Submit"}
             buttonFn={handleSubmit}
             loading={isSubmitting}
           />
