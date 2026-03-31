@@ -41,8 +41,8 @@ export default function RequestETokenPage() {
       setErrorMessage("Customer ID is required");
       return;
     }
-    if (!/^\d+$/.test(customerId)) {
-      setErrorMessage("Customer ID must contain only digits");
+    if (!/^[a-zA-Z0-9]+$/.test(customerId)) {
+      setErrorMessage("Customer ID must be alphanumeric");
       return;
     }
 
@@ -233,7 +233,7 @@ export default function RequestETokenPage() {
                   </h3>
                   <Input
                     value={customerId}
-                    onChange={(e) => setCustomerId(e.target.value.replace(/\D/g, ""))}
+                    onChange={(e) => setCustomerId(e.target.value.replace(/[^a-zA-Z0-9]/g, ""))}
                     placeholder="Enter customer ID"
                     disabled={loading}
                   />
