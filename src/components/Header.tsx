@@ -408,6 +408,15 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
               link: "/create-hardware-pin",
             },
           ]
+        },
+        {
+          text: "",
+          links: [
+            {
+              name: "Request eToken",
+              link: "/forms/request-etoken",
+            },
+          ]
         }
 
       ]
