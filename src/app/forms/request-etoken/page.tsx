@@ -38,7 +38,7 @@ export default function RequestETokenPage() {
   const handleGenerateToken = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!customerId.trim()) {
-      setErrorMessage("Customer ID is required");
+      setErrorMessage("Account number or user ID is required");
       return;
     }
     if (!/^[a-zA-Z0-9]+$/.test(customerId)) {
@@ -231,10 +231,13 @@ export default function RequestETokenPage() {
                     <KeyRound className="text-[#AF1F23]" size={20} />
                     Generate Token
                   </h3>
+                  <p className="text-sm text-gray-600">
+                    Enter your account number or your user ID for Mobile App/Internet Banking.
+                  </p>
                   <Input
                     value={customerId}
                     onChange={(e) => setCustomerId(e.target.value.replace(/[^a-zA-Z0-9]/g, ""))}
-                    placeholder="Enter customer ID"
+                    placeholder="Enter account number or user ID"
                     disabled={loading}
                   />
                   {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
