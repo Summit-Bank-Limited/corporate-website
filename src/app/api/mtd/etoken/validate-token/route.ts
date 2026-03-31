@@ -17,8 +17,8 @@ export async function POST(request: NextRequest) {
     const errors: ValidationError[] = [];
     if (!customerId) {
       errors.push({ msg: "Customer ID is required", param: "customer_id", location: "body" });
-    } else if (!/^\d+$/.test(customerId)) {
-      errors.push({ msg: "Customer ID must contain only digits", param: "customer_id", location: "body" });
+    } else if (!/^[a-zA-Z0-9]+$/.test(customerId)) {
+      errors.push({ msg: "Customer ID must be alphanumeric", param: "customer_id", location: "body" });
     }
 
     if (!token) {
