@@ -12,32 +12,12 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const accountNumber = String(body?.accountNumber ?? "").trim();
-    const accountName = String(body?.accountName ?? "").trim();
-    const email = String(body?.email ?? "").trim();
-    const phoneNumber = String(body?.phoneNumber ?? "").trim();
 
     const errors: ValidationError[] = [];
-
     if (!accountNumber) {
       errors.push({ msg: "Account number is required", param: "accountNumber", location: "body" });
     } else if (!/^\d+$/.test(accountNumber)) {
       errors.push({ msg: "Account number must contain only digits", param: "accountNumber", location: "body" });
-    }
-
-    if (!accountName) {
-      errors.push({ msg: "Account name is required", param: "accountName", location: "body" });
-    }
-
-    if (!email) {
-      errors.push({ msg: "Email is required", param: "email", location: "body" });
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errors.push({ msg: "Email must be valid", param: "email", location: "body" });
-    }
-
-    if (!phoneNumber) {
-      errors.push({ msg: "Phone number is required", param: "phoneNumber", location: "body" });
-    } else if (!/^\+?\d{7,15}$/.test(phoneNumber)) {
-      errors.push({ msg: "Phone number must be valid", param: "phoneNumber", location: "body" });
     }
 
     if (errors.length > 0) {
@@ -46,13 +26,13 @@ export async function POST(request: NextRequest) {
 
     let upstreamResponse: Response;
     try {
-      upstreamResponse = await fetch(`${BASE_URL}/mtd/etoken/request`, {
+      upstreamResponse = await fetch(`${BASE_URL}/mtd/etoken/customer-details`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ accountNumber, accountName, email, phoneNumber }),
+        body: JSON.stringify({ accountNumber }),
       });
     } catch (error) {
-      console.error("eToken request upstream unreachable:", error);
+      console.error("Customer-details upstream unreachable:", error);
       return NextResponse.json({ success: false, error: "No response from upstream service" }, { status: 502 });
     }
 
@@ -65,23 +45,31 @@ export async function POST(request: NextRequest) {
     try {
       data = JSON.parse(responseText);
     } catch (error) {
-      console.error("Invalid JSON from eToken request upstream:", error);
+      console.error("Invalid JSON from customer-details upstream:", error);
       return NextResponse.json({ success: false, error: "No response from upstream service" }, { status: 502 });
     }
 
-    if (!upstreamResponse.ok || data?.success === false) {
+    if (!upstreamResponse.ok) {
+      const status = upstreamResponse.status;
+      const fallbackMessage =
+        status === 400
+          ? "Invalid or missing account number"
+          : status === 404
+          ? "Account not found"
+          : "Failed to fetch customer details";
       return NextResponse.json(
-        { success: false, error: data?.error || "Failed to process eToken request" },
-        { status: upstreamResponse.status || 500 }
+        {
+          success: false,
+          error: data?.error || data?.message || fallbackMessage,
+          data,
+        },
+        { status }
       );
     }
 
-    return NextResponse.json(
-      { success: true, message: data?.message || "eToken request submitted successfully" },
-      { status: 200 }
-    );
+    return NextResponse.json({ success: true, data: data?.data ?? data }, { status: 200 });
   } catch (error) {
-    console.error("eToken request route error:", error);
-    return NextResponse.json({ success: false, error: "Failed to process eToken request" }, { status: 500 });
+    console.error("Customer-details route error:", error);
+    return NextResponse.json({ success: false, error: "Failed to fetch customer details" }, { status: 500 });
   }
 }
