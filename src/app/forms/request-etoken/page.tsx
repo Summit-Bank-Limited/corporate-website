@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DefaultLayout from "@/components/layout/DefaultLayout";
 import SectionHero from "@/components/generalHero/SectionHero";
 import { Input } from "@/components/ui/input";
@@ -21,9 +21,14 @@ export default function RequestETokenPage() {
   const [accountNumber, setAccountNumber] = useState("");
   const [accountName, setAccountName] = useState("");
   const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [fetchAccountNumber, setFetchAccountNumber] = useState("");
 
   const [tokenGenerated, setTokenGenerated] = useState(false);
   const [tokenValidated, setTokenValidated] = useState(false);
+  const [detailsLoaded, setDetailsLoaded] = useState(false);
+  const [lastFetchedAccountNumber, setLastFetchedAccountNumber] = useState("");
+  const [detailsLoading, setDetailsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successDialog, setSuccessDialog] = useState(false);
 
@@ -34,6 +39,15 @@ export default function RequestETokenPage() {
   ];
 
   const validateEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+  const clearFetchedDetails = () => {
+    setAccountNumber("");
+    setAccountName("");
+    setEmail("");
+    setPhoneNumber("");
+    setDetailsLoaded(false);
+    setLastFetchedAccountNumber("");
+  };
 
   const handleGenerateToken = async (e?: React.FormEvent) => {
     e?.preventDefault();
@@ -50,6 +64,8 @@ export default function RequestETokenPage() {
     setErrorMessage("");
     setTokenGenerated(false);
     setTokenValidated(false);
+    clearFetchedDetails();
+    setFetchAccountNumber("");
 
     try {
       const response = await fetch("/api/mtd/etoken/generate-token", {
@@ -93,6 +109,7 @@ export default function RequestETokenPage() {
     setLoading(true);
     setErrorMessage("");
     setTokenValidated(false);
+    clearFetchedDetails();
 
     try {
       const response = await fetch("/api/mtd/etoken/validate-token", {
@@ -140,6 +157,14 @@ export default function RequestETokenPage() {
       setErrorMessage("A valid email is required");
       return;
     }
+    if (!phoneNumber.trim()) {
+      setErrorMessage("Phone number is required");
+      return;
+    }
+    if (!detailsLoaded) {
+      setErrorMessage("Fetch customer details successfully before submitting request");
+      return;
+    }
 
     setLoading(true);
     setErrorMessage("");
@@ -151,6 +176,7 @@ export default function RequestETokenPage() {
           accountNumber: accountNumber.trim(),
           accountName: accountName.trim(),
           email: email.trim(),
+          phoneNumber: phoneNumber.trim(),
         }),
       });
       const data = await response.json();
@@ -176,10 +202,60 @@ export default function RequestETokenPage() {
     setAccountNumber("");
     setAccountName("");
     setEmail("");
+    setPhoneNumber("");
+    setFetchAccountNumber("");
     setTokenGenerated(false);
     setTokenValidated(false);
+    setDetailsLoaded(false);
+    setLastFetchedAccountNumber("");
     setErrorMessage("");
   };
+
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    const fetchCustomerDetails = async () => {
+      if (!tokenValidated || currentStep !== 3) return;
+      const value = fetchAccountNumber.trim();
+      if (!/^\d{10,}$/.test(value) || value === lastFetchedAccountNumber) return;
+
+      setDetailsLoading(true);
+      setErrorMessage("");
+      clearFetchedDetails();
+
+      try {
+        const response = await fetch("/api/mtd/etoken/customer-details", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ accountNumber: value }),
+        });
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || "Failed to fetch customer details");
+        }
+
+        const details = data.data || {};
+        setAccountNumber(String(details.accountNumber || value));
+        setAccountName(String(details.accountName || ""));
+        setEmail(String(details.email || ""));
+        setPhoneNumber(String(details.phoneNumber || ""));
+        setDetailsLoaded(true);
+        setLastFetchedAccountNumber(value);
+        toast.success("Customer details loaded.");
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "Failed to fetch customer details";
+        setErrorMessage(message);
+        toast.error(message);
+      } finally {
+        setDetailsLoading(false);
+      }
+    };
+
+    timeoutId = setTimeout(fetchCustomerDetails, 400);
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [fetchAccountNumber, tokenValidated, currentStep, lastFetchedAccountNumber]);
 
   return (
     <DefaultLayout>
@@ -296,26 +372,47 @@ export default function RequestETokenPage() {
                     <MailCheck className="text-[#AF1F23]" size={20} />
                     Submit eToken Request
                   </h3>
+                  <Input
+                    value={fetchAccountNumber}
+                    onChange={(e) => {
+                      const value = e.target.value.replace(/\D/g, "");
+                      setFetchAccountNumber(value);
+                      if (value !== lastFetchedAccountNumber) {
+                        clearFetchedDetails();
+                      }
+                    }}
+                    placeholder="Enter account number to fetch customer details"
+                    disabled={loading || detailsLoading || !tokenValidated}
+                  />
+                  {detailsLoading && (
+                    <p className="text-sm text-gray-600">Fetching customer details...</p>
+                  )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
                       value={accountNumber}
-                      onChange={(e) => setAccountNumber(e.target.value.replace(/\D/g, ""))}
                       placeholder="Account number"
-                      disabled={loading || !tokenValidated}
+                      disabled
+                      readOnly
                     />
                     <Input
                       value={accountName}
-                      onChange={(e) => setAccountName(e.target.value)}
                       placeholder="Account name"
-                      disabled={loading || !tokenValidated}
+                      disabled
+                      readOnly
                     />
                   </div>
                   <Input
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email address"
-                    disabled={loading || !tokenValidated}
+                    disabled
+                    readOnly
+                  />
+                  <Input
+                    value={phoneNumber}
+                    placeholder="Phone number"
+                    disabled
+                    readOnly
                   />
                   {errorMessage && <p className="text-sm text-red-600">{errorMessage}</p>}
                   <div className="flex justify-between">
@@ -332,7 +429,7 @@ export default function RequestETokenPage() {
                     </button>
                     <button
                       type="submit"
-                      disabled={loading || !tokenValidated}
+                      disabled={loading || !tokenValidated || !detailsLoaded}
                       className="h-[45px] px-6 rounded-lg bg-[#AF1F23] text-white disabled:bg-gray-400"
                     >
                       <span className="inline-flex items-center gap-2">
