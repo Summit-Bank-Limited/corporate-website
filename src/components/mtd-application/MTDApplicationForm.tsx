@@ -37,6 +37,7 @@ export default function MTDApplicationForm({
     tenor: "",
     effectiveDate: "",
     maturityInstruction: "",
+    profitPaymentMethod: "",
     staffId: "",
     staffEmail: "",
     customerSignature: null as File | null,
@@ -123,6 +124,7 @@ export default function MTDApplicationForm({
         tenor: "",
         effectiveDate: "",
         maturityInstruction: "",
+        profitPaymentMethod: "",
         staffId: "",
         staffEmail: "",
         customerSignature: null,
@@ -353,6 +355,15 @@ export default function MTDApplicationForm({
       return;
     }
 
+    if (!formData.profitPaymentMethod) {
+      toast.error("Please select a profit payment method");
+      return;
+    }
+    if (!["MONTHLY", "AT_MATURITY"].includes(formData.profitPaymentMethod)) {
+      toast.error("Invalid profit payment method");
+      return;
+    }
+
     if (!formData.maturityInstruction) {
       toast.error("Please select a maturity instruction");
       return;
@@ -378,6 +389,7 @@ export default function MTDApplicationForm({
       tenor: parseInt(formData.tenor),
       expectedProfitRate: expectedProfitRate,
       maturityInstruction: formData.maturityInstruction,
+      profitPaymentMethod: formData.profitPaymentMethod,
       specialRate: formData.specialRate,
       staffId: formatStaffId(customerData?.accountManagerId) || null,
       staffEmail: customerData?.accountOfficerEmail || null,
@@ -902,6 +914,36 @@ export default function MTDApplicationForm({
                   Expected Profit Rate: {expectedProfitRate.toFixed(2)}% per annum
                 </div>
               )}
+
+              <div>
+                <label className="block mb-1 font-semibold text-[10px]">Profit Payment Method *</label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { value: "MONTHLY", label: "Profit paid monthly" },
+                    { value: "AT_MATURITY", label: "Accumulated profits paid at maturity" },
+                  ].map(({ value, label }) => (
+                    <label
+                      key={value}
+                      className={`flex items-center p-2 bg-[#f8f9fa] border-2 rounded-lg cursor-pointer transition-all ${
+                        formData.profitPaymentMethod === value
+                          ? "border-[#AF1F23] bg-gradient-to-r from-[#faf8f3] to-[#f5f0e1]"
+                          : "border-[#dee2e6] hover:border-[#C6B07D]"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="profitPaymentMethod"
+                        value={value}
+                        checked={formData.profitPaymentMethod === value}
+                        onChange={(e) => setFormData({ ...formData, profitPaymentMethod: e.target.value })}
+                        className="w-4 h-4 mr-1.5"
+                        required
+                      />
+                      <span className="text-xs">{label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
 
               <div>
                 <label className="block mb-1 font-semibold text-[10px]">Maturity Instruction *</label>
