@@ -356,11 +356,11 @@ export default function MTDApplicationForm({
     }
 
     if (!formData.profitPaymentMethod) {
-      toast.error("Please select a profit payment method");
+      toast.error("Please select a profit payment instruction");
       return;
     }
     if (!["MONTHLY", "AT_MATURITY"].includes(formData.profitPaymentMethod)) {
-      toast.error("Invalid profit payment method");
+      toast.error("Invalid profit payment instruction");
       return;
     }
 
@@ -916,7 +916,7 @@ export default function MTDApplicationForm({
               )}
 
               <div>
-                <label className="block mb-1 font-semibold text-[10px]">Profit Payment Method *</label>
+                <label className="block mb-1 font-semibold text-[10px]">Profit Payment Instruction *</label>
                 <div className="flex flex-wrap gap-2">
                   {[
                     { value: "MONTHLY", label: "Profit paid monthly" },
