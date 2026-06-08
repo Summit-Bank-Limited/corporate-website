@@ -7,15 +7,21 @@ import React from "react";
 // Example summit insights data
 const summitInsights = [
   
-  
-  
   // {
   //   title: "Summit Bank MD Discusses Non-Interest Banking on Arise TV",
   //   date: "November 12, 2025",
   //   summary:
   //     "Dr. Sirajo Salisu, Managing Director/Chief Executive Office of Summit Bank Ltd, granted an interview to Arise TV on Wednesday 12 November 2025.",
   //   slug: "md-arise-tv-interview",
-  // },
+  // },  
+  
+  {
+    title: "Moments of Celebration and the Values that Shape Tomorrow",
+    date: "May, 2026",
+    summary:
+      "In the last week of May 2026, two important moments came together in a way that deserves reflection. They remind us of responsibility, compassion, and a better way to build prosperity.",
+    slug: "moments-of-celebration",
+  },
   {
     title: "What Non-Interest Banking Really Means",
     date: "May, 2026",
