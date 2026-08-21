@@ -29,11 +29,11 @@ export default function Branches() {
       email: "contact@summitbankng.com",
     },
     {
-      state: "KADUNA",
-      locationType: "Kaduna Road Branch",
-      address: "5 Ahmadu Bello Way, Kaduna.",
-      phone: "+234 (0) 700 700 0005",
-      email: "contact@summitbankng.com",
+         state: "KADUNA",
+         locationType: "Kaduna Road Branch",
+         address: "5 Ahmadu Bello Way, Yakubu Gowon Way, Kaduna 800283, Kaduna",
+         phone: "+234 (0) 700 700 0005",
+         email: "contact@summitbankng.com",
     },
     {
       state: "KANO",
