@@ -31,7 +31,7 @@ export default function Atms() {
        {
          state: "KADUNA",
          locationType: "Kaduna Road Branch",
-         address: "5 Ahmadu Bello Way, Yakubu Gowon Way, Kaduna 800283, Kaduna",
+         address: "5 Ahmadu Bello Way, Kaduna.",
          phone: "+234 (0) 700 700 0005",
          email: "contact@summitbankng.com",
        },
