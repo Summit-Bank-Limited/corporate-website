@@ -189,7 +189,7 @@ export default function Header({ scrollState }: { scrollState: boolean }) {
           text: "Accounts",
           links: [
             {
-              name: "Corporate Current Account (Qard)",
+              name: "SME Corporate Account (Qard)",
               link: "/business-corporate-account",
             },
           ],

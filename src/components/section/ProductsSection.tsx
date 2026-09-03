@@ -47,10 +47,10 @@ export default function ProductsSection({ features }: ProductsSectionProps) {
                   rel="noopener noreferrer"
                   className="px-4 py-2 text-sm font-medium text-white bg-[#AF1F23] hover:bg-[#b99f5f] rounded-md transition-colors"
                 >
-                  Open Account Online
+                  Open Your Account
                 </a>
 
-                {/* 🔥 Pulsing Coming Soon Badge */}
+                {/* 🔥 New */}
                 <motion.span
                   className="absolute -top-2 -left-2 bg-[#AF1F23] text-white text-[10px] font-semibold px-2 py-1 rounded-full shadow"
                   animate={{
@@ -63,7 +63,7 @@ export default function ProductsSection({ features }: ProductsSectionProps) {
                     ease: "easeInOut",
                   }}
                 >
-                  Coming Soon
+                  New
                 </motion.span>
               </div>
             )}

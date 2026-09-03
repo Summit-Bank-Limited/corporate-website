@@ -7,6 +7,7 @@ import FeaturesSection from "@/components/section/FeaturesSection";
 import GenericSection from "@/components/section/GenericSection";
 import { Testimonials } from "@/components/testimonials/Testimonials";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function page() {
@@ -41,6 +42,7 @@ export default function page() {
       text: "Access your funds easily with our debit card and personalized cheque book.",
     },
   ];
+
   const allSection = [
     {
       title: "Requirements",
@@ -64,7 +66,7 @@ export default function page() {
         "SMEs and registered businesses",
         "NGOs and Non-profit Organizations",
         "Government Ministries, Departments and Agencies",
-        "T&Cs apply"
+        "T&Cs apply",
       ],
     },
   ];
@@ -72,9 +74,28 @@ export default function page() {
   return (
     <div className="">
       <DefaultLayout>
-        <AccountHero text={heroDetails?.text} title={heroDetails?.title} />
+        <div className="relative">
+          <AccountHero
+            text={heroDetails?.text}
+            title={heroDetails?.title}
+          />
+
+          {/* ✅ Open Account Button */}
+          <div className="flex justify-center -mt-8 relative z-10">
+            <Link
+              href="https://external.summitbankng.com/instant-account"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 bg-[#AF1F23] text-white font-semibold rounded-lg shadow-lg hover:bg-[#8d191d] transition-all duration-300"
+            >
+              Open Account
+            </Link>
+          </div>
+        </div>
+
         {/* <Partners /> */}
         <FeaturesSection features={allFeatures} />
+
         {allSection?.map((res, index) => (
           <GenericSection
             title={res?.title}
@@ -97,8 +118,9 @@ export default function page() {
             </div>
           </GenericSection>
         ))}
+
         <Faq amount={3} />
-       {/*  <Testimonials /> */} 
+        {/* <Testimonials /> */}
       </DefaultLayout>
     </div>
   );

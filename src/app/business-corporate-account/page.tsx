@@ -7,13 +7,14 @@ import FeaturesSection from "@/components/section/FeaturesSection";
 import GenericSection from "@/components/section/GenericSection";
 import { Testimonials } from "@/components/testimonials/Testimonials";
 import Image from "next/image";
+import Link from "next/link";
 import { title } from "process";
 import React from "react";
 import { text } from "stream/consumers";
 
 export default function page() {
   const heroDetails = {
-    title: "Corporate Current Account (Qard)",
+    title: "SME Corporate Account (Qard)",
     text: "These are structured based on the customer's risk and return expectations.",
   };
 
@@ -38,11 +39,9 @@ export default function page() {
       title: "Online banking with bulk payment options",
       text: "Access your funds easily with our debit card and personalized cheque book.",
     },
-      
-    
- 
-  ]
-const allSection = [
+  ];
+
+  const allSection = [
     {
       title: "Requirements",
       image: "/account/current-1.png",
@@ -55,31 +54,41 @@ const allSection = [
         "Valid means of identification (National ID, Int'l Passport, Driver's License, or Voter's Card)",
         "Proof of business address (Utility bill or Tenancy agreement)",
         "Passport photograph",
-        
       ],
       reverse: true,
     },
     {
       title: "Eligibility",
       image: "/account/current-2.png",
-      list: [
-        "SMEs and Registered businesses",
-        "T&Cs apply"
-        ,
-    
-      ],
+      list: ["SMEs and Registered businesses", "T&Cs apply"],
     },
   ];
 
   return (
     <div className="">
       <DefaultLayout>
-        <AccountHero 
-          text={heroDetails?.text} 
-          title={heroDetails?.title} 
-        />
-      {/* <Partners /> */}
+        <div className="relative">
+          <AccountHero
+            text={heroDetails?.text}
+            title={heroDetails?.title}
+          />
+
+          {/* ✅ Open Account Button */}
+          <div className="flex justify-center -mt-8 relative z-10">
+            <Link
+              href="https://external.summitbankng.com/instant-account"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 bg-[#AF1F23] text-white font-semibold rounded-lg shadow-lg hover:bg-[#8d191d] transition-all duration-300"
+            >
+              Open Account
+            </Link>
+          </div>
+        </div>
+
+        {/* <Partners /> */}
         <FeaturesSection features={allFeatures} />
+
         {allSection?.map((res, index) => (
           <GenericSection
             title={res?.title}
@@ -102,8 +111,9 @@ const allSection = [
             </div>
           </GenericSection>
         ))}
-          <Faq amount={3}/>
-       {/*  <Testimonials /> */} 
+
+        <Faq amount={3} />
+        {/* <Testimonials /> */}
       </DefaultLayout>
     </div>
   );
